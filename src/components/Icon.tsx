@@ -120,12 +120,26 @@ export function Icon({ name, size = 20, className, label }: { name: keyof typeof
   );
 }
 
+/** Brand mark: forest-green disc (#0A2610) with a midnight-violet ring (#1f0e2f) and a leaf. */
 export function LogoMark({ size = 30, inverted = false }: { size?: number; inverted?: boolean }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-      <circle cx="16" cy="16" r="15" fill={inverted ? "#f4efed" : "#1f0e2f"} />
-      <path d="M9 21c0-7 4.5-11.5 14-11.5 0 9-5.5 13-12.5 13" fill="none" stroke={inverted ? "#1f0e2f" : "#f4efed"} strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M9 22.5 17 15" stroke="#c9a99b" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="16" cy="16" r="14.6" fill="#0A2610" stroke={inverted ? "#f4efed" : "#1f0e2f"} strokeWidth="2.2" />
+      <path d="M9 21c0-7 4.5-11.5 14-11.5 0 9-5.5 13-12.5 13" fill="none" stroke="#f4efed" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M9 22.5 17 15" stroke="#fde3d8" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
+  );
+}
+
+/** Full logo: mark + wordmark with a bold "Nourish" and a regular-weight "Well". */
+export function Logo({ inverted = false }: { inverted?: boolean }) {
+  return (
+    <>
+      <LogoMark inverted={inverted} />
+      <span className="logo-word">
+        <span className="logo-nourish">Nourish</span>
+        <span className="logo-well">Well</span>
+      </span>
+    </>
   );
 }

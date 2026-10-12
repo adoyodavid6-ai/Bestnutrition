@@ -16,6 +16,10 @@
   --slate: #2c3e39;
   --slate-70: #51625d;
   --white: #ffffff;
+  --forest: #0a2610;
+  --header-bg: #fde3d8;
+  --header-hover: #f8cdbf;
+  --header-border: #f0c4b4;
 
   /* Semantic */
   --bg: var(--parchment);
@@ -700,9 +704,9 @@ legend {
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: var(--parchment);
+  background-color: var(--header-bg);
   isolation: isolate;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--header-border);
 }
 .header-inner {
   height: 68px;
@@ -725,9 +729,24 @@ legend {
 .logo:hover {
   color: var(--violet);
 }
+.logo-word {
+  display: inline-flex;
+}
+.logo-nourish {
+  font-weight: 700;
+  color: var(--forest);
+}
+.logo-well {
+  font-weight: 400;
+  color: var(--violet);
+}
+.site-footer .logo-nourish,
+.site-footer .logo-well {
+  color: var(--white);
+}
 .main-nav {
   display: none;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--header-border);
 }
 .main-nav ul {
   list-style: none;
@@ -754,7 +773,7 @@ legend {
 .main-nav a:hover,
 .main-nav a[aria-current="page"] {
   color: var(--violet);
-  background: var(--parchment-deep);
+  background: var(--header-hover);
 }
 .header-actions {
   margin-left: auto;
@@ -777,7 +796,7 @@ legend {
   position: relative;
 }
 .icon-btn:hover {
-  background: var(--parchment-deep);
+  background: var(--header-hover);
   color: var(--violet);
 }
 .icon-btn .count {
@@ -828,11 +847,11 @@ legend {
 .mobile-drawer {
   position: fixed;
   inset: 68px 0 0 0;
-  background: var(--parchment);
+  background: var(--header-bg);
   z-index: 49;
   overflow-y: auto;
   padding: var(--s-5) var(--gutter) calc(var(--s-8) + 70px);
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--header-border);
 }
 .mobile-drawer ul {
   list-style: none;
@@ -841,7 +860,7 @@ legend {
 }
 .mobile-drawer li + li {
   margin: 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--header-border);
 }
 .mobile-drawer a {
   display: block;
@@ -853,8 +872,8 @@ legend {
 }
 
 .search-panel {
-  border-top: 1px solid var(--border);
-  background: var(--parchment);
+  border-top: 1px solid var(--header-border);
+  background: var(--header-bg);
   padding: var(--s-4) 0;
 }
 .search-form {

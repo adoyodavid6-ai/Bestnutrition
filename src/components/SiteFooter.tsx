@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { footerNav, site } from "@/lib/site";
-import { LogoMark } from "./Icon";
+import { Logo } from "./Icon";
 import { NewsletterForm } from "./forms/NewsletterForm";
 
 export function SiteFooter() {
@@ -10,8 +10,7 @@ export function SiteFooter() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link href="/" className="logo">
-              <LogoMark inverted />
-              <span>NourishWell</span>
+              <Logo inverted />
             </Link>
             <p className="small" style={{ marginTop: "1rem", maxWidth: "34ch" }}>
               {site.tagline} Practical, evidence-informed nutrition for every kitchen, culture and budget.

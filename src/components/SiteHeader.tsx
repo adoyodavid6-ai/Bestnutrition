@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Icon, LogoMark } from "./Icon";
+import { Icon, Logo } from "./Icon";
 import { primaryNav } from "@/lib/site";
 import { KEYS, useStored } from "@/lib/storage";
 
@@ -51,8 +51,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container header-inner">
         <Link href="/" className="logo" aria-label="NourishWell home">
-          <LogoMark />
-          <span>NourishWell</span>
+          <Logo />
         </Link>
 
 
