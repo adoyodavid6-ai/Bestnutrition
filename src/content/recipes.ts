@@ -1,4 +1,5 @@
 import type { ContentReview, Recipe } from "@/lib/types";
+import { recipePhotos } from "./recipe-photos";
 
 const editorial = (published: string): ContentReview => ({
   status: "published",
@@ -1241,6 +1242,8 @@ export const recipes: Recipe[] = [
     review: editorial("2026-09-01"),
   },
 ];
+
+for (const r of recipes) r.photo ??= recipePhotos[r.slug];
 
 const bySlug = new Map(recipes.map((r) => [r.slug, r]));
 

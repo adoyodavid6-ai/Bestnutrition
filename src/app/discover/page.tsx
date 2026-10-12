@@ -4,7 +4,7 @@ import { collections, collectionCovers, collectionRecipes } from "@/content/coll
 import { GOALS } from "@/content/goals";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHead } from "@/components/Editorial";
-import { FoodArt } from "@/components/FoodArt";
+import { RecipeImage } from "@/components/RecipeImage";
 
 export const metadata: Metadata = {
   title: "Discover Recipe Collections",
@@ -24,7 +24,7 @@ export default function DiscoverPage() {
             const items = collectionRecipes(c);
             return (
               <Link key={c.slug} href={`/discover/${c.slug}`} className="recipe-card">
-                <div className="art">{covers[c.slug] && <FoodArt recipe={covers[c.slug]!} decorative />}</div>
+                <div className="art">{covers[c.slug] && <RecipeImage recipe={covers[c.slug]!} decorative />}</div>
                 <div className="body">
                   <span className="cuisine">{c.kind}</span>
                   <h2 className="serif" style={{ fontWeight: 500, fontSize: "1.35rem", margin: 0 }}>

@@ -32,7 +32,8 @@ export function auditContent(now = new Date()): AuditRow[] {
   const rows: AuditRow[] = [];
   for (const r of recipes) {
     const issues = reviewIssues(r.review, false, now);
-    if (!r.photo) issues.push("No licensed photo (illustration only; Recipe rich results disabled)");
+    if (!r.photo) issues.push("No dish image (illustration only; Recipe rich results disabled)");
+    else if (r.photo.kind === "ai-generated") issues.push("AI-generated image; replace with photography of the tested dish");
     if (r.ingredients.some((l) => getIngredient(l.id).source.proxy)) issues.push("Uses proxy nutrient data");
     if ((r.references ?? []).some((id) => !getReference(id))) issues.push("Broken reference id");
     rows.push({ kind: "Recipe", title: r.title, href: `/recipes/${r.slug}`, review: r.review, references: r.references?.length ?? 0, requiresClinicalReview: false, issues });

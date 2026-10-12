@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { recipes, getRecipe } from "@/content/recipes";
 import { getIngredient } from "@/content/ingredients";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { FoodArt } from "@/components/FoodArt";
+import { RecipeImage } from "@/components/RecipeImage";
 import { RecipeCard } from "@/components/RecipeCard";
 import { ReferenceList, ReviewPanel } from "@/components/Editorial";
 import { JsonLd } from "@/components/JsonLd";
@@ -113,15 +112,15 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
             </div>
           </div>
           <figure style={{ margin: 0 }}>
-            <div className="art-frame" style={{ aspectRatio: "4 / 3" }}>
-              {recipe.photo ? (
-                <Image src={recipe.photo.src} alt={recipe.photo.alt} width={recipe.photo.width} height={recipe.photo.height} priority style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              ) : (
-                <FoodArt recipe={recipe} />
-              )}
+            <div className="art-frame" style={{ aspectRatio: "4 / 3", position: "relative" }}>
+              <RecipeImage recipe={recipe} priority sizes="(max-width: 960px) 100vw, 50vw" />
             </div>
             <figcaption className="xs muted" style={{ marginTop: 8 }}>
-              {recipe.photo ? `Photo: ${recipe.photo.credit}` : "Illustration generated from this recipe's ingredients."}
+              {!recipe.photo
+                ? "Illustration generated from this recipe's ingredients."
+                : recipe.photo.kind === "ai-generated"
+                  ? `AI-generated image of the dish (${recipe.photo.credit}). Your cooked dish may look different.`
+                  : `Photo: ${recipe.photo.credit}`}
             </figcaption>
           </figure>
         </div>

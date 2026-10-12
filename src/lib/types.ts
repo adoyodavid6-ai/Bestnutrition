@@ -139,8 +139,18 @@ export interface Recipe {
   goals: GoalId[];
   review: ContentReview;
   references?: string[]; // reference ids, for any material health claim in the intro
-  /** Licensed photograph of the finished dish. Required before Recipe rich-result markup is emitted. */
-  photo?: { src: string; alt: string; credit: string; width: number; height: number };
+  /** Image of the finished dish. Required before Recipe rich-result markup is emitted. */
+  photo?: RecipePhoto;
+}
+
+export interface RecipePhoto {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** "photograph" for licensed photography of the cooked dish; "ai-generated" for generated images. */
+  kind: "photograph" | "ai-generated";
+  credit: string;
 }
 
 export type GoalId =

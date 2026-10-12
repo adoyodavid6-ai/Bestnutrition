@@ -530,6 +530,7 @@ textarea {
   transform: translateY(-2px);
 }
 .recipe-card .art {
+  position: relative;
   aspect-ratio: 4 / 3;
   background: var(--parchment-deep);
 }
@@ -1022,6 +1023,7 @@ body {
   grid-row: span 2;
 }
 .hero-art .art-frame {
+  position: relative;
   height: 100%;
 }
 .hero-art .art-frame svg {
@@ -1487,6 +1489,7 @@ body {
   }
 }
 .plan-entry .thumb {
+  position: relative;
   width: 64px;
   height: 64px;
   border-radius: var(--r-md);

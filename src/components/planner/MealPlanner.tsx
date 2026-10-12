@@ -30,7 +30,7 @@ import { KEYS, useStored } from "@/lib/storage";
 import { planById } from "@/lib/plans";
 import { track } from "@/lib/analytics";
 import type { Allergen } from "@/lib/types";
-import { FoodArt } from "../FoodArt";
+import { RecipeImage } from "../RecipeImage";
 import { Icon } from "../Icon";
 import { toast } from "../Toaster";
 
@@ -195,7 +195,7 @@ function EntryRow({
   const title = r?.title ?? entry.customTitle ?? "Meal";
   return (
     <div className={`plan-entry${entry.prepared ? " prepared" : ""}`}>
-      <div className="thumb">{r ? <FoodArt recipe={r} decorative /> : <div style={{ width: "100%", height: "100%", background: "var(--parchment-deep)" }} />}</div>
+      <div className="thumb">{r ? <RecipeImage recipe={r} decorative sizes="64px" /> : <div style={{ width: "100%", height: "100%", background: "var(--parchment-deep)" }} />}</div>
       <div>
         <span className="slot">{SLOT_LABELS[entry.slot]}</span>
         <div className="title">{r ? <Link href={`/recipes/${r.slug}`}>{title}</Link> : title}</div>

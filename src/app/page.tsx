@@ -6,7 +6,7 @@ import { nutritionArticles } from "@/content/nutrition";
 import { conditions } from "@/content/conditions";
 import { fitnessGuides } from "@/content/fitness";
 import { supplements } from "@/content/supplements";
-import { FoodArt } from "@/components/FoodArt";
+import { RecipeImage } from "@/components/RecipeImage";
 import { RecipeCard } from "@/components/RecipeCard";
 import { Icon } from "@/components/Icon";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
@@ -77,7 +77,7 @@ export default function HomePage() {
           <div className="hero-art" aria-hidden="true">
             {heroArt.map((r) => (
               <div key={r.slug} className="art-frame">
-                <FoodArt recipe={r} decorative />
+                <RecipeImage recipe={r} decorative priority sizes="(max-width: 960px) 60vw, 30vw" />
               </div>
             ))}
           </div>
@@ -180,7 +180,7 @@ export default function HomePage() {
             const items = collectionRecipes(c);
             return (
               <Link key={c.slug} href={`/discover/${c.slug}`} className="recipe-card">
-                <div className="art">{covers[c.slug] && <FoodArt recipe={covers[c.slug]!} decorative />}</div>
+                <div className="art">{covers[c.slug] && <RecipeImage recipe={covers[c.slug]!} decorative />}</div>
                 <div className="body">
                   <span className="cuisine">{c.kind}</span>
                   <h3>{c.title}</h3>

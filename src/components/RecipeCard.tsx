@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FoodArt } from "./FoodArt";
+import { RecipeImage } from "./RecipeImage";
 import { Icon } from "./Icon";
 import { COST_LABELS, DIET_LABELS, deriveRecipeMeta } from "@/lib/recipe-meta";
 import { roundNutrient } from "@/lib/nutrition";
@@ -12,7 +12,7 @@ export function RecipeCard({ recipe, headingLevel = 3 }: { recipe: Recipe; headi
   return (
     <Link href={`/recipes/${recipe.slug}`} className="recipe-card">
       <div className="art">
-        <FoodArt recipe={recipe} decorative />
+        <RecipeImage recipe={recipe} decorative />
       </div>
       <div className="body">
         <span className="cuisine">{recipe.cuisine}</span>
