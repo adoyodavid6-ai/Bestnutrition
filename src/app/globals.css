@@ -17,9 +17,9 @@
   --slate-70: #51625d;
   --white: #ffffff;
   --forest: #0a2610;
-  --header-bg: #fde3d8;
-  --header-hover: #f8cdbf;
-  --header-border: #f0c4b4;
+  --header-bg: var(--parchment);
+  --header-hover: var(--parchment-deep);
+  --header-border: var(--border);
 
   /* Semantic */
   --bg: var(--parchment);
