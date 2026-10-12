@@ -1,0 +1,387 @@
+import type { Article } from "@/lib/types";
+import { awaitingReview } from "./review";
+
+const R = awaitingReview("2026-09-15");
+
+export const nutritionArticles: Article[] = [
+  {
+    slug: "macronutrients-explained",
+    title: "Macronutrients, Explained Simply",
+    summary: "Carbohydrate, protein and fat provide energy and building materials. Here's what each does and how to balance them on a real plate.",
+    category: "Fundamentals",
+    readMin: 6,
+    sections: [
+      {
+        heading: "The three energy-providing nutrients",
+        body: [
+          "Macronutrients are the nutrients we eat in large amounts: carbohydrate, protein and fat. Each provides energy, measured in kilocalories (kcal) or kilojoules (kJ). Carbohydrate and protein provide about 4 kcal per gram; fat provides about 9 kcal per gram. Alcohol also provides energy (about 7 kcal per gram) but is not a nutrient we need.",
+          "No single macronutrient is 'good' or 'bad'. What matters more is the quality of the foods they come from and the overall pattern of your diet across days and weeks.",
+        ],
+      },
+      {
+        heading: "What each one does",
+        body: [],
+        bullets: [
+          "Carbohydrate is the body's main fuel, especially for the brain and for physical activity. Whole grains, legumes, vegetables and fruit also bring fibre, vitamins and minerals.",
+          "Protein provides amino acids for building and repairing tissue, making enzymes and hormones, and supporting immune function.",
+          "Fat supplies essential fatty acids, helps absorb vitamins A, D, E and K, and is part of every cell membrane. The type of fat matters for heart health.",
+        ],
+      },
+      {
+        heading: "Balancing them on a plate",
+        body: [
+          "Public-health food guides such as the NHS Eatwell Guide and WHO healthy diet guidance describe balance in terms of food groups rather than grams. A practical everyday approach is a plate with plenty of vegetables and fruit, a portion of starchy food (preferably wholegrain), a source of protein such as beans, fish, eggs or meat, and a small amount of unsaturated oil.",
+          "Individual needs vary with age, body size, activity, pregnancy and health conditions. People with specific medical needs should get personalised advice from a registered dietitian.",
+        ],
+      },
+    ],
+    keyTakeaways: [
+      "Carbohydrate and protein provide about 4 kcal/g; fat about 9 kcal/g.",
+      "Food quality and overall pattern matter more than any single macronutrient.",
+      "Build plates around vegetables, whole grains, protein foods and healthy oils.",
+    ],
+    references: ["who-healthy-diet", "nhs-eatwell", "dga-2020"],
+    review: R,
+    relatedRecipes: ["githeri", "misir-wot", "tabbouleh-with-chickpeas"],
+  },
+  {
+    slug: "protein",
+    title: "Protein: How Much and From Where",
+    summary: "Most people meet their protein needs easily. Here's how to spread protein through the day, and why plant proteins deserve more room on the plate.",
+    category: "Fundamentals",
+    readMin: 6,
+    sections: [
+      {
+        heading: "Why protein matters",
+        body: [
+          "Protein is made of amino acids, some of which the body cannot make and must get from food. It supports muscle, skin, enzymes, hormones and immune function.",
+          "A commonly used reference intake for healthy adults is about 0.8 g of protein per kilogram of body weight per day. Needs can be higher in pregnancy and breastfeeding, in older age, during recovery from illness, and for some athletes.",
+        ],
+      },
+      {
+        heading: "Good sources around the world",
+        body: ["Beans, lentils, peas and green grams; groundnuts and other nuts and seeds; tofu and soy foods; fish, eggs, milk and yoghurt; poultry and meat. Grains such as maize, rice and wheat also contribute meaningful protein when eaten in larger quantities."],
+        bullets: [
+          "Combining cereals and legumes — as in githeri, rice and beans, or ugali with ndengu — is a time-tested way to get a good mix of amino acids.",
+          "Plant proteins come packaged with fibre and are usually cheaper per serving.",
+          "Health bodies advise limiting red and especially processed meat.",
+        ],
+      },
+      {
+        heading: "Do you need protein supplements?",
+        body: ["Most people can meet their needs from food. Protein powders can be convenient but are not necessary for most people, and their quality varies. See our protein powder guide for safety and quality considerations."],
+      },
+      {
+        heading: "When to get personalised advice",
+        body: ["People with chronic kidney disease may need to adjust protein intake under medical supervision. Talk to your clinician or a renal dietitian before increasing protein significantly."],
+      },
+    ],
+    keyTakeaways: [
+      "Around 0.8 g/kg/day meets the needs of most healthy adults; some groups need more.",
+      "Beans, lentils, fish, eggs, dairy and soy are all excellent sources.",
+      "Kidney disease can change protein needs — get clinical advice.",
+    ],
+    references: ["who-healthy-diet", "dga-2020", "issn-protein"],
+    review: R,
+    relatedRecipes: ["ndengu-green-gram-stew", "suqaar", "tofu-vegetable-stir-fry"],
+  },
+  {
+    slug: "carbohydrates",
+    title: "Carbohydrates Without the Confusion",
+    summary: "Whole grains, starchy staples, sugars and fibre are all carbohydrates — but they behave very differently. Here's how to choose well.",
+    category: "Fundamentals",
+    readMin: 5,
+    sections: [
+      {
+        heading: "Types of carbohydrate",
+        body: ["Carbohydrates include starches (in grains, roots and tubers), sugars (naturally in fruit and milk, or added to foods), and fibre (in plant foods). Starchy staples such as maize, rice, cassava, wheat and potatoes are the foundation of most of the world's diets."],
+      },
+      {
+        heading: "Choosing better carbohydrates",
+        body: [],
+        bullets: [
+          "Choose whole grains more often: wholegrain maize meal, brown rice, oats, millet, sorghum and whole-wheat products.",
+          "Keep the skins on potatoes and sweet potatoes where practical.",
+          "Pair starchy foods with vegetables, legumes and protein foods to make meals more filling.",
+          "Limit sugary drinks and foods high in added sugar.",
+        ],
+      },
+      {
+        heading: "Carbohydrates and blood sugar",
+        body: ["All digestible carbohydrates raise blood glucose; how quickly depends on the food, how it is cooked and what it is eaten with. People living with diabetes often benefit from consistent carbohydrate amounts and from fibre-rich choices, but individual targets should be set with their care team."],
+      },
+    ],
+    keyTakeaways: ["Starchy staples are a healthy foundation — choose wholegrain versions when you can.", "Free sugars are best kept low.", "People with diabetes should work out carbohydrate targets with their care team."],
+    references: ["who-healthy-diet", "who-sugars", "nhs-eatwell"],
+    review: R,
+    relatedRecipes: ["ugali-with-sukuma-wiki", "berry-overnight-oats", "uji-millet-porridge"],
+  },
+  {
+    slug: "dietary-fats",
+    title: "Dietary Fats: Which, How Much, and Why",
+    summary: "Fat is essential, but the type matters. Swapping saturated fat for unsaturated fat is one of the best-supported changes for heart health.",
+    category: "Fundamentals",
+    readMin: 5,
+    sections: [
+      {
+        heading: "Types of fat",
+        body: [],
+        bullets: [
+          "Unsaturated fats — in vegetable oils such as olive, canola and sunflower, and in nuts, seeds, avocado and oily fish.",
+          "Saturated fats — in fatty meat, butter, ghee, cheese, coconut oil and palm oil.",
+          "Industrially produced trans fats — in some partially hydrogenated oils and fried or baked products. WHO recommends eliminating these.",
+        ],
+      },
+      {
+        heading: "What the guidance says",
+        body: [
+          "WHO advises that total fat should not exceed about 30% of total energy intake, saturated fat should be below 10%, and trans fat below 1%, with a shift towards unsaturated fats.",
+          "Replacing saturated fats with unsaturated fats — rather than with refined carbohydrates — is associated with lower LDL cholesterol.",
+        ],
+      },
+      {
+        heading: "Practical swaps",
+        body: [],
+        bullets: [
+          "Cook with a measured spoonful of vegetable oil rather than free-pouring.",
+          "Use half a can of coconut milk topped up with water or stock.",
+          "Choose fish or beans more often than fatty or processed meat.",
+          "Check labels for 'partially hydrogenated' oils.",
+        ],
+      },
+    ],
+    keyTakeaways: ["Prefer unsaturated fats; keep saturated fat under 10% of energy.", "Avoid industrial trans fats.", "Measure cooking oil."],
+    references: ["who-healthy-diet", "aha-diet"],
+    review: R,
+    relatedRecipes: ["maharagwe-coconut-beans", "miso-glazed-salmon", "tabbouleh-with-chickpeas"],
+  },
+  {
+    slug: "fibre",
+    title: "Fibre: The Nutrient Most of Us Miss",
+    summary: "Fibre supports digestion and is linked with lower risk of several chronic diseases. Most adults eat less than recommended — here's how to close the gap.",
+    category: "Fundamentals",
+    readMin: 5,
+    sections: [
+      {
+        heading: "Why fibre matters",
+        body: ["Dietary fibre is the part of plant foods we cannot fully digest. It adds bulk to stools, feeds gut bacteria and slows the absorption of sugars. Diets higher in fibre are associated with lower risk of heart disease, type 2 diabetes and bowel cancer.", "The NHS recommends 30 g of fibre a day for adults; many national guidelines are in a similar range."],
+      },
+      {
+        heading: "Easy ways to eat more",
+        body: [],
+        bullets: [
+          "Add a handful of beans, lentils or green grams to stews and soups.",
+          "Choose wholegrain maize meal, brown rice, oats, millet or sorghum.",
+          "Keep the skin on potatoes and sweet potatoes.",
+          "Eat whole fruit rather than juice.",
+          "Increase fibre gradually and drink enough fluids to avoid discomfort.",
+        ],
+      },
+      { heading: "When to be cautious", body: ["Some digestive conditions, such as active inflammatory bowel disease, strictures or IBS, may need individual adjustments. Follow the advice of your clinician."] },
+    ],
+    keyTakeaways: ["Aim for around 30 g a day as an adult.", "Legumes and whole grains are the easiest sources.", "Increase gradually with plenty of fluids."],
+    references: ["nhs-fibre", "who-healthy-diet"],
+    review: R,
+    relatedRecipes: ["black-bean-tacos", "githeri", "ndengu-green-gram-stew"],
+  },
+  {
+    slug: "vitamins-and-minerals",
+    title: "Vitamins & Minerals: A Practical Guide",
+    summary: "Micronutrients are needed in small amounts but have big roles. A varied diet covers most needs; some groups need targeted support.",
+    category: "Fundamentals",
+    readMin: 7,
+    sections: [
+      { heading: "What micronutrients do", body: ["Vitamins and minerals support processes such as energy release, bone health, oxygen transport and immunity. Deficiencies of iron, iodine, vitamin A, folate, zinc and vitamin D remain common worldwide."] },
+      {
+        heading: "Food first",
+        body: [],
+        bullets: [
+          "Iron — beans, lentils, dark leafy greens, meat, fish; eat with vitamin C–rich foods to improve absorption.",
+          "Calcium — milk, yoghurt, small fish eaten with bones (such as omena or sardines), calcium-set tofu, some leafy greens.",
+          "Folate — legumes, leafy greens, fortified grains.",
+          "Vitamin A — orange and dark green vegetables and fruit, eggs, liver.",
+          "Iodine — iodised salt, dairy, seafood.",
+          "Vitamin B12 — animal foods and fortified foods; vegans need a reliable source.",
+        ],
+      },
+      {
+        heading: "Who may need supplements",
+        body: ["Common examples include folic acid before conception and in early pregnancy, vitamin B12 for people eating a vegan diet, and vitamin D in some climates and populations. Recommendations differ between countries — follow your national health service's guidance and consult a professional."],
+      },
+    ],
+    keyTakeaways: ["A varied diet covers most needs.", "Some life stages and diets need specific supplements.", "Higher doses are not better and can be harmful."],
+    references: ["nhs-vitamins", "who-healthy-diet", "ods-using-supplements"],
+    review: R,
+    relatedRecipes: ["ugali-with-sukuma-wiki", "ndengu-green-gram-stew", "sweet-potato-egg-hash"],
+  },
+  {
+    slug: "hydration",
+    title: "Hydration: How Much Should You Drink?",
+    summary: "Fluid needs vary with climate, activity and health. Water is the best everyday choice, and sugary drinks are worth limiting.",
+    category: "Everyday habits",
+    readMin: 4,
+    sections: [
+      { heading: "How much", body: ["The NHS suggests around 6 to 8 cups or glasses of fluid a day for adults in the UK. You'll need more in hot climates, during physical activity, or when unwell with fever, vomiting or diarrhoea. Pale straw-coloured urine is a practical sign of good hydration."] },
+      {
+        heading: "Best choices",
+        body: [],
+        bullets: ["Water, including safe tap or boiled water.", "Milk and unsweetened tea and coffee count towards fluids.", "Limit sugar-sweetened drinks and fruit juice; WHO advises keeping free sugars low."],
+      },
+      { heading: "Take care", body: ["Some people, such as those with heart failure or advanced kidney disease, may be advised to restrict fluids. Follow your clinician's guidance."] },
+    ],
+    keyTakeaways: ["Water first.", "Drink more in heat and with activity.", "Some conditions require fluid limits."],
+    references: ["nhs-water", "who-sugars"],
+    review: R,
+  },
+  {
+    slug: "added-sugar",
+    title: "Added Sugar: Where It Hides and How to Cut Back",
+    summary: "WHO recommends limiting free sugars to less than 10% of energy, ideally under 5%. Here's what counts and practical swaps.",
+    category: "Everyday habits",
+    readMin: 5,
+    sections: [
+      { heading: "What counts as free sugar", body: ["Free sugars are sugars added to foods and drinks by manufacturers, cooks or consumers, plus sugars naturally present in honey, syrups and fruit juices. Sugars inside whole fruit and vegetables, and in milk, are not counted as free sugars."] },
+      { heading: "The recommendation", body: ["WHO strongly recommends reducing free sugars to less than 10% of total energy intake and suggests a further reduction to below 5% for additional benefits. For an adult eating about 2000 kcal, 10% is about 50 g (around 12 teaspoons)."] },
+      {
+        heading: "Practical swaps",
+        body: [],
+        bullets: ["Sweeten porridge with mashed ripe banana instead of sugar.", "Reduce sugar in tea gradually — tastes adapt within weeks.", "Swap sugary sodas for water, sparkling water with lime, or unsweetened tea.", "Check labels on yoghurts, cereals and sauces."],
+      },
+    ],
+    keyTakeaways: ["Keep free sugars below 10% of energy, ideally 5%.", "Sugary drinks are the biggest source for many people.", "Whole fruit is not the problem."],
+    references: ["who-sugars", "who-healthy-diet", "nhs-food-labels"],
+    review: R,
+    relatedRecipes: ["banana-oat-bites", "spiced-tropical-fruit-salad"],
+  },
+  {
+    slug: "sodium-and-salt",
+    title: "Salt and Sodium: Why Less Is Better",
+    summary: "High sodium intake raises blood pressure. Most salt comes from processed foods and seasonings — here's how to reduce it without losing flavour.",
+    category: "Everyday habits",
+    readMin: 5,
+    sections: [
+      { heading: "The recommendation", body: ["WHO recommends adults consume less than 2000 mg of sodium a day — equivalent to less than 5 g of salt (just under a teaspoon). Most people worldwide eat considerably more."] },
+      { heading: "Where sodium comes from", body: ["Stock cubes, soy sauce, processed meats, bread, instant noodles, snacks and restaurant food are major sources, alongside salt added in cooking and at the table."] },
+      {
+        heading: "Flavour without salt",
+        body: [],
+        bullets: ["Build flavour with onion, garlic, ginger, chilli, herbs, citrus and spices.", "Use low-sodium stock, or half a stock cube.", "Taste before adding salt at the end of cooking.", "Rinse canned beans to remove some sodium."],
+      },
+      { heading: "A note on salt substitutes", body: ["Potassium-based salt substitutes can lower blood pressure for many people, but may be unsafe for people with kidney disease or taking certain medicines. Ask your clinician first."] },
+    ],
+    keyTakeaways: ["Under 2000 mg sodium (5 g salt) a day for adults.", "Most sodium is in processed foods and seasonings.", "Check with a clinician before using potassium salt substitutes."],
+    references: ["who-sodium", "nhs-hbp", "nhlbi-dash"],
+    review: R,
+    relatedRecipes: ["greek-lentil-soup", "kachumbari"],
+  },
+  {
+    slug: "reading-food-labels",
+    title: "How to Read a Food Label",
+    summary: "Nutrition panels and ingredient lists tell you more than front-of-pack claims. A quick guide to checking sugar, salt, fat and fibre.",
+    category: "Everyday habits",
+    readMin: 5,
+    sections: [
+      { heading: "Start with the ingredients list", body: ["Ingredients are listed in descending order by weight. If sugar, salt or oil appears near the top, the product contains a lot of it. Sugar has many names — glucose syrup, sucrose, dextrose, honey, fruit juice concentrate."] },
+      { heading: "Compare per 100 g", body: ["Per-serving values depend on the manufacturer's serving size, which may not match yours. Comparing per 100 g lets you compare products fairly. Some countries use traffic-light colours to show whether levels are high, medium or low."] },
+      { heading: "Be sceptical of claims", body: ["Claims such as 'natural', 'light' or 'superfood' are often loosely regulated. 'No added sugar' products may still be high in natural sugars. Allergen information is usually highlighted in the ingredients list."] },
+    ],
+    keyTakeaways: ["Read the ingredients list first.", "Compare per 100 g.", "Front-of-pack claims are marketing."],
+    references: ["nhs-food-labels"],
+    review: R,
+  },
+  {
+    slug: "portion-awareness",
+    title: "Portion Awareness Without Counting Everything",
+    summary: "Simple visual guides help you serve balanced portions without weighing every meal.",
+    category: "Everyday habits",
+    readMin: 4,
+    sections: [
+      { heading: "The hand guide", body: [], bullets: ["Vegetables: two cupped handfuls or half the plate.", "Starchy staples: about a fist-sized portion, adjusted to activity and hunger.", "Protein foods: about the size of your palm.", "Fats and oils: about the size of your thumb."] },
+      { heading: "Listen to your body", body: ["Eat slowly, notice hunger and fullness, and avoid eating directly from large packets. Portion needs vary a lot between people; there is no one 'correct' portion."] },
+      { heading: "A note on restriction", body: ["If tracking portions causes anxiety, guilt or obsessive thoughts about food, step back and seek support. Eating disorders are serious and treatable."] },
+    ],
+    keyTakeaways: ["Use your hand as a rough guide.", "Vegetables can fill half the plate.", "Portion tracking isn't helpful for everyone."],
+    references: ["nhs-eatwell", "who-healthy-diet"],
+    review: R,
+  },
+  {
+    slug: "dietary-diversity",
+    title: "Dietary Diversity: Why Variety Matters",
+    summary: "Eating a variety of food groups improves the chance of meeting nutrient needs. Here's how to add diversity on any budget.",
+    category: "Fundamentals",
+    readMin: 4,
+    sections: [
+      { heading: "What it means", body: ["Dietary diversity means eating from many food groups over a day or week: grains and roots; legumes; nuts and seeds; dairy; meat, fish and eggs; dark green leafy vegetables; vitamin A–rich fruit and vegetables; other vegetables; and other fruit."] },
+      { heading: "Affordable ways to add variety", body: [], bullets: ["Rotate between beans, lentils, green grams and peas.", "Add a different green each week: sukuma, spinach, amaranth, cabbage.", "Buy fruit that is in season locally.", "Small dried fish add protein and calcium cheaply."] },
+    ],
+    keyTakeaways: ["Aim for many food groups across the week.", "Seasonal and local foods make variety affordable."],
+    references: ["who-healthy-diet", "fao-infoods"],
+    review: R,
+    relatedRecipes: ["ugali-with-sukuma-wiki", "matoke-and-bean-stew", "kachumbari"],
+  },
+  {
+    slug: "food-safety-at-home",
+    title: "Food Safety at Home",
+    summary: "WHO's five keys to safer food: keep clean, separate raw and cooked, cook thoroughly, keep food at safe temperatures, and use safe water and raw materials.",
+    category: "Food safety",
+    readMin: 6,
+    sections: [
+      { heading: "The five keys", body: [], bullets: ["Keep clean — wash hands and surfaces often.", "Separate raw and cooked — especially raw meat, poultry and seafood.", "Cook thoroughly — poultry to 74 °C (165 °F), minced meat to 71 °C (160 °F), fish to 63 °C (145 °F).", "Keep food at safe temperatures — refrigerate within 2 hours (1 hour in hot weather).", "Use safe water and raw materials — boil or treat water if unsure."] },
+      { heading: "Leftovers", body: ["Cool leftovers quickly, refrigerate within 2 hours, and eat within 2–4 days depending on the food. Cooked rice should be cooled and refrigerated within an hour and reheated only once. Reheat until steaming hot throughout."] },
+      { heading: "Higher-risk groups", body: ["Pregnant people, babies and young children, older adults and people with weakened immunity are more vulnerable to foodborne illness and may need to avoid some foods, such as unpasteurised dairy and undercooked eggs or meat."] },
+    ],
+    keyTakeaways: ["Clean, separate, cook, chill — and use safe water.", "Refrigerate within 2 hours.", "Higher-risk groups need extra care."],
+    references: ["who-food-safety", "cdc-food-safety", "nhs-pregnancy-avoid"],
+    review: R,
+  },
+  {
+    slug: "nutrition-through-life-stages",
+    title: "Nutrition Through Life's Stages",
+    summary: "From infancy to older age, nutrient needs change. A brief guide to the priorities at each stage.",
+    category: "Life stages",
+    readMin: 7,
+    sections: [
+      { heading: "Infants and young children", body: ["WHO recommends exclusive breastfeeding for the first six months, then nutritious complementary foods alongside continued breastfeeding up to two years or beyond. Children need energy- and nutrient-dense foods, and should not be given added salt or sugar."] },
+      { heading: "Adolescents", body: ["Rapid growth increases needs for energy, protein, calcium and iron, especially for girls once menstruation begins."] },
+      { heading: "Pregnancy and breastfeeding", body: ["Folic acid before conception and in early pregnancy reduces the risk of neural tube defects. Iron, iodine and vitamin D needs may increase. See our pregnancy nutrition guide."] },
+      { heading: "Older adults", body: ["Appetite may fall while protein, vitamin D, calcium and vitamin B12 needs stay the same or increase. Staying active and eating enough protein help maintain muscle."] },
+    ],
+    keyTakeaways: ["Needs change through life.", "Pregnancy and infancy have specific, well-established recommendations.", "Older adults should prioritise protein and staying active."],
+    references: ["who-infant-feeding", "nhs-pregnancy-diet", "nia-healthy-eating"],
+    review: R,
+  },
+  {
+    slug: "building-a-balanced-meal",
+    title: "Building a Balanced Meal",
+    summary: "A simple, flexible template you can apply to any cuisine — from ugali and sukuma to rice and dal.",
+    category: "Everyday habits",
+    readMin: 4,
+    sections: [
+      { heading: "The template", body: [], bullets: ["Half the plate: vegetables and fruit, of many colours.", "A quarter: starchy staples, preferably wholegrain.", "A quarter: protein foods — legumes, fish, eggs, dairy, poultry or meat.", "A little: healthy oil for cooking and flavour.", "Water to drink."] },
+      { heading: "Apply it to your cuisine", body: ["Ugali with sukuma wiki and beans; rice with dal and a vegetable curry; injera with misir wot and greens; tortillas with black beans and slaw. Every food culture has balanced meals — you don't need imported foods to eat well."] },
+    ],
+    keyTakeaways: ["Half vegetables, a quarter starch, a quarter protein.", "Works in any cuisine."],
+    references: ["nhs-eatwell", "who-healthy-diet"],
+    review: R,
+    relatedRecipes: ["ugali-with-sukuma-wiki", "chana-masala", "black-bean-tacos"],
+  },
+  {
+    slug: "nutrition-myths-and-evidence",
+    title: "Nutrition Myths and How to Evaluate Evidence",
+    summary: "Detoxes, superfoods and miracle cures sell well but rarely hold up. Here's how to judge nutrition claims for yourself.",
+    category: "Evidence",
+    readMin: 7,
+    sections: [
+      { heading: "Common myths", body: [], bullets: ["Detox diets: your liver and kidneys already remove waste; there is no good evidence that detox products help.", "Superfoods: no single food transforms health; overall dietary pattern matters.", "Carbs make you fat: weight change depends on overall energy balance and dietary pattern, not one nutrient.", "Supplements can replace a good diet: they can fill specific gaps but don't replicate whole foods."] },
+      { heading: "Questions to ask", body: [], bullets: ["Who is making the claim, and do they profit from it?", "Is it based on human studies, or only on animal or lab studies?", "Is it a single study, or a systematic review of many studies?", "Does it promise a cure, rapid results or 'one weird trick'?", "Do public-health bodies agree?"] },
+      { heading: "How we handle evidence", body: ["Our guides prioritise public-health agencies, national health services and systematic reviews. We cite every material claim and show when content was reviewed. Read our editorial policy for details."] },
+    ],
+    keyTakeaways: ["Be wary of cures, detoxes and superfoods.", "Systematic reviews beat single studies.", "Follow the money."],
+    references: ["who-healthy-diet", "ods-using-supplements"],
+    review: R,
+  },
+];
+
+export function getNutritionArticle(slug: string) {
+  return nutritionArticles.find((a) => a.slug === slug);
+}
