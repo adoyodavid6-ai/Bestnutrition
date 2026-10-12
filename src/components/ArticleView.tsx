@@ -67,7 +67,7 @@ export function ArticleView({ article, basePath }: { article: Article; basePath:
         </div>
         <aside className="stack">
           <nav aria-label="On this page" className="card">
-            <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-sans)", fontWeight: 700 }}>On this page</h2>
+            <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-body)", fontWeight: 700 }}>On this page</h2>
             <ul className="toc">
               {article.sections.map((s) => (
                 <li key={s.heading}>

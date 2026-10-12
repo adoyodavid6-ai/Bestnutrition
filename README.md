@@ -2,7 +2,7 @@
 
 **Eat Better. Feel Stronger. Live Well.**
 
-NourishWell is a global-first nutrition platform: practical recipes (with a strong East African core), a seven-day meal planner with consolidated shopping lists, transparent nutrition estimates, and medically responsible health education.
+NourishWell is a global-first nutrition platform: practical recipes led by American, British and Asian favourites (plus East African, Mediterranean and Latin American dishes), a seven-day meal planner with consolidated shopping lists, transparent nutrition estimates, and medically responsible health education.
 
 Built with Next.js 15 (App Router), React 19 and TypeScript. No external services are required to run it.
 
@@ -24,7 +24,7 @@ Quality checks:
 ```bash
 npm run typecheck    # TypeScript
 npm run lint         # ESLint (next/core-web-vitals)
-npm test             # 46 unit tests (nutrition, scaling, planner, shopping, content integrity, forms, entitlements, search)
+npm test             # 47 unit tests (nutrition, scaling, planner, shopping, content integrity, forms, entitlements, search)
 npm run e2e          # browser tests against a running server (BASE_URL=http://localhost:3000)
 ```
 
@@ -33,7 +33,7 @@ npm run e2e          # browser tests against a running server (BASE_URL=http://l
 | Area | Status |
 | --- | --- |
 | Homepage (15 editorial sections) | ✅ Working |
-| Recipe library: 29 recipes, 15 filters, URL-shareable filters, sorting | ✅ Working |
+| Recipe library: 51 recipes (7 American, 7 British, 11 Asian, 14 African, 12 Mediterranean/Middle Eastern/Latin American/global), 15 filters, URL-shareable filters, sorting | ✅ Working |
 | Recipe pages: scaling, metric/US units, substitutions, storage, food safety, allergens, print/share/save, add to plan, add to shopping list | ✅ Working |
 | Nutrition transparency engine: per-ingredient breakdown, reference sources, proxies flagged, estimate labelling, recipe comparison | ✅ Working |
 | Nutrition education (16 guides), health conditions (22 guides, 12-part structure), supplements (12), fitness & wellness (14) | ✅ Published as general education; **clinical review pending** (honestly labelled) |

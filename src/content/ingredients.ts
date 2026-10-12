@@ -63,6 +63,9 @@ export const ingredients: Ingredient[] = [
   { id: "green-chilli", name: "Green chilli", altNames: ["pilipili"], category: "produce", per100g: n(40, 2.0, 9.5, 0.2, 0, 1.5, 7), source: fdc("Peppers, hot chili, green, raw"), cost: 1, color: "#4f8a2e" },
   { id: "cucumber", name: "Cucumber", category: "produce", per100g: n(15, 0.7, 3.6, 0.1, 0, 0.5, 2), source: fdc("Cucumber, with peel, raw"), cost: 1, color: "#8fbf6a" },
   { id: "lettuce", name: "Romaine lettuce", category: "produce", per100g: n(17, 1.2, 3.3, 0.3, 0, 2.1, 8), source: fdc("Lettuce, cos or romaine, raw"), cost: 2, color: "#9cc46b" },
+  { id: "celery", name: "Celery", category: "produce", per100g: n(14, 0.7, 3.0, 0.2, 0, 1.6, 80), source: fdc("Celery, raw"), cost: 1, color: "#a9c77a" },
+  { id: "leek", name: "Leeks", category: "produce", per100g: n(61, 1.5, 14.2, 0.3, 0, 1.8, 20), source: fdc("Leeks, (bulb and lower leaf-portion), raw"), cost: 2, color: "#b9cf8e" },
+  { id: "bok-choy", name: "Bok choy (pak choi)", category: "produce", per100g: n(13, 1.5, 2.2, 0.2, 0, 1.0, 65), source: fdc("Cabbage, chinese (pak-choi), raw"), cost: 2, color: "#5d9a4a" },
   { id: "broccoli", name: "Broccoli", category: "produce", per100g: n(34, 2.8, 6.6, 0.4, 0, 2.6, 33), source: fdc("Broccoli, raw"), cost: 2, color: "#3e7c3c" },
   { id: "cauliflower", name: "Cauliflower", category: "produce", per100g: n(25, 1.9, 5.0, 0.3, 0.1, 2.0, 30), source: fdc("Cauliflower, raw"), cost: 2, color: "#efe9d6" },
   { id: "green-beans", name: "Green beans", altNames: ["French beans"], category: "produce", per100g: n(31, 1.8, 7.0, 0.2, 0, 2.7, 6), source: fdc("Beans, snap, green, raw"), cost: 1, color: "#5c9a3d" },
@@ -107,11 +110,18 @@ export const ingredients: Ingredient[] = [
   { id: "sardines", name: "Sardines canned in oil (drained)", category: "protein", per100g: n(208, 24.6, 0, 11.5, 1.5, 0, 307), source: fdc("Fish, sardine, Atlantic, canned in oil, drained solids with bone"), allergens: ["fish"], animal: "fish", cost: 2, color: "#9aa3a8" },
   { id: "shrimp", name: "Prawns / shrimp", category: "protein", per100g: n(85, 20.1, 0, 0.5, 0.1, 0, 119), source: fdc("Crustaceans, shrimp, raw"), allergens: ["shellfish"], animal: "shellfish", cost: 3, color: "#f2a38a" },
 
+  { id: "ground-turkey", name: "Lean ground turkey (93% lean)", altNames: ["turkey mince"], category: "protein", per100g: n(150, 18.7, 0, 8.3, 2.2, 0, 69), source: fdc("Turkey, ground, 93% lean, 7% fat, raw"), animal: "poultry", cost: 2, color: "#c99a86" },
+  { id: "lean-beef-mince", name: "Lean beef mince (90% lean)", altNames: ["ground beef"], category: "protein", per100g: n(176, 20, 0, 10, 3.9, 0, 66), source: fdc("Beef, ground, 90% lean meat / 10% fat, raw"), animal: "meat", cost: 3, color: "#8c3b32" },
+  { id: "cod", name: "Cod or haddock fillet", category: "protein", per100g: n(82, 17.8, 0, 0.7, 0.1, 0, 54), source: fdc("Fish, cod, Atlantic, raw"), allergens: ["fish"], animal: "fish", cost: 3, color: "#f3ebe2" },
+
   // ---------- Dairy ----------
   { id: "yogurt", name: "Plain low-fat yoghurt", altNames: ["mala (fermented milk) works too"], category: "dairy", per100g: n(63, 5.3, 7.0, 1.6, 1.0, 0, 70), source: fdc("Yogurt, plain, low fat"), allergens: ["dairy"], animal: "dairy", cost: 2, color: "#f7f4ec" },
   { id: "greek-yogurt", name: "Plain Greek yoghurt (0%)", category: "dairy", per100g: n(59, 10.2, 3.6, 0.4, 0.1, 0, 36), source: fdc("Yogurt, Greek, plain, nonfat"), allergens: ["dairy"], animal: "dairy", cost: 2, color: "#fbf9f3" },
   { id: "milk", name: "Milk (semi-skimmed / 2%)", altNames: ["maziwa"], category: "dairy", per100g: n(50, 3.3, 4.8, 2.0, 1.1, 0, 47), source: fdc("Milk, reduced fat, fluid, 2% milkfat"), allergens: ["dairy"], animal: "dairy", cost: 1, color: "#fbfaf6" },
   { id: "feta", name: "Feta cheese", category: "dairy", per100g: n(264, 14.2, 4.1, 21.3, 14.9, 0, 1116), source: fdc("Cheese, feta"), allergens: ["dairy"], animal: "dairy", cost: 3, color: "#f6f3ea" },
+
+  { id: "cheddar", name: "Mature cheddar cheese", category: "dairy", per100g: n(403, 24.9, 1.3, 33.1, 21.1, 0, 621), source: fdc("Cheese, cheddar"), allergens: ["dairy"], animal: "dairy", cost: 2, color: "#f2b84b" },
+  { id: "blue-cheese", name: "Blue cheese", category: "dairy", per100g: n(353, 21.4, 2.3, 28.7, 18.7, 0, 1146), source: fdc("Cheese, blue"), allergens: ["dairy"], animal: "dairy", cost: 3, color: "#e9ece4" },
 
   // ---------- Nuts & seeds ----------
   { id: "peanut-butter", name: "Peanut butter (natural, unsalted)", altNames: ["groundnut paste"], category: "nuts-seeds", per100g: n(588, 25.1, 19.6, 50.4, 10.3, 6.0, 17), source: fdc("Peanut butter, smooth style, without salt"), allergens: ["peanut"], cost: 2, color: "#b77b3f" },
@@ -121,15 +131,23 @@ export const ingredients: Ingredient[] = [
   { id: "chia", name: "Chia seeds", category: "nuts-seeds", per100g: n(486, 16.5, 42.1, 30.7, 3.3, 34.4, 16), source: fdc("Seeds, chia seeds, dried"), cost: 3, color: "#4d4a4a" },
   { id: "tahini", name: "Tahini (sesame paste)", category: "nuts-seeds", per100g: n(595, 17, 21.2, 53.8, 7.5, 9.3, 115), source: fdc("Seeds, sesame butter, tahini, from roasted and toasted kernels"), allergens: ["sesame"], cost: 2, color: "#cfa874" },
 
+  { id: "sesame-seeds", name: "Sesame seeds", category: "nuts-seeds", per100g: n(573, 17.7, 23.4, 49.7, 7.0, 11.8, 11), source: fdc("Seeds, sesame seeds, whole, dried"), allergens: ["sesame"], cost: 2, color: "#efe2c2" },
+
   // ---------- Oils & pantry ----------
   { id: "olive-oil", name: "Olive oil", category: "oils", per100g: n(884, 0, 0, 100, 13.8, 0, 2), source: fdc("Oil, olive, salad or cooking"), cost: 3, color: "#b8a634" },
   { id: "veg-oil", name: "Vegetable oil (canola/rapeseed or sunflower)", category: "oils", per100g: n(884, 0, 0, 100, 7.4, 0, 0), source: fdc("Oil, canola"), cost: 1, color: "#e5c65a" },
+  { id: "sesame-oil", name: "Toasted sesame oil", category: "oils", per100g: n(884, 0, 0, 100, 14.2, 0, 0), source: fdc("Oil, sesame, salad or cooking"), allergens: ["sesame"], cost: 2, color: "#b8762e" },
   { id: "coconut-milk", name: "Coconut milk (canned)", altNames: ["tui"], category: "pantry", per100g: n(197, 2.0, 2.8, 21.3, 18.9, 0, 13), source: fdc("Nuts, coconut milk, canned (liquid expressed from grated meat and water)"), cost: 2, color: "#f7f1e3" },
   { id: "canned-tomatoes", name: "Canned chopped tomatoes", category: "pantry", per100g: n(32, 1.6, 7.3, 0.3, 0, 1.9, 132), source: fdc("Tomatoes, crushed, canned"), cost: 1, color: "#b8352a" },
   { id: "tomato-paste", name: "Tomato paste", category: "pantry", per100g: n(82, 4.3, 18.9, 0.5, 0.1, 4.1, 59), source: fdc("Tomato products, canned, paste, without salt added"), cost: 1, color: "#a3271f" },
   { id: "stock", name: "Low-sodium vegetable stock", category: "pantry", per100g: n(6, 0.3, 1.2, 0, 0, 0, 58), source: fdc("Soup, vegetable broth, ready to serve, low sodium", "Sodium varies widely between brands; check the label"), cost: 1, color: "#d8c38a" },
   { id: "soy-sauce", name: "Reduced-sodium soy sauce", category: "pantry", per100g: n(53, 8.1, 4.9, 0.1, 0, 0.8, 3333), source: fdc("Soy sauce, reduced sodium, made from soy and wheat (shoyu)"), allergens: ["soy", "gluten"], cost: 2, color: "#3a2418" },
   { id: "miso", name: "Miso paste", category: "pantry", per100g: n(198, 12.8, 25.4, 6.0, 1.0, 5.4, 3728), source: fdc("Miso"), allergens: ["soy"], cost: 3, color: "#c8873f" },
+  { id: "fish-sauce", name: "Fish sauce", altNames: ["nam pla", "nuoc mam"], category: "pantry", per100g: n(35, 5.1, 3.6, 0, 0, 0, 7851), source: fdc("Sauce, fish, ready-to-serve"), allergens: ["fish"], animal: "fish", cost: 2, color: "#8a5a2b" },
+  { id: "baked-beans", name: "Baked beans in tomato sauce (canned)", altNames: ["navy beans in sauce"], category: "legumes", per100g: n(94, 4.8, 21.1, 0.4, 0.1, 4.1, 343), source: fdc("Beans, baked, canned, plain or vegetarian"), cost: 1, color: "#c4542e" },
+  { id: "pasta", name: "Dried pasta (macaroni or penne)", category: "grains", per100g: n(371, 13, 74.7, 1.5, 0.3, 3.2, 6), source: fdc("Pasta, dry, enriched"), allergens: ["gluten"], cost: 1, color: "#f0d58c" },
+  { id: "rice-noodles", name: "Rice vermicelli noodles (dry)", altNames: ["bun noodles"], category: "grains", per100g: n(364, 6.0, 80.2, 0.6, 0.2, 1.6, 182), source: fdc("Rice noodles, dry"), cost: 2, color: "#f6f1e6" },
+  { id: "wakame", name: "Wakame seaweed (rehydrated)", category: "produce", per100g: n(45, 3.0, 9.1, 0.6, 0.1, 0.5, 872), source: fdc("Seaweed, wakame, raw"), cost: 2, color: "#2f5a3a" },
   { id: "honey", name: "Honey", altNames: ["asali"], category: "pantry", per100g: n(304, 0.3, 82.4, 0, 0, 0.2, 4), source: fdc("Honey"), animal: "honey", cost: 2, color: "#e0a42b" },
   { id: "sugar", name: "Sugar", category: "pantry", per100g: n(387, 0, 100, 0, 0, 0, 1), source: fdc("Sugars, granulated"), cost: 1, color: "#fbfaf7" },
   { id: "vinegar", name: "Cider or wine vinegar", category: "pantry", per100g: n(21, 0, 0.9, 0, 0, 0, 5), source: fdc("Vinegar, cider"), cost: 1, color: "#d9b26a" },
@@ -147,6 +165,7 @@ export const ingredients: Ingredient[] = [
   { id: "curry-powder", name: "Curry powder", category: "spices", per100g: n(325, 14.3, 55.8, 14, 2.3, 53.2, 52), source: fdc("Spices, curry powder"), cost: 1, color: "#c98a1f" },
   { id: "pilau-masala", name: "Pilau masala or garam masala", altNames: ["xawaash (Somali spice blend)"], category: "spices", per100g: n(325, 14.3, 55.8, 14, 2.3, 53.2, 52), source: fdc("Spices, curry powder", "Curry powder used as proxy for whole-spice blends"), cost: 1, color: "#7a4a24" },
   { id: "chilli-flakes", name: "Chilli flakes or powder", category: "spices", per100g: n(318, 12, 56.6, 17.3, 3.3, 27.2, 30), source: fdc("Spices, pepper, red or cayenne"), cost: 1, color: "#a8241c" },
+  { id: "dried-herbs", name: "Dried thyme or mixed herbs", category: "spices", per100g: n(276, 9.1, 63.9, 7.4, 2.7, 37, 55), source: fdc("Spices, thyme, dried"), cost: 1, color: "#6f7d4a" },
   { id: "coriander-ground", name: "Ground coriander seed", category: "spices", per100g: n(298, 12.4, 55, 17.8, 1.0, 41.9, 35), source: fdc("Spices, coriander seed"), cost: 1, color: "#a88a4a" },
 ];
 

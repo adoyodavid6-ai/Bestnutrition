@@ -248,7 +248,7 @@ export function ShoppingList() {
           <div className="field" style={{ margin: 0 }}>
             <label htmlFor="currency">Currency</label>
             <select id="currency" className="select" value={prefs.currency} onChange={(e) => update({ currency: e.target.value })}>
-              {["KES", "USD", "EUR", "GBP", "TZS", "UGX", "ETB", "NGN", "ZAR", "AED", "INR", "CAD", "AUD", "BRL", "MXN", "SOS"].map((c) => (
+              {["USD", "GBP", "EUR", "JPY", "KRW", "CNY", "SGD", "MYR", "THB", "VND", "PHP", "HKD", "KES", "TZS", "UGX", "ETB", "NGN", "ZAR", "AED", "INR", "CAD", "AUD", "BRL", "MXN", "SOS"].map((c) => (
                 <option key={c}>{c}</option>
               ))}
             </select>

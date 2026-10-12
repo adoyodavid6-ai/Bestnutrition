@@ -12,7 +12,30 @@ export interface Collection {
 
 const meta = (r: Recipe) => deriveRecipeMeta(r);
 
+const ASIA = ["East Asia", "Southeast Asia", "South Asia"];
+
 export const collections: Collection[] = [
+  {
+    slug: "american-classics",
+    title: "American Classics, Made Lighter",
+    description: "Chili, mac & cheese, jambalaya, pancakes and sheet-pan dinners — familiar US favourites rebuilt with more vegetables, whole grains and lean protein.",
+    kind: "cultural",
+    filter: (r) => r.region === "United States",
+  },
+  {
+    slug: "british-favourites",
+    title: "British Favourites",
+    description: "Cottage pie, fish & chips, tikka masala, jacket potatoes and proper porridge — comforting UK classics with a lighter touch.",
+    kind: "cultural",
+    filter: (r) => r.region === "United Kingdom",
+  },
+  {
+    slug: "asian-kitchen",
+    title: "The Asian Kitchen",
+    description: "Japanese, Korean, Chinese, Thai, Vietnamese and Indian dishes: rice bowls, curries, noodle salads, dal and steamed fish.",
+    kind: "cultural",
+    filter: (r) => ASIA.includes(r.region),
+  },
   {
     slug: "east-african-kitchen",
     title: "The East African Kitchen",

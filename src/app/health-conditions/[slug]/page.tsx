@@ -153,7 +153,7 @@ export default async function ConditionPage({ params }: { params: Promise<{ slug
           </div>
           <aside className="stack">
             <nav aria-label="On this page" className="card">
-              <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-sans)", fontWeight: 700 }}>On this page</h2>
+              <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-body)", fontWeight: 700 }}>On this page</h2>
               <ul className="toc">
                 {SECTIONS.map(([id, label]) => (
                   <li key={id}>
@@ -169,7 +169,7 @@ export default async function ConditionPage({ params }: { params: Promise<{ slug
               </ul>
             </nav>
             <div className="card card-muted">
-              <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-sans)", fontWeight: 700 }}>Find qualified support</h2>
+              <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-body)", fontWeight: 700 }}>Find qualified support</h2>
               <p className="small">A registered dietitian can create a plan for your situation.</p>
               <Link href="/professionals" className="link-arrow">
                 Professional directory

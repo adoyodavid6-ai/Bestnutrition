@@ -26,14 +26,14 @@ const GOAL_ICONS: Record<string, string> = {
 
 export default function HomePage() {
   const featured = [
-    { label: "Breakfast", slug: "canjeero-somali-pancakes" },
-    { label: "Lunch", slug: "tabbouleh-with-chickpeas" },
-    { label: "Dinner", slug: "samaki-wa-kupaka" },
-    { label: "Supper", slug: "groundnut-stew" },
+    { label: "Breakfast", slug: "banana-oat-pancakes" },
+    { label: "Lunch", slug: "vietnamese-prawn-noodle-salad" },
+    { label: "Dinner", slug: "lighter-chicken-tikka-masala" },
+    { label: "Supper", slug: "leek-and-potato-soup" },
   ].map((f) => ({ ...f, recipe: getRecipe(f.slug)! }));
 
   const preview = generatePlan(recipes, { ...DEFAULT_PREFS, seed: 7, budget: 2, maxTotalMin: 60 });
-  const heroArt = ["ugali-with-sukuma-wiki", "kachumbari", "berry-overnight-oats"].map((s) => getRecipe(s)!);
+  const heroArt = ["sheet-pan-lemon-herb-chicken", "vegetable-bibimbap", "porridge-with-stewed-apples"].map((s) => getRecipe(s)!);
   const premium = plans.find((p) => p.id === "premium")!;
   const free = plans.find((p) => p.id === "free")!;
   const covers = collectionCovers();
@@ -62,7 +62,7 @@ export default function HomePage() {
             <div className="hero-stats">
               <div>
                 <strong>{recipes.length}</strong>
-                <span>recipes, East African to global</span>
+                <span>recipes from American, British &amp; Asian kitchens and beyond</span>
               </div>
               <div>
                 <strong>{conditions.length}</strong>
@@ -94,7 +94,7 @@ export default function HomePage() {
             <label htmlFor="home-q" className="sr-only">
               Search recipes
             </label>
-            <input id="home-q" name="q" type="search" className="input" placeholder="Search by dish, ingredient or cuisine — e.g. beans, ugali, salmon" />
+            <input id="home-q" name="q" type="search" className="input" placeholder="Search by dish, ingredient or cuisine — e.g. chili, curry, salmon" />
             <button className="btn btn-primary" type="submit">
               <Icon name="search" size={16} /> Search
             </button>
@@ -105,7 +105,9 @@ export default function HomePage() {
               ["Budget-friendly", "/recipes?cost=1"],
               ["Vegetarian", "/recipes?diet=vegetarian"],
               ["Breakfast", "/recipes?meal=breakfast"],
-              ["East African", "/recipes?region=East+Africa"],
+              ["American", "/discover/american-classics"],
+              ["British", "/discover/british-favourites"],
+              ["Asian", "/discover/asian-kitchen"],
               ["High fibre", "/recipes?nutrition=high-fibre"],
               ["Gluten-free", "/recipes?diet=gluten-free"],
             ].map(([label, href]) => (

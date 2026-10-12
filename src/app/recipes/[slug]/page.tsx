@@ -140,7 +140,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
               <RecipeIngredients recipe={recipe} />
             </div>
             <div className="card card-muted" style={{ marginTop: 16 }}>
-              <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-sans)", fontWeight: 700 }}>Allergens</h2>
+              <h2 style={{ fontSize: "1rem", fontFamily: "var(--font-body)", fontWeight: 700 }}>Allergens</h2>
               {meta.allergens.length ? (
                 <p className="small">
                   <strong>Contains:</strong> {meta.allergens.map((a) => ALLERGEN_LABELS[a]).join(", ")}.

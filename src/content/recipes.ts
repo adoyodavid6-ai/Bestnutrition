@@ -1,5 +1,6 @@
 import type { ContentReview, Recipe } from "@/lib/types";
 import { recipePhotos } from "./recipe-photos";
+import { usUkAsiaRecipes } from "./recipes-us-uk-asia";
 
 const editorial = (published: string): ContentReview => ({
   status: "published",
@@ -8,7 +9,7 @@ const editorial = (published: string): ContentReview => ({
   note: "Recipe written and checked editorially for completeness and food-safety guidance. Independent kitchen testing is scheduled but not yet complete.",
 });
 
-export const recipes: Recipe[] = [
+const originalRecipes: Recipe[] = [
   // ------------------------------------------------------------------ EAST AFRICA
   {
     slug: "ugali-with-sukuma-wiki",
@@ -1242,6 +1243,9 @@ export const recipes: Recipe[] = [
     review: editorial("2026-09-01"),
   },
 ];
+
+/** American, British and Asian dishes lead; the original East African and global recipes follow unchanged. */
+export const recipes: Recipe[] = [...usUkAsiaRecipes, ...originalRecipes];
 
 for (const r of recipes) r.photo ??= recipePhotos[r.slug];
 

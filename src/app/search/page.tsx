@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const index = buildSearchIndex();
-const SUGGESTIONS = ["beans", "breakfast", "Somali", "high blood pressure", "fibre", "vitamin D", "walking", "lentils", "diabetes", "budget"];
+const SUGGESTIONS = ["chili", "curry", "breakfast", "salmon", "Thai", "high blood pressure", "fibre", "vitamin D", "walking", "budget"];
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string; type?: string }> }) {
   const { q = "", type } = await searchParams;

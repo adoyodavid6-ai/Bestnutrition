@@ -11,7 +11,7 @@ import { recipeSummaries } from "@/lib/recipe-index";
 
 export const metadata: Metadata = {
   title: "Healthy Recipes from Around the World",
-  description: "Search healthy, affordable recipes by meal, cuisine, time, cost, diet and allergens — including Kenyan, Somali, Swahili, Ethiopian, Mediterranean, Asian and Latin American dishes.",
+  description: "Search healthy, affordable recipes by meal, cuisine, time, cost, diet and allergens — American, British and Asian favourites plus African, Mediterranean and Latin American dishes.",
   alternates: { canonical: "/recipes" },
 };
 
@@ -23,7 +23,7 @@ export default function RecipesPage() {
       <PageHead
         eyebrow="Recipe library"
         title="Recipes for real kitchens"
-        lede={`${recipes.length} recipes from East Africa and around the world, each with complete quantities, practical steps, substitutions and transparent nutrition estimates.`}
+        lede={`${recipes.length} recipes from American, British and Asian kitchens and around the world, each with complete quantities, practical steps, substitutions and transparent nutrition estimates.`}
       >
         <div className="chip-row" style={{ marginTop: 20 }}>
           {collections.map((c) => (

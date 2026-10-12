@@ -120,7 +120,20 @@ export interface Recipe {
   intro: string;
   categories: MealCategory[];
   cuisine: string;
-  region: "East Africa" | "West Africa" | "North Africa" | "Mediterranean" | "Middle East" | "South Asia" | "East Asia" | "Latin America" | "Europe" | "Global";
+  region:
+    | "United States"
+    | "United Kingdom"
+    | "East Asia"
+    | "Southeast Asia"
+    | "South Asia"
+    | "East Africa"
+    | "West Africa"
+    | "North Africa"
+    | "Mediterranean"
+    | "Middle East"
+    | "Latin America"
+    | "Europe"
+    | "Global";
   prepMin: number;
   cookMin: number;
   /** Hands-off time such as soaking, fermenting or chilling, shown separately. */

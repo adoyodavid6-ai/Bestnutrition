@@ -73,6 +73,13 @@ describe("editorial integrity", () => {
     for (const g of GOALS) expect(recipes.filter((r) => r.goals.includes(g.id)).length, g.id).toBeGreaterThan(1);
   });
 
+  it("leads with American, British and Asian recipes", () => {
+    expect(recipes.filter((r) => r.region === "United States").length).toBeGreaterThanOrEqual(7);
+    expect(recipes.filter((r) => r.region === "United Kingdom").length).toBeGreaterThanOrEqual(7);
+    expect(recipes.filter((r) => ["East Asia", "Southeast Asia", "South Asia"].includes(r.region)).length).toBeGreaterThanOrEqual(10);
+    expect(["United States", "United Kingdom", "East Asia", "Southeast Asia", "South Asia"]).toContain(recipes[0].region);
+  });
+
   it("includes substantial East African content", () => {
     expect(recipes.filter((r) => r.region === "East Africa").length).toBeGreaterThanOrEqual(10);
   });

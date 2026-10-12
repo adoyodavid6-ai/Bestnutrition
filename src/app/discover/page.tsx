@@ -8,7 +8,7 @@ import { RecipeImage } from "@/components/RecipeImage";
 
 export const metadata: Metadata = {
   title: "Discover Recipe Collections",
-  description: "Curated collections: East African classics, budget-friendly meals, 30-minute dinners, plant-forward plates, Mediterranean favourites and warming soups.",
+  description: "Curated collections: American classics, British favourites, the Asian kitchen, budget-friendly meals, 30-minute dinners, plant-forward plates and warming soups.",
   alternates: { canonical: "/discover" },
 };
 

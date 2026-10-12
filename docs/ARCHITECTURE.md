@@ -3,11 +3,11 @@
 ## Stack
 
 - **Next.js 15 App Router**, React 19, TypeScript (strict). Server components by default; client components only where interaction is needed.
-- **Styling**: one design-token stylesheet (`src/app/globals.css`) built on the brand palette (Midnight Violet `#1f0e2f`, Parchment `#f4efed`, Ash Grey `#aab2b0`, Mauve Bark `#725246`, Dark Slate Grey `#2C3E39`, White). Fraunces (editorial serif) + Inter (sans) via `next/font`.
+- **Styling**: one design-token stylesheet (`src/app/globals.css`) built on the brand palette (Midnight Violet `#1f0e2f`, Parchment `#f4efed`, Ash Grey `#aab2b0`, Mauve Bark `#725246`, Dark Slate Grey `#2C3E39`, White). Serif type throughout via `next/font`: Fraunces for headlines and Source Serif 4 (a screen-optimised serif) for body text, navigation, buttons and forms.
 - **Validation**: Zod for all form input.
 - **Tests**: Vitest (unit), Playwright (browser).
 
-Most pages are statically prerendered (129 at build). `/search`, `/admin` and the forms API are dynamic.
+Most pages are statically prerendered (154 at build). `/search`, `/admin` and the forms API are dynamic.
 
 ## Layers
 

@@ -9,14 +9,14 @@ export default function AboutPage() {
     <InfoPage path="/about" eyebrow="About" title="About NourishWell" lede="Eat Better. Feel Stronger. Live Well. — a global nutrition platform that starts in real kitchens, with real budgets.">
       <h2>Why we exist</h2>
       <p>
-        Most nutrition websites are either beautiful but vague, or detailed but impossible to use. Many assume that healthy eating means expensive imported food. We think good food starts with the
-        ingredients people already know — maize and beans, lentils and greens, fish and rice — and with honest, practical guidance.
+        Most nutrition websites are either beautiful but vague, or detailed but impossible to use. Many assume that healthy eating means expensive or unfamiliar food. We think good food starts with the
+        dishes people already love — a pot of chili, a cottage pie, a bowl of dal or a teriyaki rice bowl — made a little lighter, with honest, practical guidance.
       </p>
       <h2>What makes us different</h2>
       <ul>
         <li>
-          <strong>Local food intelligence.</strong> Kenyan, Somali, Swahili, Ethiopian and Ugandan dishes sit alongside Mediterranean, Asian and Latin American recipes, with familiar ingredient names
-          and affordable substitutions.
+          <strong>Food people actually cook.</strong> American, British and Asian favourites lead the library, alongside East African, Mediterranean, Middle Eastern and Latin American recipes, with
+          familiar ingredient names, US and metric measurements, and affordable substitutions.
         </li>
         <li>
           <strong>Practical meal planning.</strong> Plans reuse ingredients across the week, respect your time and budget, and turn into one consolidated shopping list.
