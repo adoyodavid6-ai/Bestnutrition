@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { NewsletterCTA } from "@/components/marketing/NewsletterCTA";
 import { notFound } from "next/navigation";
 import { recipes, getRecipe } from "@/content/recipes";
 import { getIngredient } from "@/content/ingredients";
@@ -258,6 +259,10 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
           </div>
         </div>
       </article>
+
+      <div className="container">
+        <NewsletterCTA source="recipe" />
+      </div>
 
       <section className="section container no-print" aria-labelledby="related-heading">
         <div className="section-head">

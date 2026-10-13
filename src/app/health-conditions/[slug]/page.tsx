@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { conditions, getCondition } from "@/content/conditions";
 import { getRecipe } from "@/content/recipes";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { NewsletterCTA } from "@/components/marketing/NewsletterCTA";
 import { MedicalNotice, ReferenceList, ReviewBadge, ReviewPanel, formatDate } from "@/components/Editorial";
 import { RecipeCard } from "@/components/RecipeCard";
 import { SaveButton, ShareButton } from "@/components/SaveButton";
@@ -178,6 +179,10 @@ export default async function ConditionPage({ params }: { params: Promise<{ slug
           </aside>
         </div>
       </article>
+      {/* Generic source: sign-ups never record which guide someone read. */}
+      <div className="container">
+        <NewsletterCTA source="article" heading="Practical nutrition, once a week" text="A seasonal meal plan, new recipes and one evidence-informed tip. No miracle claims." />
+      </div>
 
       {recipes.length > 0 && (
         <section className="section container" aria-labelledby="cond-recipes">

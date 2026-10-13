@@ -9,6 +9,8 @@ import { formatMoney, useUserPrefs } from "@/lib/user-prefs";
 import type { IngredientCategory, Unit } from "@/lib/types";
 import { Icon } from "./Icon";
 import { toast } from "./Toaster";
+import { usePlan } from "./billing/usePlan";
+import { UpgradePrompt, useExport } from "./billing/PremiumExport";
 
 const UNITS: Unit[] = ["piece", "g", "ml", "tsp", "tbsp", "handful", "pinch"];
 
@@ -93,6 +95,8 @@ function ItemRow({ item, currency, units, onChange, onRemove }: { item: Shopping
 
 export function ShoppingList() {
   const [items, setItems, hydrated] = useStored<ShoppingItem[]>(KEYS.shopping, []);
+  const exporter = useExport();
+  const premium = usePlan().info.plan === "premium";
   const { prefs, update } = useUserPrefs();
   const [grouped, setGrouped] = useState(true);
   const [newName, setNewName] = useState("");
@@ -185,6 +189,9 @@ export function ShoppingList() {
           <Link href="/shopping-calendar" className="btn btn-ghost btn-sm">
             <Icon name="calendar" size={16} /> Shopping calendar
           </Link>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => exporter.run("Exporting lists", { kind: "shopping-csv", items, units: prefs.units }, "nourishwell-shopping-list.csv")}>
+            <Icon name="download" size={16} /> Spreadsheet{premium ? "" : " · Premium"}
+          </button>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => setItems((all) => all.filter((i) => !i.checked))} disabled={done === 0}>
             Remove ticked items
           </button>
@@ -198,6 +205,11 @@ export function ShoppingList() {
             Clear list
           </button>
         </div>
+        {exporter.blocked && (
+          <div style={{ marginTop: 12 }}>
+            <UpgradePrompt feature={exporter.blocked} onClose={exporter.clear} />
+          </div>
+        )}
       </div>
 
       <form

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fitnessGuides, getFitnessGuide } from "@/content/fitness";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { NewsletterCTA } from "@/components/marketing/NewsletterCTA";
 import { ReferenceList, ReviewBadge, ReviewPanel } from "@/components/Editorial";
 import { PrintButton, SaveButton } from "@/components/SaveButton";
 import { RecentTracker } from "@/components/RecentTracker";
@@ -93,6 +94,10 @@ export default async function FitnessPage({ params }: { params: Promise<{ slug: 
           </aside>
         </div>
       </article>
+      {/* Generic source: sign-ups never record which guide someone read. */}
+      <div className="container">
+        <NewsletterCTA source="article" heading="Practical nutrition, once a week" text="A seasonal meal plan, new recipes and one evidence-informed tip. No miracle claims." />
+      </div>
     </>
   );
 }

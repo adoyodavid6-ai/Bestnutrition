@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHead } from "@/components/Editorial";
 import { ListingForm } from "@/components/forms/ListingForm";
+import Link from "next/link";
+import { featuredListingOffer } from "@/lib/billing/offers";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "For Professionals & Businesses",
@@ -9,7 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/for-businesses" },
 };
 
-export default function ForBusinessesPage() {
+export default async function ForBusinessesPage() {
+  const featured = await featuredListingOffer();
   return (
     <>
       <Breadcrumbs items={[{ href: "/for-businesses", label: "For businesses" }]} />
@@ -23,7 +28,7 @@ export default function ForBusinessesPage() {
           {[
             { t: "Verified profile", d: "Your credentials or business details are checked and displayed with a verification date — a signal readers can trust." },
             { t: "Lead generation", d: "Readers can request appointments or contact you directly from your profile and from relevant guides." },
-            { t: "Premium listings (coming)", d: "Enhanced profiles, extra media, analytics and lead management. Prominent placements will always be labelled as promoted." },
+            { t: "Featured listings", d: "Priority placement in the directory and on relevant guides, an enhanced profile and extra media. Featured placements are always labelled as promoted." },
           ].map((x) => (
             <div key={x.t} className="card">
               <h2 style={{ fontSize: "1.2rem" }}>{x.t}</h2>
@@ -40,9 +45,13 @@ export default function ForBusinessesPage() {
                 <strong>Basic listing — free:</strong> name, profession or category, service areas, languages, contact link, verification status.
               </li>
               <li>
-                <strong>Premium listing — pricing to be announced:</strong> enhanced profile, gallery, analytics, lead management and labelled promoted placement.
+                <strong>Featured listing — {featured ? `${featured.display} per ${featured.interval}` : "pricing to be announced"}:</strong> enhanced profile, gallery, priority placement labelled as promoted, and a monthly
+                summary of profile views and enquiries.
               </li>
-              <li>Renewal, cancellation and refund terms will be published before paid listings open.</li>
+              <li>Featured listings are offered only after verification. We send a secure payment link; you can cancel any time and the listing reverts to Basic at the end of the paid period.</li>
+              <li>
+                Paying never buys verification, reviews or editorial coverage. See <Link href="/how-we-make-money">how we make money</Link>.
+              </li>
             </ul>
           </div>
           <div className="card card-muted">

@@ -7,6 +7,7 @@ import { MobileTabBar } from "@/components/MobileTabBar";
 import { Toaster } from "@/components/Toaster";
 import { ConsentBanner } from "@/components/ConsentBanner";
 import { JsonLd } from "@/components/JsonLd";
+import { Analytics } from "@/components/marketing/Analytics";
 import { site } from "@/lib/site";
 
 // One serif family for every piece of text on the site: headings, dish names, body, UI and forms.
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MobileTabBar />
         <ConsentBanner />
         <Toaster />
+        <Analytics />
         <JsonLd
           data={{
             "@context": "https://schema.org",
@@ -51,6 +53,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             name: site.name,
             url: site.url,
             slogan: site.tagline,
+            logo: `${site.url}/icon.svg`,
+          }}
+        />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: site.name,
+            url: site.url,
+            potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${site.url}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" },
           }}
         />
       </body>

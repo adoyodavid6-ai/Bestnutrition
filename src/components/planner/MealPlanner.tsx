@@ -26,15 +26,15 @@ import {
 import { deriveRecipeMeta, ALLERGEN_LABELS, COST_LABELS } from "@/lib/recipe-meta";
 import { roundNutrient } from "@/lib/nutrition";
 import { buildShoppingList, mergeShoppingLists, type ShoppingItem } from "@/lib/shopping";
+import { usePlan } from "../billing/usePlan";
+import { UpgradePrompt, upcomingMonday, useExport } from "../billing/PremiumExport";
 import { KEYS, useStored } from "@/lib/storage";
-import { planById } from "@/lib/plans";
 import { track } from "@/lib/analytics";
 import type { Allergen } from "@/lib/types";
 import { RecipeImage } from "../RecipeImage";
 import { Icon } from "../Icon";
 import { toast } from "../Toaster";
 
-const FREE_PLAN_LIMIT = planById("free").limits.savedPlans;
 const ALLERGENS = Object.keys(ALLERGEN_LABELS) as Allergen[];
 const REGIONS = Array.from(new Set(recipes.map((r) => r.region))).sort();
 const INGREDIENT_OPTIONS = [...ingredients].filter((i) => !["water", "salt"].includes(i.id)).sort((a, b) => a.name.localeCompare(b.name));
@@ -348,9 +348,18 @@ export function MealPlanner() {
   const [currentId, setCurrentId] = useStored<string | null>(KEYS.currentPlan, null);
   const [shopping, setShopping] = useStored<ShoppingItem[]>(KEYS.shopping, []);
   const [notes, setNotes] = useState<string[]>([]);
+  const { info: planInfo } = usePlan();
+  const planLimit = planInfo.limits.savedPlans;
+  const premium = planInfo.plan === "premium";
+  const exporter = useExport();
   const mergedPrefs = { ...DEFAULT_PREFS, ...prefs };
   const plan = plans.find((p) => p.id === currentId) ?? null;
 
+  const [showLimit, setShowLimit] = useState(false);
+  const limitReached = () => {
+    toast(`You can keep up to ${planLimit} saved plans. Delete one to make room.`);
+    if (!premium) setShowLimit(true);
+  };
   const savePlan = (p: MealPlan) => setPlans((all) => (all.some((x) => x.id === p.id) ? all.map((x) => (x.id === p.id ? p : x)) : [...all, p]));
   const setDays = (days: MealPlan["days"]) => plan && savePlan({ ...plan, days });
 
@@ -363,8 +372,8 @@ export function MealPlanner() {
     if (plan) {
       savePlan({ ...plan, prefs: nextPrefs, days: g.days, createdAt: new Date().toISOString() });
     } else {
-      if (plans.length >= FREE_PLAN_LIMIT) {
-        toast(`You can keep up to ${FREE_PLAN_LIMIT} saved plans. Delete one to create another.`);
+      if (plans.length >= planLimit) {
+        limitReached();
         return;
       }
       const p: MealPlan = { id: newId("plan"), name: `Week of ${new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short" })}`, createdAt: new Date().toISOString(), prefs: nextPrefs, days: g.days };
@@ -376,8 +385,8 @@ export function MealPlanner() {
   };
 
   const newBlankPlan = () => {
-    if (plans.length >= FREE_PLAN_LIMIT) {
-      toast(`You can keep up to ${FREE_PLAN_LIMIT} saved plans. Delete one to create another.`);
+    if (plans.length >= planLimit) {
+      limitReached();
       return;
     }
     const p: MealPlan = { id: newId("plan"), name: "New plan", createdAt: new Date().toISOString(), prefs: mergedPrefs, days: DAY_LABELS.map((label) => ({ label, entries: [] })) };
@@ -387,8 +396,8 @@ export function MealPlanner() {
 
   const duplicate = () => {
     if (!plan) return;
-    if (plans.length >= FREE_PLAN_LIMIT) {
-      toast(`You can keep up to ${FREE_PLAN_LIMIT} saved plans. Delete one to duplicate this.`);
+    if (plans.length >= planLimit) {
+      limitReached();
       return;
     }
     const p: MealPlan = {
@@ -455,7 +464,9 @@ export function MealPlanner() {
           <div className="card no-print" style={{ marginBottom: 16 }}>
             <div className="spread">
               <div className="field" style={{ margin: 0, flex: "1 1 220px" }}>
-                <label htmlFor="plan-select">Saved plans ({plans.length}/{FREE_PLAN_LIMIT})</label>
+                <label htmlFor="plan-select">
+                  Saved plans ({plans.length}/{planLimit})
+                </label>
                 <select id="plan-select" className="select" value={currentId ?? ""} onChange={(e) => setCurrentId(e.target.value)}>
                   {plans.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -477,8 +488,19 @@ export function MealPlanner() {
               </div>
             </div>
             <p className="xs muted" style={{ margin: "8px 0 0" }}>
-              Plans are saved on this device. The free plan keeps up to {FREE_PLAN_LIMIT}. <Link href="/pricing">See Premium plans</Link>.
+              {premium ? (
+                <>Plans are saved on this device. Premium keeps up to {planLimit}.</>
+              ) : (
+                <>
+                  Plans are saved on this device. The free plan keeps up to {planLimit}. <Link href="/pricing">See Premium plans</Link>.
+                </>
+              )}
             </p>
+            {showLimit && (
+              <div style={{ marginTop: 12 }}>
+                <UpgradePrompt feature="Keeping more than 3 saved plans" onClose={() => setShowLimit(false)} />
+              </div>
+            )}
           </div>
         )}
 
@@ -510,8 +532,19 @@ export function MealPlanner() {
                 <button type="button" className="btn btn-ghost btn-sm" onClick={() => window.print()}>
                   <Icon name="print" size={16} /> Print plan
                 </button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => exporter.run("Exporting plans", { kind: "plan-ics", plan, weekStart: upcomingMonday() }, "nourishwell-meal-plan.ics")}>
+                  <Icon name="calendar" size={16} /> Add to calendar{premium ? "" : " · Premium"}
+                </button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => exporter.run("Exporting plans", { kind: "plan-csv", plan }, "nourishwell-meal-plan.csv")}>
+                  <Icon name="download" size={16} /> Spreadsheet{premium ? "" : " · Premium"}
+                </button>
               </div>
             </div>
+            {exporter.blocked && (
+              <div style={{ marginBottom: 16 }} className="no-print">
+                <UpgradePrompt feature={exporter.blocked} onClose={exporter.clear} />
+              </div>
+            )}
 
             {notes.length > 0 && (
               <div className="callout callout-info" style={{ marginBottom: 16 }} role="status">

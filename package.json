@@ -2,7 +2,7 @@
   "name": "nourishwell",
   "version": "0.1.0",
   "private": true,
-  "description": "NourishWell — Eat Better. Feel Stronger. Live Well.",
+  "description": "NourishWell \u2014 Eat Better. Feel Stronger. Live Well.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "e2e": "node e2e/interact.cjs && node e2e/crawl.cjs"
+    "e2e": "node e2e/interact.cjs && node e2e/crawl.cjs",
+    "e2e:billing": "node e2e/billing.cjs"
   },
   "engines": {
     "node": ">=20"

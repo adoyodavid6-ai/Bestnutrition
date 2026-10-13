@@ -1,64 +1,51 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHead } from "@/components/Editorial";
-import { ALL_FEATURES, FEATURE_LABELS, plans } from "@/lib/plans";
+import { JsonLd } from "@/components/JsonLd";
+import { CheckoutNotice, PricingPlans } from "@/components/billing/PricingPlans";
+import { premiumOffers, yearlySaving } from "@/lib/billing/offers";
+import { ALL_FEATURES, FEATURE_LABELS, FEATURE_STATUS, planById, premiumLiveExtras, premiumPlannedExtras } from "@/lib/plans";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Free & Premium Plans",
-  description: "NourishWell is free to use. See what's included for free and what Premium will add.",
+  description: "NourishWell is free to use: recipes, nutrition guides, a weekly meal planner, shopping lists and a shopping calendar. Premium adds more saved plans and exports.",
   alternates: { canonical: "/pricing" },
 };
 
-export default function PricingPage() {
-  const [free, premium] = plans;
+const FAQ = [
+  { q: "Is NourishWell really free?", a: "Yes. Recipes, all nutrition and health guides, the weekly meal planner, shopping lists and the shopping calendar are free, with no card and no time limit." },
+  { q: "What does Premium add today?", a: "More saved weekly plans (up to 50 instead of 3) and exports: your meal plan as a spreadsheet or calendar file, and your shopping list as a spreadsheet. Planned features are listed separately and aren't charged for until they exist." },
+  { q: "Will I be charged automatically?", a: "Premium renews automatically each month or year until you cancel. The price and renewal period are shown before you pay, and Stripe emails a receipt for every payment." },
+  { q: "How do I cancel?", a: "Go to Account → Billing and choose Manage billing. You can cancel, change plan, update your card and download receipts there. After cancelling you keep Premium until the end of the period you've paid for." },
+  { q: "Does Premium work on all my devices?", a: "Not yet. Until accounts launch, Premium is linked to the browser you subscribed in. If you need it on another device, contact us and we'll help." },
+  { q: "Will health information ever be paywalled?", a: "No. Health-condition guides, nutrition education and basic planning will always be free, and we never use health information for advertising." },
+];
+
+export default async function PricingPage() {
+  const offers = await premiumOffers();
+  const free = planById("free");
+  const premium = planById("premium");
+  const freeItems = [...free.features.map((f) => FEATURE_LABELS[f]), `Up to ${free.limits.savedPlans} saved weekly plans`];
+  const premiumItems = [`Up to ${premium.limits.savedPlans} saved weekly plans`, ...premiumLiveExtras().filter((f) => f !== "planner.saved-plans.multiple").map((f) => FEATURE_LABELS[f])];
+  const plannedItems = premiumPlannedExtras().map((f) => FEATURE_LABELS[f]);
+
   return (
     <>
       <Breadcrumbs items={[{ href: "/pricing", label: "Free & Premium" }]} />
       <PageHead
         eyebrow="Plans"
         title="Genuinely useful for free"
-        lede="Recipes, nutrition and health education, a seven-day meal planner and shopping lists are free for everyone. Premium will add convenience for busy households — never paywalled health information."
+        lede="Recipes, nutrition and health education, a seven-day meal planner, shopping lists and a shopping calendar are free for everyone. Premium adds convenience for busy households — never paywalled health information."
       />
       <div className="container" style={{ paddingBottom: 48 }}>
-        <div className="pricing-grid">
-          <div className="price-card">
-            <h2>{free.name}</h2>
-            <p className="serif" style={{ fontSize: "2.4rem", color: "var(--violet)", margin: "8px 0" }}>
-              Free
-            </p>
-            <p className="muted">{free.tagline}</p>
-            <Link href="/meal-planner" className="btn btn-primary" style={{ margin: "8px 0 16px" }}>
-              Start planning
-            </Link>
-            <ul className="check-list">
-              {free.features.map((f) => (
-                <li key={f}>{FEATURE_LABELS[f]}</li>
-              ))}
-              <li>Up to {free.limits.savedPlans} saved weekly plans</li>
-            </ul>
-          </div>
-          <div className="price-card featured">
-            <h2>
-              {premium.name} <span className="chip" style={{ verticalAlign: "middle" }}>Coming soon</span>
-            </h2>
-            <p className="serif" style={{ fontSize: "1.6rem", margin: "8px 0", color: "#fff" }}>
-              Pricing to be announced
-            </p>
-            <p>{premium.tagline}</p>
-            <button className="btn btn-light" disabled aria-disabled="true" style={{ margin: "8px 0 16px" }}>
-              Not yet available
-            </button>
-            <ul className="check-list">
-              <li>Everything in Free</li>
-              {premium.features
-                .filter((f) => !free.features.includes(f))
-                .map((f) => (
-                  <li key={f}>{FEATURE_LABELS[f]}</li>
-                ))}
-            </ul>
-          </div>
-        </div>
+        <Suspense>
+          <CheckoutNotice />
+        </Suspense>
+        <PricingPlans sellable={offers.sellable} month={offers.month} year={offers.year} trialDays={offers.trialDays} saving={yearlySaving(offers.month, offers.year)} freeItems={freeItems} premiumItems={premiumItems} plannedItems={plannedItems} />
 
         <section className="section-tight" aria-labelledby="compare-h" style={{ marginTop: 32 }}>
           <h2 id="compare-h" style={{ fontSize: "var(--fs-xl)" }}>
@@ -80,29 +67,49 @@ export default function PricingPage() {
                       {FEATURE_LABELS[f]}
                     </th>
                     <td>{free.features.includes(f) ? "✓ Included" : "—"}</td>
-                    <td>{premium.features.includes(f) ? "✓ Included" : "—"}</td>
+                    <td>{premium.features.includes(f) ? (FEATURE_STATUS[f] === "live" ? "✓ Included" : "Planned") : "—"}</td>
                   </tr>
                 ))}
+                <tr>
+                  <th scope="row" style={{ background: "transparent", position: "static", fontWeight: 500 }}>
+                    Saved weekly plans
+                  </th>
+                  <td>Up to {free.limits.savedPlans}</td>
+                  <td>Up to {premium.limits.savedPlans}</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        <section className="section-tight two-col-list" aria-label="Billing information">
+        <section className="section-tight faq" aria-labelledby="faq-h">
+          <h2 id="faq-h" style={{ fontSize: "var(--fs-xl)" }}>
+            Questions about plans and billing
+          </h2>
+          {FAQ.map((f) => (
+            <details key={f.q}>
+              <summary>{f.q}</summary>
+              <p className="small">{f.a}</p>
+            </details>
+          ))}
+          <JsonLd data={{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }} />
+        </section>
+
+        <section className="section-tight two-col-list" aria-label="Our promises">
           <div className="card">
             <h3>Our promises</h3>
             <ul className="small" style={{ marginBottom: 0 }}>
               <li>Health and condition guidance will always be free.</li>
               <li>We will never use health information for targeted advertising.</li>
-              <li>Prices, renewal terms and cancellation will be shown clearly before you pay, in supported local currencies where possible.</li>
-              <li>You&apos;ll be able to cancel at any time and access receipts and billing history.</li>
+              <li>The price, renewal period and how to cancel are shown before you pay.</li>
+              <li>Cancel any time, with receipts and billing history in Account → Billing.</li>
             </ul>
           </div>
           <div className="card card-muted">
-            <h3>Why isn&apos;t Premium available yet?</h3>
+            <h3>How NourishWell is funded</h3>
             <p className="small" style={{ marginBottom: 0 }}>
-              We&apos;re focusing on making the free experience excellent first. Premium will launch once accounts and a payment provider are in place and fully tested. Join the{" "}
-              <Link href="/#news-h">newsletter</Link> to hear when it opens.
+              Premium subscriptions, verified business listings and clearly labelled partnerships keep the core site free. Read <Link href="/how-we-make-money">how we make money</Link> and our{" "}
+              <Link href="/editorial-policy">editorial policy</Link>.
             </p>
           </div>
         </section>

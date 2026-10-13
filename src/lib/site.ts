@@ -26,6 +26,7 @@ export const footerNav = [
       { href: "/recipes", label: "Recipe library" },
       { href: "/discover", label: "Collections" },
       { href: "/meal-planner", label: "Meal planner" },
+      { href: "/free-meal-plan", label: "Free 7-day meal plan" },
       { href: "/shopping-list", label: "Shopping list" },
       { href: "/shopping-calendar", label: "Shopping calendar" },
       { href: "/search", label: "Search" },
@@ -47,6 +48,7 @@ export const footerNav = [
       { href: "/professionals", label: "Find a professional" },
       { href: "/businesses", label: "Business directory" },
       { href: "/for-businesses", label: "List your business" },
+      { href: "/advertise", label: "Advertise & partner" },
       { href: "/pricing", label: "Free & Premium" },
     ],
   },
@@ -55,6 +57,7 @@ export const footerNav = [
     links: [
       { href: "/about", label: "About" },
       { href: "/editorial-policy", label: "Editorial policy" },
+      { href: "/how-we-make-money", label: "How we make money" },
       { href: "/medical-disclaimer", label: "Medical disclaimer" },
       { href: "/privacy", label: "Privacy" },
       { href: "/terms", label: "Terms" },

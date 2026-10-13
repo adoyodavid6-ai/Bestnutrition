@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { auditContent, referenceUsage } from "@/lib/content-audit";
 import { professionals, businesses } from "@/content/directory";
-import { ALL_FEATURES, FEATURE_LABELS, plans } from "@/lib/plans";
+import { ALL_FEATURES, FEATURE_LABELS, FEATURE_STATUS, plans } from "@/lib/plans";
+import { absoluteUrl, site } from "@/lib/site";
+import { billingConfig, billingStatus } from "@/lib/billing/config";
+import { signListing } from "@/lib/billing/entitlement";
+import { featuredListingOffer, premiumOffers } from "@/lib/billing/offers";
+import { UtmBuilder } from "@/components/marketing/UtmBuilder";
 import { primaryNav } from "@/lib/site";
 import { formatDate } from "@/components/Editorial";
 import { WEBHOOK_ENV } from "@/lib/forms";
@@ -19,7 +24,15 @@ const STATUS_CHIP: Record<string, string> = {
   archived: "chip-outline",
 };
 
-export default function AdminPage() {
+export default async function AdminPage({ searchParams }: { searchParams: Promise<{ listing?: string }> }) {
+  const { listing = "" } = await searchParams;
+  const config = billingConfig();
+  const status = billingStatus(config);
+  const [offers, featured] = await Promise.all([premiumOffers(config), featuredListingOffer(config)]);
+  const listingSlug = listing.trim().toLowerCase();
+  const listingValid = /^[a-z0-9-]{2,80}$/.test(listingSlug);
+  const paymentLink = listingValid && config.entitlementSecret ? absoluteUrl(`/for-businesses/upgrade?listing=${listingSlug}&sig=${signListing(listingSlug, config.entitlementSecret)}`) : null;
+  const verifiedSlugs = [...professionals, ...businesses].filter((x) => x.verification === "verified").map((x) => x.slug);
   const rows = auditContent();
   const refs = referenceUsage();
   const byStatus = rows.reduce<Record<string, number>>((acc, r) => ((acc[r.review.status] = (acc[r.review.status] ?? 0) + 1), acc), {});
@@ -28,6 +41,7 @@ export default function AdminPage() {
     { name: "Newsletter delivery", env: WEBHOOK_ENV.newsletter },
     { name: "Contact form delivery", env: WEBHOOK_ENV.contact },
     { name: "Listing applications", env: WEBHOOK_ENV.listing },
+    { name: "Analytics (Plausible, consent-gated)", env: "NEXT_PUBLIC_PLAUSIBLE_DOMAIN" },
     { name: "Database / auth (Supabase)", env: "NEXT_PUBLIC_SUPABASE_URL" },
   ].map((i) => ({ ...i, configured: Boolean(process.env[i.env]) }));
 
@@ -195,18 +209,59 @@ export default function AdminPage() {
 
       <section aria-labelledby="subs-h" style={{ marginBottom: 32 }}>
         <h2 id="subs-h" style={{ fontSize: "var(--fs-xl)" }}>
-          Subscription configuration
+          Monetization
         </h2>
-        <div className="table-scroll">
+        <div className="grid grid-2" style={{ gap: 16, alignItems: "start" }}>
+          <div className="card">
+            <h3 style={{ fontSize: "var(--fs-lg)" }}>Billing configuration</h3>
+            <ul className="status-list">
+              {status.map((s) => (
+                <li key={s.env}>
+                  <span>
+                    {s.label}
+                    <br />
+                    <code className="xs">{s.env}</code>
+                  </span>
+                  <span className={s.ok ? "status-ok" : "status-missing"}>{s.ok ? `✓ ${s.note ?? "Set"}` : "Not set"}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="card">
+            <h3 style={{ fontSize: "var(--fs-lg)" }}>Live prices (read from Stripe)</h3>
+            <ul className="status-list">
+              <li>
+                <span>Premium monthly</span>
+                <span>{offers.month ? `${offers.month.display} / month` : "—"}</span>
+              </li>
+              <li>
+                <span>Premium yearly</span>
+                <span>{offers.year ? `${offers.year.display} / year` : "—"}</span>
+              </li>
+              <li>
+                <span>Featured listing</span>
+                <span>{featured ? `${featured.display} / ${featured.interval}` : "—"}</span>
+              </li>
+              <li>
+                <span>Free trial</span>
+                <span>{offers.trialDays ? `${offers.trialDays} days` : "None"}</span>
+              </li>
+            </ul>
+            <p className="xs muted" style={{ marginBottom: 0 }}>
+              {offers.sellable ? "Premium checkout is live on /pricing." : "Premium shows “Coming soon” with a waitlist until Stripe, a Premium price and ENTITLEMENT_SECRET are set."} Prices are changed in the Stripe dashboard, never in code. See docs/MONETIZATION.md.
+            </p>
+          </div>
+        </div>
+
+        <div className="table-scroll" style={{ marginTop: 16 }}>
           <table className="data-table">
             <thead>
               <tr>
                 <th>Feature</th>
                 {plans.map((p) => (
-                  <th key={p.id}>
-                    {p.name} {p.available ? "" : "(not live)"}
-                  </th>
+                  <th key={p.id}>{p.name}</th>
                 ))}
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -216,12 +271,54 @@ export default function AdminPage() {
                   {plans.map((p) => (
                     <td key={p.id}>{p.features.includes(f) ? "✓" : "—"}</td>
                   ))}
+                  <td>{FEATURE_STATUS[f] === "live" ? "Live" : "Planned (not sold)"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="xs muted">Configured in src/lib/plans.ts. Premium price: not set. Payments: not configured.</p>
+        <p className="xs muted">Plans and limits: src/lib/plans.ts. Premium is enforced on the server by the signed entitlement cookie (exports via /api/premium/export).</p>
+      </section>
+
+      <section aria-labelledby="listing-pay-h" style={{ marginBottom: 32 }}>
+        <h2 id="listing-pay-h" style={{ fontSize: "var(--fs-xl)" }}>
+          Featured listing payment links
+        </h2>
+        <p className="small muted">Generate a personal payment link only after a listing has been verified. The link is signed, so it can&apos;t be edited to upgrade a different listing.</p>
+        <form method="get" action="/admin#listing-pay-h" className="row" style={{ alignItems: "flex-end" }}>
+          <div className="field" style={{ margin: 0, flex: "1 1 260px" }}>
+            <label htmlFor="listing">Listing slug</label>
+            <input id="listing" name="listing" className="input" defaultValue={listingSlug} list="verified-listings" placeholder="e.g. green-table-kitchen" />
+            <datalist id="verified-listings">
+              {verifiedSlugs.map((v) => (
+                <option key={v} value={v} />
+              ))}
+            </datalist>
+          </div>
+          <button className="btn btn-primary btn-sm" type="submit">
+            Generate link
+          </button>
+        </form>
+        {listing && !listingValid && <p className="error">Use lowercase letters, numbers and hyphens only.</p>}
+        {listing && listingValid && !config.entitlementSecret && <p className="error">Set ENTITLEMENT_SECRET (32+ characters) to sign payment links.</p>}
+        {paymentLink && (
+          <div className="field" style={{ marginTop: 12 }}>
+            <label htmlFor="pay-link">Payment link for {listingSlug}</label>
+            <input id="pay-link" className="input" readOnly value={paymentLink} />
+            {!featured && <p className="xs muted">Payments aren&apos;t switched on yet (STRIPE_PRICE_LISTING_FEATURED), so this page will say so instead of taking payment.</p>}
+          </div>
+        )}
+      </section>
+
+      <section aria-labelledby="campaign-h" style={{ marginBottom: 32 }}>
+        <h2 id="campaign-h" style={{ fontSize: "var(--fs-xl)" }}>
+          Campaign links
+        </h2>
+        <p className="small muted">
+          Tag every link you share. The first campaign a visitor arrives from is stored in their browser and sent with newsletter sign-ups, listing applications and checkouts (see the <code>attribution</code> field in
+          webhook payloads and <code>attr_*</code> metadata in Stripe). No advertising pixels are used.
+        </p>
+        <UtmBuilder baseUrl={site.url} />
       </section>
 
       <section aria-labelledby="nav-h">

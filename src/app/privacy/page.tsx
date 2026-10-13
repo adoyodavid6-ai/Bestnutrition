@@ -25,6 +25,10 @@ export default function PrivacyPage() {
         <li>
           <strong>Listing applications:</strong> the professional or business details you provide, used to verify and publish a listing.
         </li>
+        <li>
+          <strong>Where you found us:</strong> if you arrived through one of our tagged links (for example a newsletter or social post), the campaign name, the page you landed on and the referring website are
+          stored in your browser and sent along with any of the forms above, or with a checkout. They never include what you read or searched for.
+        </li>
       </ul>
       <p>These forms are delivered to our team through a secure integration configured by NourishWell. If a form is not connected, it tells you so and nothing is stored.</p>
       <p>Please don&apos;t send us personal medical information. We can&apos;t provide individual medical advice.</p>
@@ -36,8 +40,18 @@ export default function PrivacyPage() {
         <Link href="/account">Account &amp; preferences</Link>.
       </p>
 
+      <h2 id="payments">Payments</h2>
+      <p>
+        Premium subscriptions and featured listings are paid through Stripe, which processes your card details and billing address under its own privacy policy — NourishWell never sees or stores your full card
+        number. We receive your email, a customer reference, what you bought and its status, to provide the service, send receipts and handle support. Records needed for tax and accounting are kept for as long as
+        the law requires.
+      </p>
+
       <h2>Cookies and storage</h2>
-      <p>We use browser storage that is essential for the features you use. We don&apos;t use advertising cookies.</p>
+      <p>
+        We use browser storage that is essential for the features you use. If you subscribe to Premium, an essential, signed cookie (<code>nw_ent</code>) records that this browser has an active subscription; it
+        contains Stripe references, not your name or card. We don&apos;t use advertising cookies or pixels.
+      </p>
 
       <h2>Future accounts</h2>
       <p>

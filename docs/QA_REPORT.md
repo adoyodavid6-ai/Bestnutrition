@@ -8,8 +8,8 @@ These tests were run on 12 October 2026 against a production build (`next build 
 | --- | --- |
 | `npm run typecheck` (TypeScript strict) | ✅ No errors |
 | `npm run lint` (next/core-web-vitals + TypeScript rules) | ✅ No warnings or errors |
-| `npm test`: 64 unit tests | ✅ 64/64 passed |
-| `npm run build` | ✅ 155 pages prerendered, no warnings |
+| `npm test`: 80 unit tests | ✅ 80/80 passed |
+| `npm run build` | ✅ 217 pages and images prerendered, no warnings |
 
 Unit tests cover:
 
@@ -62,6 +62,35 @@ A scripted Chromium run passed all 26 checks:
 - **Hide for today** removes the banner. **Done shopping** removes it, clears ticked items and marks the day done on the calendar.
 - Missed trips show as "still to do". The 2-day lead time shows "Shopping day is Thursday", and nothing appears before the window opens.
 - At 375px there is no horizontal overflow, every element uses Source Serif 4, and there are no console errors.
+
+## Monetization and marketing (13 October 2026)
+
+**Billing with Stripe configured.** These tests used `npm run e2e:billing` against the mock Stripe API (`e2e/mock-stripe.cjs`), with a production build carrying test-mode env vars. All 36 checks passed:
+
+- **Pricing:** prices are read from Stripe ($4.99/month and $39.99/year, "save 33%", other currencies listed). Planned features are marked "not yet included", and the auto-renewal terms are shown before payment.
+- **Checkout and confirmation:**
+  - Checkout runs through the mock hosted page, then `/api/billing/confirm`, then `/account/billing` with "Welcome to Premium".
+  - The checkout session carries the price, a 14-day trial, promo codes and first-touch UTM metadata.
+  - The entitlement cookie is httpOnly and SameSite=Lax.
+  - A second checkout is refused (409).
+- **Premium features:** the saved-plan limit rises to 50, and plan CSV and calendar exports download. Without Premium, export returns 402 and shows an upgrade prompt.
+- **Customer Portal:** it opens for the right customer.
+- **Expired tokens:** these are re-checked with Stripe. A cancelled subscription loses access and the cookie is cleared; an active one is renewed. A forged cookie is rejected.
+- **Webhook:** a signed webhook is accepted and forwarded with its campaign; an unsigned one gets 400. A past-due subscription shows the payment warning.
+- **Featured listings:** `/admin` generates a signed link, a tampered link is refused, and the listing checkout completes with listing metadata.
+- **Lead magnet:** the kitchen tabs work. A newsletter sign-up carries `source=free-meal-plan` plus attribution, and "Make it mine" saves the plan into the planner.
+
+**Without Stripe configured.** Checkout returns an honest 503 ("no payment was taken") and the webhook returns 503. Pricing shows "Coming soon" and a waitlist, and the upgrade page refuses invalid links. `/admin` still returns 404 without credentials.
+
+**Marketing:**
+- Newsletter boxes appear on recipe and guide pages. On condition, supplement and fitness guides the sign-up source is the generic `article`, never the topic.
+- Open Graph PNGs render for the site and for recipes in Source Serif 4, and pages declare `og:image`.
+- WebSite SearchAction JSON-LD is present.
+- At 390px, the new pages have no horizontal overflow, and every element computes to Source Serif 4.
+
+**Regression:** `npm run e2e` passed 36/36. The crawl covered 154 pages with no problems and no console errors. The shopping calendar suite passed 26/26.
+
+**Not tested:** real Stripe test mode and live mode. That needs the owner's keys, using the plan in `docs/MONETIZATION.md` section 10.
 
 ## Server and API checks (manual, with curl)
 

@@ -12,7 +12,10 @@ import { Icon } from "@/components/Icon";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { ShoppingDueBanner } from "@/components/shopping/ShoppingDueBanner";
 import { DEFAULT_PREFS, SLOT_LABELS, generatePlan } from "@/lib/planner";
-import { FEATURE_LABELS, plans } from "@/lib/plans";
+import { FEATURE_LABELS, plans, premiumLiveExtras, premiumPlannedExtras } from "@/lib/plans";
+import { premiumOffers } from "@/lib/billing/offers";
+
+export const revalidate = 3600;
 
 const GOAL_ICONS: Record<string, string> = {
   "heart-health": "heart",
@@ -25,7 +28,9 @@ const GOAL_ICONS: Record<string, string> = {
   "plant-forward": "leaf",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const offers = await premiumOffers();
+  const fromPrice = offers.month ? `${offers.month.display} / month` : offers.year ? `${offers.year.display} / year` : null;
   const featured = [
     { label: "Breakfast", slug: "banana-oat-pancakes" },
     { label: "Lunch", slug: "vietnamese-prawn-noodle-salad" },
@@ -63,6 +68,9 @@ export default function HomePage() {
                 Build My Meal Plan
               </Link>
             </div>
+            <p className="small" style={{ marginTop: 12 }}>
+              New here? <Link href="/free-meal-plan">Get a free 7-day starter plan with shopping list</Link>.
+            </p>
             <div className="hero-stats">
               <div>
                 <strong>{recipes.length}</strong>
@@ -377,7 +385,7 @@ export default function HomePage() {
             <p className="lede">A seasonal recipe, a practical nutrition tip and a meal-plan idea. No spam, no miracle claims.</p>
           </div>
           <div className="card">
-            <NewsletterForm />
+            <NewsletterForm source="homepage" />
           </div>
         </div>
       </section>
@@ -388,7 +396,7 @@ export default function HomePage() {
           <div>
             <span className="eyebrow">Free &amp; Premium</span>
             <h2 id="price-h">Useful for free. More convenient with Premium.</h2>
-            <p>Recipes, education, meal planning and shopping lists are free for everyone. Premium will add extra planning power for busy households.</p>
+            <p>Recipes, education, meal planning, shopping lists and the shopping calendar are free for everyone. Premium adds extra planning power for busy households.</p>
           </div>
           <Link href="/pricing" className="link-arrow">
             Compare plans
@@ -406,16 +414,27 @@ export default function HomePage() {
           </div>
           <div className="price-card featured">
             <h3>
-              {premium.name} <span className="chip" style={{ marginLeft: 8 }}>Coming soon</span>
+              {premium.name} {!offers.sellable && <span className="chip" style={{ marginLeft: 8 }}>Coming soon</span>}
             </h3>
+            {fromPrice && <p className="price-amount" style={{ fontSize: "1.8rem" }}>{fromPrice}</p>}
             <p className="small">{premium.tagline}</p>
             <ul className="check-list small">
-              {premium.features
-                .filter((f) => !free.features.includes(f))
+              <li>Up to {premium.limits.savedPlans} saved weekly plans</li>
+              {premiumLiveExtras()
+                .filter((f) => f !== "planner.saved-plans.multiple")
                 .map((f) => (
                   <li key={f}>{FEATURE_LABELS[f]}</li>
                 ))}
             </ul>
+            <p className="xs" style={{ opacity: 0.85 }}>
+              Planned: {premiumPlannedExtras()
+                .map((f) => FEATURE_LABELS[f].toLowerCase())
+                .join("; ")}
+              .
+            </p>
+            <Link href="/pricing" className="btn btn-light btn-sm">
+              {offers.sellable ? "See Premium" : "Join the waitlist"}
+            </Link>
           </div>
         </div>
       </section>

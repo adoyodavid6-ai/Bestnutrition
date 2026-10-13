@@ -1,28 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { WEBHOOK_ENV, formSchemas, isFormType } from "@/lib/forms";
+import { clientIp, rateLimited } from "@/lib/rate-limit";
 
-// Simple per-instance rate limit. For multi-instance deployments use a shared store (e.g. Redis).
-const hits = new Map<string, { count: number; reset: number }>();
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 8;
-
-function rateLimited(key: string) {
-  const now = Date.now();
-  const entry = hits.get(key);
-  if (!entry || entry.reset < now) {
-    hits.set(key, { count: 1, reset: now + WINDOW_MS });
-    return false;
-  }
-  entry.count++;
-  return entry.count > MAX_PER_WINDOW;
-}
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ type: string }> }) {
   const { type } = await params;
   if (!isFormType(type)) return NextResponse.json({ ok: false, message: "Unknown form." }, { status: 404 });
 
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (rateLimited(`${type}:${ip}`)) {
+  if (rateLimited(`${type}:${clientIp(req.headers)}`, MAX_PER_WINDOW, WINDOW_MS)) {
     return NextResponse.json({ ok: false, message: "Too many submissions. Please try again in a few minutes." }, { status: 429 });
   }
 

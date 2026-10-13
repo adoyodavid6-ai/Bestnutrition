@@ -4,7 +4,22 @@ import Link from "next/link";
 import { useId } from "react";
 import { formToObject, useFormSubmit } from "./useFormSubmit";
 
-export function NewsletterForm({ variant = "light", compact = false }: { variant?: "light" | "dark"; compact?: boolean }) {
+export function NewsletterForm({
+  variant = "light",
+  compact = false,
+  source = "site",
+  heading = "The NourishWell weekly",
+  consentText = "Send me weekly recipes and nutrition tips.",
+  button = "Subscribe",
+}: {
+  variant?: "light" | "dark";
+  compact?: boolean;
+  /** Where the sign-up happened, sent with the subscription so campaigns can be measured. */
+  source?: string;
+  heading?: string;
+  consentText?: string;
+  button?: string;
+}) {
   const id = useId();
   const { state, submit } = useFormSubmit("newsletter");
   const dark = variant === "dark";
@@ -26,7 +41,8 @@ export function NewsletterForm({ variant = "light", compact = false }: { variant
       }}
       aria-describedby={`${id}-status`}
     >
-      {!compact && <h3 style={{ color: dark ? "#fff" : undefined }}>The NourishWell weekly</h3>}
+      {!compact && heading && <h3 style={{ color: dark ? "#fff" : undefined }}>{heading}</h3>}
+      <input type="hidden" name="source" value={source} />
       <label htmlFor={`${id}-email`} className={compact ? "sr-only" : "label"} style={dark ? { color: "#fff" } : undefined}>
         Email address
       </label>
@@ -43,7 +59,7 @@ export function NewsletterForm({ variant = "light", compact = false }: { variant
           aria-describedby={state.errors.email ? `${id}-email-err` : undefined}
         />
         <button className={`btn ${dark ? "btn-light" : "btn-primary"}`} type="submit" disabled={state.status === "submitting"}>
-          {state.status === "submitting" ? "Sending…" : "Subscribe"}
+          {state.status === "submitting" ? "Sending…" : button}
         </button>
       </div>
       {state.errors.email && (
@@ -60,7 +76,7 @@ export function NewsletterForm({ variant = "light", compact = false }: { variant
       <label className="checkbox xs" style={{ marginTop: 10, color: dark ? "#d8cfe0" : undefined }}>
         <input type="checkbox" name="consent" required />
         <span>
-          Send me weekly recipes and nutrition tips. Unsubscribe any time. See our{" "}
+          {consentText} Unsubscribe any time. See our{" "}
           <Link href="/privacy" style={dark ? { color: "#fff" } : undefined}>
             privacy policy
           </Link>

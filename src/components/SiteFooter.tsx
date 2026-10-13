@@ -16,7 +16,7 @@ export function SiteFooter() {
               {site.tagline} Practical, evidence-informed nutrition for every kitchen, culture and budget.
             </p>
             <div style={{ marginTop: "1.5rem" }}>
-              <NewsletterForm variant="dark" compact />
+              <NewsletterForm variant="dark" compact source="footer" />
             </div>
           </div>
           {footerNav.map((group) => (

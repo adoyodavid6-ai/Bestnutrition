@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRecipe } from "@/content/recipes";
 import type { Article } from "@/lib/types";
+import { NewsletterCTA } from "./marketing/NewsletterCTA";
 import { MedicalNotice, ReferenceList, ReviewBadge, ReviewPanel, formatDate } from "./Editorial";
 import { RecipeCard } from "./RecipeCard";
 import { SaveButton, ShareButton } from "./SaveButton";
@@ -64,6 +65,8 @@ export function ArticleView({ article, basePath }: { article: Article; basePath:
           <div style={{ marginTop: 40 }}>
             <ReferenceList ids={article.references} />
           </div>
+          {/* The source is deliberately generic: sign-ups never record which health topic someone read. */}
+          <NewsletterCTA source="article" heading="Practical nutrition, once a week" text="A seasonal meal plan, new recipes and one evidence-informed tip. No miracle claims." />
         </div>
         <aside className="stack">
           <nav aria-label="On this page" className="card">

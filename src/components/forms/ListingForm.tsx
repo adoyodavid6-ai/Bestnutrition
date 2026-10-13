@@ -70,6 +70,12 @@ export function ListingForm({ defaultType = "professional" }: { defaultType?: "p
       <F id="website" error={err.website} label="Website (optional)">
         <input {...a("website")} className="input" type="url" inputMode="url" placeholder="https://" />
       </F>
+      <F id="tier" label="Listing you're interested in" hint="Everyone starts with verification. Featured listings are paid for only after you're verified.">
+        <select id="tier" name="tier" className="select" defaultValue="basic">
+          <option value="basic">Basic listing (free)</option>
+          <option value="featured">Featured listing (paid, after verification)</option>
+        </select>
+      </F>
       <F id="services" error={err.services} label="Services, specialties, languages and service areas">
         <textarea {...a("services")} className="textarea" required />
       </F>

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { FormType } from "@/lib/forms";
+import { getAttribution } from "@/lib/attribution-client";
+import { track } from "@/lib/analytics";
 
 export type FormState = { status: "idle" | "submitting" | "success" | "error"; message?: string; errors: Record<string, string> };
 
@@ -14,10 +16,11 @@ export function useFormSubmit(type: FormType) {
       const res = await fetch(`/api/forms/${type}`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, attribution: getAttribution() }),
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.ok) {
+        if (type === "newsletter") track("newsletter_signup", typeof data.source === "string" ? { source: data.source } : undefined);
         setState({ status: "success", message: json.message, errors: {} });
         return true;
       }

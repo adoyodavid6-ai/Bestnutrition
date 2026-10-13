@@ -40,6 +40,20 @@ export function AccountSettings() {
         </p>
       </section>
 
+      <section className="card" aria-labelledby="billing-h">
+        <div className="spread">
+          <h2 id="billing-h" style={{ fontSize: "var(--fs-xl)", margin: 0 }}>
+            Plan &amp; billing
+          </h2>
+          <Link href="/account/billing" className="link-arrow small">
+            Open
+          </Link>
+        </div>
+        <p className="small muted" style={{ margin: "8px 0 0" }}>
+          See your plan, manage or cancel Premium, and download receipts.
+        </p>
+      </section>
+
       <section className="card" aria-labelledby="prefs-h">
         <h2 id="prefs-h" style={{ fontSize: "var(--fs-xl)" }}>
           Preferences

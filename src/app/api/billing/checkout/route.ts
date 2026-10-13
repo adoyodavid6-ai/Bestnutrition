@@ -1,0 +1,74 @@
+import { NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
+import { billingConfig, listingSellable, premiumSellable } from "@/lib/billing/config";
+import { ENTITLEMENT_COOKIE, verifyListing } from "@/lib/billing/entitlement";
+import { attributionMetadata, cleanAttribution } from "@/lib/billing/attribution";
+import { resolvePlan } from "@/lib/billing/server";
+import { StripeError, createCheckoutSession } from "@/lib/billing/stripe";
+import { clientIp, rateLimited } from "@/lib/rate-limit";
+
+const body = z.discriminatedUnion("product", [
+  z.object({ product: z.literal("premium"), interval: z.enum(["month", "year"]), attribution: z.unknown().optional() }),
+  z.object({ product: z.literal("listing-featured"), listing: z.string(), sig: z.string(), attribution: z.unknown().optional() }),
+]);
+
+const fail = (message: string, status: number) => NextResponse.json({ ok: false, message }, { status, headers: { "Cache-Control": "no-store" } });
+
+export async function POST(req: NextRequest) {
+  if (rateLimited(`checkout:${clientIp(req.headers)}`, 10, 10 * 60 * 1000)) return fail("Too many attempts. Please wait a few minutes and try again.", 429);
+  const parsed = body.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) return fail("Invalid request.", 400);
+  const input = parsed.data;
+  const config = billingConfig();
+  const origin = req.nextUrl.origin;
+  const metadata = { product: input.product, ...attributionMetadata(cleanAttribution(input.attribution)) };
+
+  try {
+    if (input.product === "premium") {
+      if (!premiumSellable(config)) return fail("Premium isn't open for sign-up yet, so no payment was taken. Join the waitlist to hear when it opens.", 503);
+      const price = input.interval === "year" ? config.prices.premiumYearly : config.prices.premiumMonthly;
+      if (!price) return fail(`${input.interval === "year" ? "Yearly" : "Monthly"} billing isn't available. Please choose the other option.`, 400);
+      const current = await resolvePlan(req.cookies.get(ENTITLEMENT_COOKIE)?.value, config);
+      if (current.plan === "premium") return fail("This browser already has Premium. Manage your subscription from Account → Billing.", 409);
+
+      const session = await createCheckoutSession(
+        {
+          mode: "subscription",
+          line_items: [{ price, quantity: 1 }],
+          success_url: `${origin}/api/billing/confirm?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${origin}/pricing?checkout=cancelled`,
+          allow_promotion_codes: true,
+          billing_address_collection: "auto",
+          ...(process.env.STRIPE_AUTOMATIC_TAX === "true" ? { automatic_tax: { enabled: true } } : {}),
+          subscription_data: { metadata, ...(config.trialDays ? { trial_period_days: config.trialDays } : {}) },
+          metadata,
+        },
+        config,
+      );
+      return NextResponse.json({ ok: true, url: session.url }, { headers: { "Cache-Control": "no-store" } });
+    }
+
+    if (!listingSellable(config)) return fail("Featured listings aren't open for payment yet, so no payment was taken.", 503);
+    if (!verifyListing(input.listing, input.sig, config.entitlementSecret!)) return fail("This payment link isn't valid. Please use the link we sent after verifying your listing.", 403);
+    const listingMeta = { ...metadata, listing: input.listing };
+    const session = await createCheckoutSession(
+      {
+        mode: "subscription",
+        line_items: [{ price: config.prices.listingFeatured, quantity: 1 }],
+        success_url: `${origin}/for-businesses/upgrade?listing=${encodeURIComponent(input.listing)}&status=success`,
+        cancel_url: `${origin}/for-businesses/upgrade?listing=${encodeURIComponent(input.listing)}&sig=${encodeURIComponent(input.sig)}&status=cancelled`,
+        allow_promotion_codes: true,
+        billing_address_collection: "required",
+        tax_id_collection: { enabled: true },
+        ...(process.env.STRIPE_AUTOMATIC_TAX === "true" ? { automatic_tax: { enabled: true } } : {}),
+        subscription_data: { metadata: listingMeta },
+        metadata: listingMeta,
+      },
+      config,
+    );
+    return NextResponse.json({ ok: true, url: session.url }, { headers: { "Cache-Control": "no-store" } });
+  } catch (e) {
+    console.error("checkout failed", e instanceof StripeError ? `${e.status} ${e.message}` : e);
+    return fail("We couldn't start checkout just now. No payment was taken. Please try again shortly.", 502);
+  }
+}
