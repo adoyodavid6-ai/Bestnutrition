@@ -17,12 +17,12 @@
   --slate-70: #51625d;
   --white: #ffffff;
   --forest: #0a2610;
-  /* Header: logo row #DEE0CC, navigation row #C5C9A6 */
+  /* Header: logo row #DEE0CC, navigation row Midnight Violet (as the footer) */
   --header-bg: #dee0cc;
   --header-hover: #cfd2b8;
   --header-border: #c3c7a4;
-  --nav-bg: #c5c9a6;
-  --nav-hover: #b2b78f;
+  --nav-bg: var(--violet);
+  --nav-hover: rgba(255, 255, 255, 0.14);
 
   /* Semantic */
   --bg: var(--parchment);
@@ -779,14 +779,18 @@ legend {
   font-size: 0.875rem;
   font-weight: 700;
   white-space: nowrap;
-  /* White on #C5C9A6 is low contrast; a soft shadow helps legibility. */
-  text-shadow: 0 1px 2px rgba(31, 14, 47, 0.45);
 }
 .main-nav a:hover,
 .main-nav a[aria-current="page"] {
   color: var(--white);
-  background: var(--violet);
-  text-shadow: none;
+  background: var(--nav-hover);
+}
+.main-nav a[aria-current="page"] {
+  box-shadow: inset 0 -2px 0 #fde3d8;
+}
+.main-nav a:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
 }
 .header-actions {
   margin-left: auto;
@@ -860,7 +864,7 @@ legend {
 .mobile-drawer {
   position: fixed;
   inset: 68px 0 0 0;
-  background: var(--nav-bg);
+  background: var(--header-bg);
   z-index: 49;
   overflow-y: auto;
   padding: var(--s-5) var(--gutter) calc(var(--s-8) + 70px);
