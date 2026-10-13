@@ -17,9 +17,12 @@
   --slate-70: #51625d;
   --white: #ffffff;
   --forest: #0a2610;
-  --header-bg: var(--parchment);
-  --header-hover: var(--parchment-deep);
-  --header-border: var(--border);
+  /* Header: logo row #DEE0CC, navigation row #C5C9A6 */
+  --header-bg: #dee0cc;
+  --header-hover: #cfd2b8;
+  --header-border: #c3c7a4;
+  --nav-bg: #c5c9a6;
+  --nav-hover: #b2b78f;
 
   /* Semantic */
   --bg: var(--parchment);
@@ -752,6 +755,7 @@ legend {
 }
 .main-nav {
   display: none;
+  background-color: var(--nav-bg);
   border-top: 1px solid var(--header-border);
 }
 .main-nav ul {
@@ -779,7 +783,7 @@ legend {
 .main-nav a:hover,
 .main-nav a[aria-current="page"] {
   color: var(--violet);
-  background: var(--header-hover);
+  background: var(--nav-hover);
 }
 .header-actions {
   margin-left: auto;
@@ -853,7 +857,7 @@ legend {
 .mobile-drawer {
   position: fixed;
   inset: 68px 0 0 0;
-  background: var(--header-bg);
+  background: var(--nav-bg);
   z-index: 49;
   overflow-y: auto;
   padding: var(--s-5) var(--gutter) calc(var(--s-8) + 70px);
