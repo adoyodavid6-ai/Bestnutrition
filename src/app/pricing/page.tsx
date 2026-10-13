@@ -21,7 +21,7 @@ const FAQ = [
   { q: "What does Premium add today?", a: "More saved weekly plans (up to 50 instead of 3) and exports: your meal plan as a spreadsheet or calendar file, and your shopping list as a spreadsheet. Planned features are listed separately and aren't charged for until they exist." },
   { q: "Will I be charged automatically?", a: "Premium renews automatically each month or year until you cancel. The price and renewal period are shown before you pay, and Stripe emails a receipt for every payment." },
   { q: "How do I cancel?", a: "Go to Account → Billing and choose Manage billing. You can cancel, change plan, update your card and download receipts there. After cancelling you keep Premium until the end of the period you've paid for." },
-  { q: "Does Premium work on all my devices?", a: "Not yet. Until accounts launch, Premium is linked to the browser you subscribed in. If you need it on another device, contact us and we'll help." },
+  { q: "Does Premium work on all my devices?", a: "Premium is turned on per browser until accounts launch. To add another browser or device, go to Account → Billing and ask for a sign-in link to be emailed to the address you used at checkout." },
   { q: "Will health information ever be paywalled?", a: "No. Health-condition guides, nutrition education and basic planning will always be free, and we never use health information for advertising." },
 ];
 

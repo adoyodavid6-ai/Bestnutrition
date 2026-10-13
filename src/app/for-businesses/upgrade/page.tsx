@@ -6,6 +6,7 @@ import { FeaturedCheckout } from "@/components/billing/FeaturedCheckout";
 import { billingConfig } from "@/lib/billing/config";
 import { verifyListing } from "@/lib/billing/entitlement";
 import { featuredListingOffer } from "@/lib/billing/offers";
+import { LISTING_PACKAGES } from "@/lib/commerce/listings";
 
 export const dynamic = "force-dynamic";
 
@@ -62,9 +63,11 @@ export default async function UpgradePage({ searchParams }: { searchParams: Prom
               <span className="price-per"> / {offer.interval}</span>
             </p>
             <ul className="check-list small">
-              <li>Priority placement in the directory and on relevant guides, labelled “Promoted”</li>
-              <li>Enhanced profile with gallery and extra media</li>
-              <li>A monthly summary of profile views and enquiries</li>
+              {LISTING_PACKAGES.find((x) => x.id === "featured")!
+                .benefits.filter((b) => b.status === "live")
+                .map((b) => (
+                  <li key={b.text}>{b.text}</li>
+                ))}
             </ul>
             <p className="xs muted">
               Renews automatically every {offer.interval} until you cancel. Cancel any time by contacting us or through the billing link we send you; your listing reverts to Basic at the end of the paid period. Prices exclude any applicable

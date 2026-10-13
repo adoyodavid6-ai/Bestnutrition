@@ -28,6 +28,12 @@ export default function HowWeMakeMoneyPage() {
           <Link href="/for-businesses">for businesses</Link>.
         </li>
         <li>
+          <strong>Printable resources.</strong> Original one-time purchases such as the <Link href="/resources">meal-planning workbook</Link>. They&apos;re optional extras; everything on the website stays free.
+        </li>
+        <li>
+          <strong>Workplace programmes.</strong> Quoted workshops and group access for organisations, with aggregate-only reporting. See <Link href="/for-organisations">for workplaces</Link>.
+        </li>
+        <li>
           <strong>Sponsorships and partnerships.</strong> Labelled sponsored collections, newsletter sponsor slots and brand partnerships. See <Link href="/advertise">advertise with us</Link>.
         </li>
         <li>

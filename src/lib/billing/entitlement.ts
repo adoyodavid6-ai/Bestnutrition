@@ -63,3 +63,24 @@ export function signListing(listing: string, secret: string) {
 export function verifyListing(listing: string, sig: string | undefined | null, secret: string) {
   return Boolean(sig) && /^[a-z0-9-]{2,80}$/.test(listing) && safeEqual(sig!, signListing(listing, secret));
 }
+
+/**
+ * Generic short-lived signed tokens (restore links, download links). The purpose is part of
+ * the signature, so a token minted for one use can't be replayed for another.
+ */
+export function signToken<T extends object>(purpose: string, payload: T & { exp: number }, secret: string) {
+  const body = b64(JSON.stringify(payload));
+  return `${body}.${mac(`${purpose}.${body}`, secret)}`;
+}
+
+export function verifyToken<T extends { exp: number }>(purpose: string, token: string | null | undefined, secret: string, nowSec = Math.floor(Date.now() / 1000)): T | null {
+  if (!token) return null;
+  const [body, sig] = token.split(".");
+  if (!body || !sig || !safeEqual(sig, mac(`${purpose}.${body}`, secret))) return null;
+  try {
+    const p = JSON.parse(unb64(body)) as T;
+    return typeof p.exp === "number" && p.exp > nowSec ? p : null;
+  } catch {
+    return null;
+  }
+}

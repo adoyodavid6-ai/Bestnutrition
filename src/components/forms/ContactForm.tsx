@@ -10,6 +10,7 @@ const TOPICS = [
   { value: "privacy", label: "Privacy or data request" },
   { value: "accessibility", label: "Accessibility issue" },
   { value: "partnership", label: "Partnerships and advertising" },
+  { value: "workplace", label: "Workplace or organisation programmes" },
   { value: "other", label: "Something else" },
 ];
 

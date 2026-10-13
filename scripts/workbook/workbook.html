@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en-GB" class="size-a4">
+<head>
+<meta charset="utf-8">
+<title>The NourishWell Meal-Planning Workbook</title>
+<!-- Fonts (@font-face, file:// URLs) and @page size are injected by build-workbook.cjs -->
+<link rel="stylesheet" href="workbook.css">
+</head>
+<body>
+
+<!-- ===================================================== 1. COVER -->
+<section class="page cover no-foot" id="p-cover">
+  <div class="top">
+    <span class="logo" data-logo></span>
+    <span class="eyebrow">Printable workbook</span>
+  </div>
+
+  <div class="hero">
+    <div class="art">
+      <svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- fork -->
+          <path d="M34 26v20M40 26v20M46 26v20" stroke="#1f0e2f" stroke-width="1.3"/>
+          <path d="M34 46c0 6 3 9 6 9s6-3 6-9" stroke="#1f0e2f" stroke-width="1.3"/>
+          <path d="M40 55v77" stroke="#1f0e2f" stroke-width="2.4"/>
+          <!-- knife -->
+          <path d="M200 26c8 9 9 30 1 44h-3V26z" stroke="#1f0e2f" stroke-width="1.3" fill="#ffffff"/>
+          <path d="M199.5 70v62" stroke="#1f0e2f" stroke-width="2.4"/>
+          <!-- plate -->
+          <circle cx="120" cy="80" r="60" fill="#ffffff" stroke="#1f0e2f" stroke-width="1.3"/>
+          <circle cx="120" cy="80" r="48" stroke="#aab2b0" stroke-width="0.9"/>
+          <path d="M120 32v96M120 80h48" stroke="#aab2b0" stroke-width="0.9"/>
+          <!-- vegetables half: leaves -->
+          <path d="M86 62c10-10 22-8 26-2-8 9-18 10-26 2z" stroke="#725246" stroke-width="1.1"/>
+          <path d="M88 62c8-1 15-2 22-2" stroke="#725246" stroke-width="0.8"/>
+          <path d="M84 96c4-12 14-16 22-12-3 11-12 15-22 12z" stroke="#725246" stroke-width="1.1"/>
+          <path d="M86 94c6-3 12-6 18-9" stroke="#725246" stroke-width="0.8"/>
+          <circle cx="104" cy="106" r="4" stroke="#725246" stroke-width="1"/>
+          <circle cx="98" cy="76" r="3" stroke="#725246" stroke-width="1"/>
+          <!-- protein quarter -->
+          <ellipse cx="143" cy="60" rx="10" ry="7.5" stroke="#1f0e2f" stroke-width="1.1"/>
+          <circle cx="143" cy="60" r="3.2" stroke="#725246" stroke-width="1"/>
+          <!-- grains quarter -->
+          <g stroke="#1f0e2f" stroke-width="1">
+            <ellipse cx="136" cy="94" rx="3.2" ry="1.7" transform="rotate(-25 136 94)"/>
+            <ellipse cx="145" cy="99" rx="3.2" ry="1.7" transform="rotate(20 145 99)"/>
+            <ellipse cx="153" cy="92" rx="3.2" ry="1.7" transform="rotate(-10 153 92)"/>
+            <ellipse cx="139" cy="104" rx="3.2" ry="1.7" transform="rotate(35 139 104)"/>
+            <ellipse cx="150" cy="106" rx="3.2" ry="1.7" transform="rotate(-30 150 106)"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:4mm">Four weeks · Plan · Shop · Prep · Review</p>
+      <h1>The NourishWell<br><span style="white-space:nowrap">Meal-Planning</span> Workbook</h1>
+    </div>
+    <p class="sub">Plan a month of easier, balanced meals</p>
+    <p class="inside">Weekly meal planners, shopping lists by aisle, prep-session plans and reviews, plus pantry and freezer inventories, a grocery budget tracker, a batch-cooking planner and blank recipe cards.</p>
+  </div>
+
+  <div class="bottom">
+    <span>First edition · 2026</span>
+    <span class="tag">Eat Better. Feel Stronger. Live Well.</span>
+  </div>
+</section>
+
+<!-- ===================================================== CONTENTS -->
+<section class="page" id="p-contents" data-foot="Contents">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Inside this workbook</span>
+      <h1>Contents</h1>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lede">Start with the two short guides, then work through one week at a time. The reference pages at the back are there whenever you need them; print extra copies of any page for your own use.</p>
+    <ul class="toc">
+      <li data-toc-for="p-howto"><span class="t">How to use this workbook</span><span class="d">Plan, shop, prep, review</span><span class="p"></span></li>
+      <li data-toc-for="p-plate"><span class="t">Build a balanced plate</span><span class="d">A simple guide for planning meals</span><span class="p"></span></li>
+      <li data-toc-for="p-month"><span class="t">Your month at a glance</span><span class="d">Busy days, go-to meals and staples</span><span class="p"></span></li>
+      <li data-toc-for="w1-plan"><span class="t">Week 1</span><span class="d">Meal planner, shopping list, prep session, review</span><span class="p"></span></li>
+      <li data-toc-for="w2-plan"><span class="t">Week 2</span><span class="d">Meal planner, shopping list, prep session, review</span><span class="p"></span></li>
+      <li data-toc-for="w3-plan"><span class="t">Week 3</span><span class="d">Meal planner, shopping list, prep session, review</span><span class="p"></span></li>
+      <li data-toc-for="w4-plan"><span class="t">Week 4</span><span class="d">Meal planner, shopping list, prep session, review</span><span class="p"></span></li>
+      <li data-toc-for="p-pantry"><span class="t">Pantry inventory</span><span class="d">Cupboard staples and use-by dates</span><span class="p"></span></li>
+      <li data-toc-for="p-freezer"><span class="t">Freezer inventory</span><span class="d">What's frozen, and when to use it</span><span class="p"></span></li>
+      <li data-toc-for="p-budget"><span class="t">Grocery budget tracker</span><span class="d">Planned, spent and the difference</span><span class="p"></span></li>
+      <li data-toc-for="p-batch"><span class="t">Batch-cooking planner</span><span class="d">Portions, storage, labels and food safety</span><span class="p"></span></li>
+      <li data-toc-for="p-cards1"><span class="t">Recipe cards</span><span class="d">Eight blank cards for meals worth keeping</span><span class="p"></span></li>
+    </ul>
+    <div class="row nogrow" style="margin-top:auto">
+      <div class="panel soft">
+        <h3>What you'll need</h3>
+        <ul class="tips">
+          <li>A pencil and an eraser</li>
+          <li>Your diary or calendar for the month</li>
+          <li>A little time once a week to plan</li>
+          <li>Containers and labels for prep days</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>About this workbook</h3>
+        <p class="small" style="font-size:8.8pt">It's a planning tool, not a diet. The guidance inside is general and practical, and there are no rules to follow perfectly. Skip any page that doesn't suit your week, and come back to it when it does.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== 2. HOW TO USE -->
+<section class="page" id="p-howto" data-foot="How to use this workbook">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Getting started</span>
+      <h1>How to use this workbook</h1>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lede">Each week follows the same simple rhythm: plan, shop, prep, review. Use as much or as little as suits you. Even planning a few dinners ahead can take some of the guesswork out of the week.</p>
+
+    <div class="steps">
+      <div class="step"><span class="n">01</span><div><h2>Plan</h2><p>Sit down once a week with your diary. Mark the busy evenings first, then fill in the meal planner, starting with dinners. Pencil in one "cook once, eat twice" meal to cover a busy day.</p></div></div>
+      <div class="step"><span class="n">02</span><div><h2>Shop</h2><p>Check the fridge, freezer and pantry pages before you write anything. Note what needs using up, then build the shopping list by aisle, straight from your plan.</p></div></div>
+      <div class="step"><span class="n">03</span><div><h2>Prep</h2><p>Choose a prep session that fits your week: one longer slot or two short ones. Wash and chop, cook a grain or a pot of beans, and portion meals into labelled containers.</p></div></div>
+      <div class="step"><span class="n">04</span><div><h2>Review</h2><p>At the end of the week, note what worked, what to swap and which meals to repeat. Carry leftovers and good ideas straight into next week's plan.</p></div></div>
+    </div>
+
+    <div class="panel soft">
+      <h2>Reuse ingredients, waste less</h2>
+      <ul class="tips">
+        <li>Roast a large tray of vegetables: serve them as a side one night, then add them to a grain bowl, wrap or soup.</li>
+        <li>Cook a pot of grains or lentils once and build two or three meals around it.</li>
+        <li>Pick one bunch of herbs and one leafy green for the week and use them in several dishes.</li>
+        <li>Plan a use-it-up meal near the end of the week, such as a frittata, soup, fried rice or a tray bake.</li>
+        <li>Freeze portions you won't eat in the next couple of days, and note them on the freezer inventory.</li>
+        <li>Buy tins, jars and frozen staples you'll use across several meals, rather than one-off ingredients.</li>
+      </ul>
+    </div>
+
+    <div class="col nogrow">
+      <h2>A sample weekly rhythm</h2>
+      <div class="rhythm">
+        <div><span class="eyebrow">Before the week</span><b>Plan &amp; shop</b><p>Fill in the planner, check the inventory pages, write the list.</p></div>
+        <div><span class="eyebrow">A free slot</span><b>Prep session</b><p>Batch-cook, wash and chop, portion and label.</p></div>
+        <div><span class="eyebrow">Midweek</span><b>Cook once, eat twice</b><p>Turn one batch into a second, different meal.</p></div>
+        <div><span class="eyebrow">End of the week</span><b>Use up &amp; review</b><p>A use-it-up meal, then a few notes for next week.</p></div>
+      </div>
+    </div>
+
+    <div class="row nogrow" style="margin-top:auto">
+      <div class="note"><strong>Printing.</strong> Pages are mostly white with fine lines, to go easy on ink. Print the weekly pages as many times as you need for your own use.</div>
+      <div class="note"><strong>Pencil helps.</strong> Plans change. Write in pencil, or use sticky notes on the planner, so you can move meals around the week.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== 3. BALANCED PLATE -->
+<section class="page" id="p-plate" data-foot="Build a balanced plate">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">A one-page guide</span>
+      <h1>Build a balanced plate</h1>
+    </div>
+  </div>
+  <div class="body">
+    <p class="lede">A quick visual check for planning meals. It isn't a rule for every plate: think about balance across the day and the week.</p>
+
+    <div class="plate-wrap">
+      <svg viewBox="0 0 220 236" xmlns="http://www.w3.org/2000/svg" font-family="Source Serif 4" aria-hidden="true">
+        <circle cx="100" cy="100" r="94" fill="#ffffff" stroke="#aab2b0" stroke-width="1"/>
+        <circle cx="100" cy="100" r="80" fill="#ffffff" stroke="#1f0e2f" stroke-width="1.2"/>
+        <path d="M100 20A80 80 0 0 0 100 180Z" fill="#f4efed"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#1f0e2f" stroke-width="1.2"/>
+        <path d="M100 20v160M100 100h80" stroke="#1f0e2f" stroke-width="1.2"/>
+        <g text-anchor="middle" fill="#1f0e2f">
+          <text x="60" y="96" font-size="10.5" font-weight="700">Vegetables</text>
+          <text x="60" y="109" font-size="10.5" font-weight="700">&amp; fruit</text>
+          <text x="60" y="123" font-size="7.5" font-weight="600" fill="#725246" letter-spacing="1">ABOUT HALF</text>
+          <text x="140" y="68" font-size="10" font-weight="700">Protein</text>
+          <text x="140" y="81" font-size="7" font-weight="600" fill="#725246" letter-spacing="1">A QUARTER</text>
+          <text x="140" y="120" font-size="9.5" font-weight="700">Whole grains</text>
+          <text x="140" y="132" font-size="9.5" font-weight="700">&amp; starchy</text>
+          <text x="140" y="144" font-size="7" font-weight="600" fill="#725246" letter-spacing="1">A QUARTER</text>
+        </g>
+        <!-- water glass -->
+        <g fill="none" stroke="#1f0e2f" stroke-width="1.2" stroke-linejoin="round">
+          <path d="M28 196h22l-2.5 32h-17z"/>
+          <path d="M30.4 206h17.2" stroke="#aab2b0"/>
+        </g>
+        <text x="58" y="210" font-size="9.5" font-weight="700" fill="#1f0e2f">Water</text>
+        <text x="58" y="222" font-size="7" font-weight="600" fill="#725246" letter-spacing="1">MAIN DRINK</text>
+        <!-- oil drop -->
+        <path d="M138 196c6 8 9 13 9 18a9 9 0 0 1-18 0c0-5 3-10 9-18z" fill="none" stroke="#1f0e2f" stroke-width="1.2" stroke-linejoin="round"/>
+        <text x="154" y="210" font-size="9.5" font-weight="700" fill="#1f0e2f">Healthy fats</text>
+        <text x="154" y="222" font-size="7" font-weight="600" fill="#725246" letter-spacing="1">A LITTLE</text>
+      </svg>
+
+      <div class="parts">
+        <div class="part"><h3>Vegetables &amp; fruit <span class="share">About half</span></h3><p>Mix colours and types across the week. Fresh, frozen and tinned all count; for tins, choose ones in water or juice, with no added sugar or salt where you can.</p></div>
+        <div class="part"><h3>Protein <span class="share">About a quarter</span></h3><p>Rotate between beans, lentils, chickpeas, tofu, eggs, fish, poultry and lean meat. Pulses are an easy, low-cost staple to keep in the cupboard.</p></div>
+        <div class="part"><h3>Whole grains &amp; starchy foods <span class="share">About a quarter</span></h3><p>Choose wholegrain or higher-fibre versions where you can: oats, brown rice, wholewheat pasta, wholegrain bread, potatoes with their skins on.</p></div>
+        <div class="part"><h3>Healthy fats <span class="share">A little</span></h3><p>Cook with or dress food with small amounts of oils such as olive or rapeseed oil, and add nuts, seeds or avocado now and then.</p></div>
+        <div class="part"><h3>Water <span class="share">Through the day</span></h3><p>Make water your usual drink, and keep a glass or bottle within reach at meals.</p></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Using the plate when you plan</h2>
+      <ul class="tips">
+        <li>Look at each dinner on your planner and ask: is there a vegetable, a protein, and a grain or starchy food?</li>
+        <li>If a meal is light on vegetables, add an easy side such as a salad, frozen peas or a tray of roasted vegetables.</li>
+        <li>Breakfasts, lunches and snacks can fill gaps: fruit with breakfast, a handful of nuts, a bean-based lunch.</li>
+      </ul>
+    </div>
+
+    <div class="note nogrow">General guidance for healthy adults. If you have a medical condition, are pregnant, or follow a clinical diet, follow your clinician's advice.</div>
+  </div>
+</section>
+
+<!-- ===================================================== MONTH AT A GLANCE -->
+<section class="page" id="p-month" data-foot="Your month at a glance">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Before you start</span>
+      <h1>Your month at a glance</h1>
+    </div>
+    <div class="fields"><span class="field" style="--w:40mm">Month</span></div>
+  </div>
+  <div class="body">
+    <p class="hint" style="font-size:8.5pt">Sketch out the month before planning each week: which days are busy, when you'll shop and prep, and one new meal you'd like to try each week.</p>
+    <div class="grid" style="flex:0 0 auto; height:80mm"
+         data-cols="Week:16mm|Week of:24mm|Busy days to plan around:1fr|New meal to try:1fr|Shop day:19mm|Prep day:19mm"
+         data-rowlabels="1|2|3|4"></div>
+
+    <div class="row grow">
+      <div class="panel grow">
+        <h3>Go-to quick meals</h3>
+        <p class="hint">Meals you can make from staples on a tired evening.</p>
+        <div class="checks" data-checks="9"></div>
+      </div>
+      <div class="panel grow">
+        <h3>Staples to keep in stock</h3>
+        <p class="hint">The cupboard and freezer basics that make those meals possible.</p>
+        <div class="checks" data-checks="9"></div>
+      </div>
+    </div>
+
+    <div class="panel soft nogrow">
+      <h3>This month I'd like to…</h3>
+      <div class="lines fixed" data-lines="3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== 4. FOUR WEEKS -->
+<div id="weeks"></div>
+
+<template id="week-tpl">
+  <!-- Week {{N}}: planner -->
+  <section class="page" id="w{{N}}-plan" data-foot="Week {{N}} · Meal planner">
+    <div class="head">
+      <div class="titles">
+        <span class="eyebrow">Week {{N}} of 4 · Plan</span>
+        <h1>Weekly meal planner</h1>
+      </div>
+      <div class="fields"><span class="field" style="--w:36mm">Week of</span></div>
+    </div>
+    <div class="body">
+      <div class="grid" data-planner
+           data-cols=":22mm|Breakfast:1fr|Lunch:1fr|Dinner:1fr|Snacks:1fr"
+           data-rowlabels="Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday"></div>
+      <div class="panel nogrow">
+        <h4>Notes</h4>
+        <div class="lines fixed" data-lines="3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Week {{N}}: shopping list -->
+  <section class="page" id="w{{N}}-shop" data-foot="Week {{N}} · Shopping list">
+    <div class="head">
+      <div class="titles">
+        <span class="eyebrow">Week {{N}} of 4 · Shop</span>
+        <h1>Shopping list</h1>
+      </div>
+      <div class="fields"><span class="field" style="--w:30mm">Shopping day</span></div>
+    </div>
+    <div class="body">
+      <div class="panel soft nogrow">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:6mm">
+          <h3>Use up first</h3>
+          <span class="hint">Check the fridge, fruit bowl and inventory pages before you shop, and plan these into the week.</span>
+        </div>
+        <div class="row">
+          <div class="checks" data-checks="3"></div>
+          <div class="checks" data-checks="3"></div>
+        </div>
+      </div>
+      <div class="row grow">
+        <div class="col">
+          <div class="col" style="flex:9 1 0; gap:0"><h4>Produce</h4><div class="checks" data-checks="9"></div></div>
+          <div class="col" style="flex:5 1 0; gap:0"><h4>Protein</h4><div class="checks" data-checks="5"></div></div>
+          <div class="col" style="flex:5 1 0; gap:0"><h4>Dairy &amp; alternatives</h4><div class="checks" data-checks="5"></div></div>
+          <div class="col" style="flex:5 1 0; gap:0"><h4>Grains &amp; bakery</h4><div class="checks" data-checks="5"></div></div>
+        </div>
+        <div class="col">
+          <div class="col" style="flex:6 1 0; gap:0"><h4>Tins &amp; jars</h4><div class="checks" data-checks="6"></div></div>
+          <div class="col" style="flex:6 1 0; gap:0"><h4>Frozen</h4><div class="checks" data-checks="6"></div></div>
+          <div class="col" style="flex:5 1 0; gap:0"><h4>Herbs &amp; spices</h4><div class="checks" data-checks="5"></div></div>
+          <div class="col" style="flex:7 1 0; gap:0"><h4>Other</h4><div class="checks" data-checks="7"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Week {{N}}: prep session -->
+  <section class="page" id="w{{N}}-prep" data-foot="Week {{N}} · Prep session">
+    <div class="head">
+      <div class="titles">
+        <span class="eyebrow">Week {{N}} of 4 · Prep</span>
+        <h1>Prep-session planner</h1>
+      </div>
+      <div class="fields"><span class="field" style="--w:20mm">Date</span><span class="field" style="--w:16mm">Time available</span></div>
+    </div>
+    <div class="body">
+      <div class="col" style="flex:8 1 0">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:6mm">
+          <h2>Time blocks</h2>
+          <span class="hint">Start whatever takes longest first, then chop, portion and wash up while it cooks.</span>
+        </div>
+        <div class="grid" data-cols="Time:24mm|Task:1fr|Done:16mm:box" data-rows="8"></div>
+      </div>
+      <div class="col" style="flex:5 1 0">
+        <h2>What to batch-cook</h2>
+        <div class="grid" data-cols="Recipe:1fr|Portions:20mm|Meals it covers:1fr|Store in:24mm:store" data-rows="4"></div>
+      </div>
+      <div class="panel nogrow">
+        <h3>Storage container checklist</h3>
+        <ul class="checklist">
+          <li><span class="box"></span>Containers clean, lids matched</li>
+          <li><span class="box"></span>Labels and a pen ready</li>
+          <li><span class="box"></span>Shallow containers for quick cooling</li>
+          <li><span class="box"></span>Space cleared in the fridge</li>
+          <li><span class="box"></span>Freezer-safe boxes or bags</li>
+          <li><span class="box"></span>Space cleared in the freezer</li>
+          <li><span class="box"></span>Jars for sauces and dressings</li>
+          <li><span class="box"></span>Lunch boxes for the week</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Week {{N}}: reflection -->
+  <section class="page" id="w{{N}}-review" data-foot="Week {{N}} · Weekly reflection">
+    <div class="head">
+      <div class="titles">
+        <span class="eyebrow">Week {{N}} of 4 · Review</span>
+        <h1>Weekly reflection</h1>
+      </div>
+      <div class="fields"><span class="field" style="--w:36mm">Week of</span></div>
+    </div>
+    <div class="body">
+      <div class="row grow">
+        <div class="panel grow"><h3>What worked</h3><p class="hint">Meals, routines or shortcuts that made the week easier.</p><div class="lines" data-lines="6"></div></div>
+        <div class="panel grow"><h3>What to swap</h3><p class="hint">Anything that took too long, didn't get eaten or didn't suit the week.</p><div class="lines" data-lines="6"></div></div>
+      </div>
+      <div class="row grow">
+        <div class="panel grow"><h3>Favourites to repeat</h3><p class="hint">Add the best ones to your go-to list or a recipe card.</p><div class="checks" data-checks="6"></div></div>
+        <div class="panel grow"><h3>Left over or thrown away</h3><p class="hint">Buy a little less next time, or plan a use-it-up meal.</p><div class="lines" data-lines="6"></div></div>
+      </div>
+      <div class="panel soft nogrow">
+        <h3>Carry into next week</h3>
+        <div class="lines fixed" data-lines="3"></div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<!-- ===================================================== 5. PANTRY & FREEZER -->
+<section class="page" id="p-pantry" data-foot="Pantry inventory">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Inventory · 1 of 2</span>
+      <h1>Pantry inventory</h1>
+    </div>
+    <div class="fields"><span class="field" style="--w:30mm">Date checked</span></div>
+  </div>
+  <div class="body">
+    <p class="hint" style="font-size:8.5pt">List cupboard staples: tins, jars, dried grains and pulses, oils, spices. Move items with the nearest dates to the front, and plan them in first.</p>
+    <div class="row grow">
+      <div class="grid" data-cols="Item:1fr|Qty:13mm|Use by:20mm" data-rows="24"></div>
+      <div class="grid" data-cols="Item:1fr|Qty:13mm|Use by:20mm" data-rows="24"></div>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="p-freezer" data-foot="Freezer inventory">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Inventory · 2 of 2</span>
+      <h1>Freezer inventory</h1>
+    </div>
+    <div class="fields"><span class="field" style="--w:30mm">Date checked</span></div>
+  </div>
+  <div class="body">
+    <p class="hint" style="font-size:8.5pt">Note what you freeze, how much, and when to use it by. Check the pack or your local food-safety guidance if you're unsure how long something keeps.</p>
+    <div class="row grow">
+      <div class="grid" data-cols="Item:1fr|Qty:13mm|Use by:20mm" data-rows="24"></div>
+      <div class="grid" data-cols="Item:1fr|Qty:13mm|Use by:20mm" data-rows="24"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== 6. BUDGET -->
+<section class="page" id="p-budget" data-foot="Grocery budget tracker">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Money</span>
+      <h1>Grocery budget tracker</h1>
+    </div>
+    <div class="fields"><span class="field" style="--w:16mm">Currency:</span><span class="field" style="--w:18mm">Month</span></div>
+  </div>
+  <div class="body">
+    <div class="col nogrow">
+      <h2>Four-week summary</h2>
+      <div class="grid" style="flex:0 0 auto; height:62mm"
+           data-cols="Week:30mm|Planned:1fr|Spent:1fr|Difference:1fr|Notes:1.3fr"
+           data-rowlabels="Week 1|Week 2|Week 3|Week 4|Month total" data-tintlast></div>
+      <p class="hint">Difference = planned minus spent. A positive number means you spent less than planned.</p>
+    </div>
+
+    <div class="col grow">
+      <h2>Shopping trips</h2>
+      <div class="grid" data-cols="Date:22mm|Where:1fr|Planned:24mm|Spent:24mm|Notes:1fr" data-rows="11"></div>
+    </div>
+
+    <div class="panel soft nogrow">
+      <h3>Ways to stretch the budget</h3>
+      <ul class="tips">
+        <li>Check the pantry and freezer pages before writing your list, so you don't buy what you already have.</li>
+        <li>Plan meals that share ingredients across the week.</li>
+        <li>Compare the unit price on shelf labels, not just the pack price.</li>
+        <li>Frozen and tinned vegetables, pulses and fish keep well and help cut waste.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== 7. BATCH COOKING -->
+<section class="page" id="p-batch" data-foot="Batch-cooking planner">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Cook once, eat twice</span>
+      <h1>Batch-cooking planner</h1>
+    </div>
+    <div class="fields"><span class="field" style="--w:28mm">Month</span></div>
+  </div>
+  <div class="body">
+    <p class="hint" style="font-size:8.5pt">Record what you batch-cook, how many portions it made and where they're stored. Write the same date on the container label.</p>
+    <div class="grid" data-cols="Recipe:1fr|Portions:20mm|Store in:24mm:store|Label date:24mm|Eat by:24mm" data-rows="11"></div>
+
+    <div class="panel soft nogrow">
+      <h3>Keeping leftovers safe</h3>
+      <ul class="tips">
+        <li>Cool leftovers quickly and refrigerate them within about 2 hours of cooking. Shallow containers help them cool faster.</li>
+        <li>Eat refrigerated leftovers within 2–3 days, or freeze them.</li>
+        <li>Reheat food until it is steaming hot all the way through.</li>
+        <li>Label and date every container before it goes in the fridge or freezer.</li>
+      </ul>
+      <p class="small" style="margin-top:1mm"><strong>Follow the food-safety guidance in your country.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================== 8. RECIPE CARDS -->
+<section class="page" id="p-cards1" data-foot="Recipe cards · 1 of 2">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Keep the keepers · 1 of 2</span>
+      <h1>Recipe cards</h1>
+    </div>
+  </div>
+  <div class="body"><div class="cards" data-cards="4"></div></div>
+</section>
+
+<section class="page" id="p-cards2" data-foot="Recipe cards · 2 of 2">
+  <div class="head">
+    <div class="titles">
+      <span class="eyebrow">Keep the keepers · 2 of 2</span>
+      <h1>Recipe cards</h1>
+    </div>
+  </div>
+  <div class="body"><div class="cards" data-cards="4"></div></div>
+</section>
+
+<!-- ===================================================== 10. CLOSING -->
+<section class="page closing no-foot" id="p-end">
+  <div class="frame">
+    <span class="logo lg" data-logo></span>
+    <div class="rule"></div>
+    <p class="msg">Find recipes, a free weekly meal planner and a shopping calendar at NourishWell.</p>
+    <p class="tagline">Eat Better. Feel Stronger. Live Well.</p>
+    <div class="rule"></div>
+    <p class="copy">© 2026 NourishWell. For personal use. Please don't redistribute.</p>
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+  var all = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+
+  /* Expand the four weekly sections from the template */
+  var tpl = document.getElementById("week-tpl").innerHTML;
+  var weeks = "";
+  for (var n = 1; n <= 4; n++) weeks += tpl.replace(/\{\{N\}\}/g, String(n));
+  document.getElementById("weeks").outerHTML = weeks;
+
+  /* Logo */
+  var MARK = '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="16" cy="16" r="14.6" fill="#0A2610" stroke="#1f0e2f" stroke-width="2.2"/><path d="M9 21c0-7 4.5-11.5 14-11.5 0 9-5.5 13-12.5 13" fill="none" stroke="#f4efed" stroke-width="1.8" stroke-linecap="round"/><path d="M9 22.5 17 15" stroke="#fde3d8" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  all("[data-logo]").forEach(function (el) {
+    el.innerHTML = MARK + '<span class="word"><span class="n">Nourish</span><span class="w">Well</span></span>';
+  });
+
+  /* Grid tables: data-cols="Label:width[:type]|..." with data-rows or data-rowlabels */
+  var STORE = '<span><i class="box"></i>Fridge</span><span><i class="box"></i>Freezer</span>';
+  all(".grid[data-cols]").forEach(function (el) {
+    var cols = el.dataset.cols.split("|").map(function (c) {
+      var p = c.split(":"); return { label: p[0], width: p[1], type: p[2] || "" };
+    });
+    var labels = el.dataset.rowlabels ? el.dataset.rowlabels.split("|") : null;
+    var rows = labels ? labels.length : parseInt(el.dataset.rows, 10);
+    var planner = el.hasAttribute("data-planner");
+    var tintLast = el.hasAttribute("data-tintlast");
+    var last = cols.length - 1;
+
+    el.style.gridTemplateColumns = cols.map(function (c) { return c.width; }).join(" ");
+    el.style.gridTemplateRows = "auto repeat(" + rows + ", minmax(0, 1fr))" + (planner ? " minmax(0, 1.25fr)" : "");
+
+    var html = "";
+    cols.forEach(function (c, i) { html += '<div class="th' + (i === last ? " last" : "") + '">' + c.label + "</div>"; });
+    for (var r = 0; r < rows; r++) {
+      var tint = tintLast && r === rows - 1 ? " tint" : "";
+      cols.forEach(function (c, i) {
+        var cls = (i === last ? " last" : "") + tint;
+        if (i === 0 && labels) html += '<div class="rh' + cls + '">' + labels[r] + "</div>";
+        else if (c.type === "box") html += '<div class="ctr' + cls + '"><i class="box"></i></div>';
+        else if (c.type === "store") html += '<div class="opt' + cls + '">' + STORE + "</div>";
+        else html += '<div class="' + cls.trim() + '"></div>';
+      });
+    }
+    if (planner) {
+      html += '<div class="rh tint">Cook once,<br>eat twice</div>' +
+        '<div class="last tint" style="grid-column: span ' + last + '"><div class="cook">' +
+        '<div class="pair"><span class="fline">Cook</span><span class="fline">Eat again as</span></div>' +
+        '<div class="pair"><span class="fline">Cook</span><span class="fline">Eat again as</span></div>' +
+        "</div></div>";
+    }
+    el.innerHTML = html;
+  });
+
+  /* Recipe cards */
+  var CARD =
+    '<div class="card">' +
+      '<div class="name"><span class="eyebrow">Recipe</span><div class="ln"></div></div>' +
+      '<div class="meta"><span class="field">Serves</span><span class="field">Prep</span><span class="field">Cook</span></div>' +
+      '<h4>Ingredients</h4>' +
+      '<div class="ingr"><div class="lines" data-lines="6"></div><div class="lines" data-lines="6"></div></div>' +
+      '<h4>Method</h4>' +
+      '<div class="method"><div class="lines" data-lines="7"></div></div>' +
+      '<div class="foot-opts"><span><i class="box"></i>Freezes well</span><span><i class="box"></i>Good for lunches</span><span><i class="box"></i>Make again</span></div>' +
+    "</div>";
+  all("[data-cards]").forEach(function (el) {
+    el.innerHTML = new Array(parseInt(el.dataset.cards, 10) + 1).join(CARD);
+  });
+
+  /* Writing lines and checkbox lines */
+  all("[data-lines]").forEach(function (el) {
+    el.innerHTML = new Array(parseInt(el.dataset.lines, 10) + 1).join('<div class="ln"></div>');
+  });
+  all("[data-checks]").forEach(function (el) {
+    el.innerHTML = new Array(parseInt(el.dataset.checks, 10) + 1).join('<div class="ck"><span class="box"></span></div>');
+  });
+
+  /* Footers and page numbers */
+  var pages = all(".page");
+  pages.forEach(function (p, i) {
+    p.dataset.num = String(i + 1);
+    if (p.classList.contains("no-foot")) return;
+    var f = document.createElement("footer");
+    f.className = "foot";
+    f.innerHTML = "<span>The NourishWell Meal-Planning Workbook · " + (p.dataset.foot || "") + '</span><span class="num">' + (i + 1) + "</span>";
+    p.appendChild(f);
+  });
+
+  /* Contents page numbers */
+  all("[data-toc-for]").forEach(function (li) {
+    var target = document.getElementById(li.dataset.tocFor);
+    li.querySelector(".p").textContent = target ? target.dataset.num : "";
+  });
+
+  window.__workbookReady = true;
+})();
+</script>
+</body>
+</html>

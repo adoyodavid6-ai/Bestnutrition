@@ -1,0 +1,445 @@
+/*
+ * The NourishWell Meal-Planning Workbook — print stylesheet.
+ *
+ * The @font-face rules (absolute file:// URLs) and the @page size are injected
+ * by build-workbook.cjs for each output size, together with a class on <html>:
+ *   html.size-a4      -> 210mm x 297mm
+ *   html.size-letter  -> 8.5in x 11in
+ * Every .page is a fixed-size box, so each section always starts on a new
+ * sheet and nothing can split mid-row.
+ */
+
+:root {
+  --violet: #1f0e2f;   /* Midnight Violet: headings */
+  --parch: #f4efed;    /* Parchment: soft fills */
+  --ash: #aab2b0;      /* Ash: rules and writing lines */
+  --mauve: #725246;    /* Mauve Bark: accents and eyebrows */
+  --slate: #2c3e39;    /* Dark Slate: body text */
+  --white: #ffffff;
+  --leaf: #0a2610;     /* wordmark "Nourish" and logo mark only */
+
+  --rule: 0.6pt;
+  --pw: 210mm;
+  --ph: 297mm;
+  --pad-x: 16mm;
+  --pad-top: 15mm;
+  --pad-bottom: 12mm;
+}
+
+html.size-a4 { --pw: 210mm; --ph: 297mm; }
+html.size-letter { --pw: 8.5in; --ph: 11in; --pad-top: 13mm; --pad-bottom: 11mm; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--white);
+  color: var(--slate);
+  font-family: "Source Serif 4";
+  font-weight: 400;
+  font-size: 9.5pt;
+  line-height: 1.45;
+  font-variant-numeric: lining-nums;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  font-kerning: normal;
+}
+
+/* ---------- Page box ---------- */
+
+.page {
+  position: relative;
+  width: var(--pw);
+  /* 1px under the sheet height so Chromium never spills onto a blank sheet */
+  height: calc(var(--ph) - 1px);
+  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  break-after: page;
+  page-break-after: always;
+  break-inside: avoid;
+}
+.page:last-child { break-after: auto; page-break-after: auto; }
+
+.page > .body {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5mm;
+}
+
+.foot {
+  flex: 0 0 auto;
+  margin-top: 5mm;
+  padding-top: 2.2mm;
+  border-top: var(--rule) solid var(--ash);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 7.5pt;
+  color: var(--mauve);
+  letter-spacing: 0.02em;
+}
+.foot .num { font-weight: 600; color: var(--violet); }
+
+/* ---------- Type ---------- */
+
+.eyebrow {
+  font-size: 7.5pt;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mauve);
+}
+
+h1, h2, h3, h4 { color: var(--violet); font-weight: 700; line-height: 1.12; }
+h1 { font-size: 24pt; letter-spacing: -0.01em; }
+h2 { font-size: 13pt; font-weight: 600; }
+h3 { font-size: 10.5pt; font-weight: 600; }
+h4 { font-size: 8pt; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mauve); }
+
+p { max-width: 60em; }
+.lede { font-size: 10.5pt; line-height: 1.5; color: var(--slate); max-width: 46em; }
+.small { font-size: 8pt; line-height: 1.4; }
+.muted { color: var(--mauve); }
+strong, b { font-weight: 600; color: var(--violet); }
+
+/* Page header */
+.head {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8mm;
+  padding-bottom: 3.5mm;
+  border-bottom: var(--rule) solid var(--ash);
+}
+.head .titles { display: flex; flex-direction: column; gap: 1.6mm; }
+.head .fields { display: flex; gap: 5mm; padding-bottom: 1mm; }
+
+/* Fill-in field: "Label ________" */
+.field {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1.5mm;
+  font-size: 7.5pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  white-space: nowrap;
+}
+.field::after {
+  content: "";
+  display: inline-block;
+  width: var(--w, 28mm);
+  border-bottom: var(--rule) solid var(--ash);
+  transform: translateY(-0.6mm);
+}
+
+/* ---------- Writing lines & checkboxes ---------- */
+
+.lines { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+.lines .ln {
+  flex: 1 1 0;
+  min-height: 6mm;
+  border-bottom: var(--rule) solid var(--ash);
+}
+.lines.fixed { flex: 0 0 auto; }
+.lines.fixed .ln { flex: 0 0 auto; height: 7.5mm; }
+
+.box {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 3.1mm;
+  height: 3.1mm;
+  border: var(--rule) solid var(--slate);
+  border-radius: 0.5mm;
+  background: var(--white);
+}
+
+.checks { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+.checks .ck {
+  flex: 1 1 0;
+  min-height: 6mm;
+  display: flex;
+  align-items: flex-end;
+  gap: 2.2mm;
+  padding-bottom: 1.2mm;
+}
+.checks .ck::after {
+  content: "";
+  flex: 1 1 auto;
+  border-bottom: var(--rule) solid var(--ash);
+  transform: translateY(0.2mm);
+}
+.checks .ck .box { margin-bottom: 0.3mm; }
+
+/* labelled checklist (printed items) */
+.checklist { list-style: none; display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; row-gap: 2.6mm; }
+.checklist li { display: flex; gap: 2.4mm; align-items: flex-start; font-size: 9pt; line-height: 1.35; }
+.checklist li .box { margin-top: 0.7mm; }
+
+/* ---------- Panels ---------- */
+
+.panel {
+  border: var(--rule) solid var(--ash);
+  border-radius: 2mm;
+  padding: 4mm 4.5mm;
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+  min-height: 0;
+}
+.panel.soft { background: var(--parch); border-color: var(--parch); }
+.panel.grow { flex: 1 1 0; }
+.panel h3 + .lines, .panel h4 + .lines { margin-top: -1mm; }
+
+.note {
+  border-left: 1.4pt solid var(--mauve);
+  padding: 1.2mm 0 1.2mm 3.5mm;
+  font-size: 8.5pt;
+  line-height: 1.45;
+  color: var(--slate);
+}
+
+/* ---------- Grid "tables" ---------- */
+
+.grid {
+  display: grid;
+  flex: 1 1 0;
+  min-height: 0;
+  border-top: 1pt solid var(--violet);
+}
+.grid > div {
+  border-bottom: var(--rule) solid var(--ash);
+  border-right: var(--rule) solid var(--ash);
+  padding: 1.6mm 2.2mm;
+  min-height: 0;
+}
+.grid > div.last { border-right: none; }
+.grid > .th {
+  font-size: 7.5pt;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--violet);
+  padding-top: 2mm;
+  padding-bottom: 1.6mm;
+  border-bottom: var(--rule) solid var(--violet);
+  display: flex;
+  align-items: flex-end;
+}
+.grid > .rh {
+  font-weight: 600;
+  color: var(--violet);
+  font-size: 9pt;
+}
+.grid > .rh small {
+  display: block;
+  font-size: 7pt;
+  font-weight: 400;
+  color: var(--mauve);
+  letter-spacing: 0.02em;
+}
+.grid > .tint { background: var(--parch); }
+.grid > .ctr { display: flex; align-items: center; justify-content: center; }
+.grid .opt { display: flex; flex-direction: column; justify-content: center; gap: 1.6mm; font-size: 7.5pt; color: var(--slate); }
+.grid .opt span { display: flex; align-items: center; gap: 1.6mm; }
+
+.hint {
+  font-size: 7.5pt;
+  line-height: 1.35;
+  color: var(--mauve);
+}
+
+/* ---------- Logo ---------- */
+
+.logo { display: inline-flex; align-items: center; gap: 2.4mm; }
+.logo svg { width: 7.5mm; height: 7.5mm; display: block; }
+.logo .word { font-size: 14pt; letter-spacing: -0.005em; line-height: 1; }
+.logo .word .n { font-weight: 700; color: var(--leaf); }
+.logo .word .w { font-weight: 400; color: var(--violet); }
+.logo.lg svg { width: 11mm; height: 11mm; }
+.logo.lg .word { font-size: 21pt; }
+
+/* ---------- Cover ---------- */
+
+.cover { padding: 18mm 18mm 16mm; }
+.cover .top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 6mm; border-bottom: var(--rule) solid var(--ash); }
+.cover .top .eyebrow { letter-spacing: 0.2em; }
+.cover .hero { flex: 1 1 0; display: flex; flex-direction: column; justify-content: center; gap: 7mm; padding: 6mm 0; min-height: 0; }
+.cover .art {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 120mm;
+  background: var(--parch);
+  border-radius: 3mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8mm;
+}
+.cover .art svg { height: 100%; width: auto; max-width: 100%; display: block; }
+.cover h1 { font-size: 36pt; line-height: 1.06; letter-spacing: -0.015em; }
+.cover .sub { font-size: 15pt; color: var(--mauve); font-weight: 400; line-height: 1.3; }
+.cover .inside { font-size: 9.5pt; color: var(--slate); max-width: 130mm; }
+.cover .bottom { display: flex; justify-content: space-between; align-items: baseline; padding-top: 4mm; border-top: var(--rule) solid var(--ash); font-size: 8.5pt; color: var(--mauve); }
+.cover .bottom .tag { color: var(--violet); font-weight: 600; letter-spacing: 0.01em; }
+
+/* ---------- Contents ---------- */
+
+.toc { list-style: none; display: flex; flex-direction: column; }
+.toc li {
+  display: flex;
+  align-items: baseline;
+  gap: 3mm;
+  padding: 2.4mm 0;
+  border-bottom: var(--rule) solid var(--ash);
+  font-size: 10.5pt;
+}
+.toc li .t { color: var(--violet); font-weight: 600; }
+.toc li .d { color: var(--slate); font-size: 8.5pt; flex: 1 1 auto; }
+.toc li .p { font-weight: 600; color: var(--mauve); min-width: 10mm; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.toc li.sub { padding-left: 6mm; font-size: 9.5pt; padding-top: 1.6mm; padding-bottom: 1.6mm; }
+.toc li.sub .t { font-weight: 400; color: var(--slate); }
+
+/* ---------- How to use ---------- */
+
+.steps { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm 8mm; }
+.step { display: flex; gap: 4mm; align-items: flex-start; padding-top: 3mm; border-top: var(--rule) solid var(--ash); }
+.step .n { font-size: 22pt; font-weight: 700; color: var(--mauve); line-height: 1; min-width: 10mm; }
+.step h2 { margin-bottom: 1.2mm; }
+.step p { font-size: 9pt; }
+
+.tips { list-style: none; display: flex; flex-direction: column; gap: 2.2mm; }
+.tips li { display: flex; gap: 3mm; font-size: 9pt; line-height: 1.45; }
+.tips li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 1.6mm;
+  height: 1.6mm;
+  margin-top: 1.6mm;
+  border-radius: 50%;
+  background: var(--mauve);
+}
+
+/* ---------- Plate ---------- */
+
+.plate-wrap { display: grid; grid-template-columns: 82mm 1fr; gap: 8mm; align-items: center; }
+.plate-wrap svg { width: 100%; height: auto; display: block; }
+.parts { display: flex; flex-direction: column; gap: 3.2mm; }
+.part { padding-top: 2.4mm; border-top: var(--rule) solid var(--ash); }
+.part h3 { display: flex; align-items: baseline; gap: 2.4mm; margin-bottom: 0.8mm; }
+.part h3 .share { font-size: 7.5pt; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mauve); }
+.part p { font-size: 8.8pt; line-height: 1.42; }
+
+/* ---------- Recipe cards ---------- */
+
+.cards { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 5mm; }
+.card {
+  border: var(--rule) solid var(--ash);
+  border-radius: 2mm;
+  padding: 3.6mm 4mm;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8mm;
+  min-height: 0;
+}
+.card .name { display: flex; flex-direction: column; gap: 0.6mm; }
+.card .name .ln { height: 6.5mm; border-bottom: 0.9pt solid var(--violet); }
+.card .meta { display: flex; justify-content: space-between; gap: 2mm; }
+.card .meta .field { --w: 10mm; font-size: 6.5pt; }
+.card h4 { font-size: 6.8pt; margin-top: 0.6mm; }
+.card .lines .ln { min-height: 5mm; }
+.card .ingr { flex: 1.1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 4mm; }
+.card .ingr .lines { height: 100%; }
+.card .method { flex: 1.25 1 0; min-height: 0; display: flex; flex-direction: column; }
+.card .method .lines { counter-reset: step; }
+.card .method .ln { position: relative; padding-left: 4mm; }
+.card .method .ln::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  bottom: 0.6mm;
+  font-size: 6.5pt;
+  font-weight: 600;
+  color: var(--mauve);
+}
+.card .foot-opts { display: flex; gap: 4mm; font-size: 6.8pt; color: var(--slate); align-items: center; }
+.card .foot-opts span { display: inline-flex; align-items: center; gap: 1.4mm; }
+.card .foot-opts .box { width: 2.6mm; height: 2.6mm; }
+
+/* ---------- Closing page ---------- */
+
+.closing { justify-content: center; align-items: center; text-align: center; }
+.closing .frame {
+  flex: 1 1 0;
+  width: 100%;
+  border: var(--rule) solid var(--ash);
+  border-radius: 3mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 7mm;
+  padding: 20mm 18mm;
+}
+.closing .msg { font-size: 15pt; line-height: 1.4; color: var(--violet); max-width: 120mm; }
+.closing .tagline { font-size: 10pt; font-weight: 600; color: var(--mauve); letter-spacing: 0.04em; }
+.closing .rule { width: 24mm; border-top: var(--rule) solid var(--ash); }
+.closing .copy { font-size: 7.5pt; color: var(--slate); }
+
+/* utilities */
+.row { display: flex; gap: 6mm; min-height: 0; }
+.row > * { flex: 1 1 0; }
+.col { display: flex; flex-direction: column; gap: 3mm; min-height: 0; }
+.grow { flex: 1 1 0; min-height: 0; }
+.nogrow { flex: 0 0 auto; }
+
+/* full-width fill-in line inside a cell or panel */
+.fline {
+  display: flex;
+  align-items: flex-end;
+  gap: 2mm;
+  font-size: 7pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  white-space: nowrap;
+}
+.fline::after {
+  content: "";
+  flex: 1 1 auto;
+  border-bottom: var(--rule) solid var(--ash);
+  transform: translateY(-0.6mm);
+}
+.cook { display: grid; grid-template-columns: 1fr 1fr; column-gap: 6mm; align-content: space-evenly; height: 100%; }
+.cook .pair { display: flex; flex-direction: column; justify-content: space-evenly; gap: 2.6mm; }
+
+/* titles never wrap beside header fields */
+.head h1 { white-space: nowrap; }
+
+/* weekly rhythm strip (How to use) */
+.rhythm { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1pt solid var(--violet); }
+.rhythm > div { padding: 3mm 3mm 0 0; display: flex; flex-direction: column; gap: 1.2mm; border-right: var(--rule) solid var(--ash); padding-left: 3mm; }
+.rhythm > div:first-child { padding-left: 0; }
+.rhythm > div:last-child { border-right: none; }
+.rhythm b { font-size: 10.5pt; }
+.rhythm p { font-size: 8.5pt; line-height: 1.4; }
+
+/* roomier guide pages */
+#p-howto .step p { font-size: 9.5pt; }
+#p-howto .step h2 { font-size: 14pt; }
+#p-howto .steps { row-gap: 7mm; }
+#p-howto .tips li { font-size: 9.5pt; }
+#p-plate .plate-wrap { grid-template-columns: 96mm 1fr; gap: 7mm; }
+#p-plate .part p { font-size: 9.2pt; }
+#p-plate .parts { gap: 4mm; }
+.toc li { padding: 3mm 0; }
+#p-plate .body { justify-content: space-between; }
+.part h3 { flex-wrap: wrap; row-gap: 0; }
+.part h3 .share { white-space: nowrap; }

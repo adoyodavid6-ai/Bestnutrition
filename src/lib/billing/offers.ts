@@ -50,3 +50,16 @@ export function yearlySaving(month: Offer | null, year: Offer | null) {
   if (!month || !year || month.currency !== year.currency || month.amount <= 0) return 0;
   return Math.max(0, Math.round((1 - year.amount / (month.amount * 12)) * 100));
 }
+
+/** A one-time price (digital products), read from Stripe. */
+export async function oneTimeOffer(id: string | undefined, config: BillingConfig = billingConfig()): Promise<{ amount: number; currency: string; display: string } | null> {
+  if (!id || !config.secretKey) return null;
+  try {
+    const p = await getPrice(id, config);
+    if (!p.active || p.unit_amount == null || p.recurring) return null;
+    return { amount: p.unit_amount, currency: p.currency, display: formatMoney(p.unit_amount, p.currency) };
+  } catch (e) {
+    console.error("price lookup failed", id, e);
+    return null;
+  }
+}

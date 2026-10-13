@@ -1,3 +1,4 @@
+import type { Sponsor } from "@/lib/commerce/disclosure";
 import { recipes } from "./recipes";
 import { deriveRecipeMeta } from "@/lib/recipe-meta";
 import type { Recipe } from "@/lib/types";
@@ -8,6 +9,8 @@ export interface Collection {
   description: string;
   kind: "cultural" | "budget" | "seasonal" | "goal" | "time";
   filter: (r: Recipe) => boolean;
+  /** Set only for a signed, labelled sponsorship (see lib/commerce/disclosure.ts). */
+  sponsor?: Sponsor;
 }
 
 const meta = (r: Recipe) => deriveRecipeMeta(r);

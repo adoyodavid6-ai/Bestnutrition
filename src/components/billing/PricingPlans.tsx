@@ -7,6 +7,7 @@ import { track } from "@/lib/analytics";
 import type { Offer } from "@/lib/billing/offers";
 import { NewsletterForm } from "../forms/NewsletterForm";
 import { startCheckout, usePlan } from "./usePlan";
+import { experimentAssignments, useVariant } from "../marketing/useExperiment";
 
 export interface PricingPlansProps {
   sellable: boolean;
@@ -25,6 +26,13 @@ export function PricingPlans({ sellable, month, year, trialDays, saving, freeIte
   const [error, setError] = useState<string | null>(null);
   const { info } = usePlan();
   const offer = interval === "year" ? year : month;
+  const [touched, setTouched] = useState(false);
+  const defaultInterval = useVariant("pricing-default-interval");
+
+  useEffect(() => {
+    // Experiment: which billing period is shown first. The price itself never changes.
+    if (!touched && defaultInterval === "yearly-first" && year) setInterval("year");
+  }, [defaultInterval, touched, year]);
 
   useEffect(() => {
     track("pricing_view", { sellable: sellable ? "yes" : "no" });
@@ -34,7 +42,7 @@ export function PricingPlans({ sellable, month, year, trialDays, saving, freeIte
     setBusy(true);
     setError(null);
     track("checkout_started", { interval });
-    const err = await startCheckout({ product: "premium", interval, attribution: getAttribution() });
+    const err = await startCheckout({ product: "premium", interval, attribution: getAttribution(), experiments: experimentAssignments() });
     if (err) {
       setError(err);
       setBusy(false);
@@ -68,10 +76,24 @@ export function PricingPlans({ sellable, month, year, trialDays, saving, freeIte
           <>
             {month && year && (
               <div className="seg seg-dark" role="group" aria-label="Billing period" style={{ margin: "8px 0 4px" }}>
-                <button type="button" aria-pressed={interval === "month"} onClick={() => setInterval("month")}>
+                <button
+                  type="button"
+                  aria-pressed={interval === "month"}
+                  onClick={() => {
+                    setTouched(true);
+                    setInterval("month");
+                  }}
+                >
                   Monthly
                 </button>
-                <button type="button" aria-pressed={interval === "year"} onClick={() => setInterval("year")}>
+                <button
+                  type="button"
+                  aria-pressed={interval === "year"}
+                  onClick={() => {
+                    setTouched(true);
+                    setInterval("year");
+                  }}
+                >
                   Yearly{saving > 0 ? ` · save ${saving}%` : ""}
                 </button>
               </div>

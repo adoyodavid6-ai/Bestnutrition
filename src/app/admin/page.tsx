@@ -8,6 +8,7 @@ import { billingConfig, billingStatus } from "@/lib/billing/config";
 import { signListing } from "@/lib/billing/entitlement";
 import { featuredListingOffer, premiumOffers } from "@/lib/billing/offers";
 import { UtmBuilder } from "@/components/marketing/UtmBuilder";
+import { AdminNav } from "@/components/AdminNav";
 import { primaryNav } from "@/lib/site";
 import { formatDate } from "@/components/Editorial";
 import { WEBHOOK_ENV } from "@/lib/forms";
@@ -49,6 +50,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     <div className="container" style={{ padding: "32px var(--gutter) 64px" }}>
       <span className="eyebrow">Administration</span>
       <h1>Content &amp; operations dashboard</h1>
+      <AdminNav current="/admin" />
       <div className="callout callout-info" style={{ marginBottom: 24 }}>
         <p className="small">
           This dashboard reads content directly from the repository (<code>src/content</code>). Editing, approvals and moderation through the browser require the database layer described in{" "}

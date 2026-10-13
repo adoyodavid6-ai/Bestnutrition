@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { publishedBusinesses } from "@/content/directory";
+import { isFeatured, publishedBusinesses } from "@/content/directory";
+import { FeaturedExtras } from "@/components/FeaturedExtras";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 // Only prerendered slugs exist; unknown slugs return a real 404.
@@ -30,6 +31,7 @@ export default async function BusinessPage({ params }: { params: Promise<{ slug:
           <span className="eyebrow">{b.category}</span>
           <h1>{b.name}</h1>
           <p className="lede">{b.description}</p>
+          {isFeatured(b) && <FeaturedExtras listing={b} name={b.name} />}
         </header>
         <div className="two-col-list">
           <div className="card">

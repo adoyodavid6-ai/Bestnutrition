@@ -4,6 +4,7 @@ import { collections, collectionRecipes, getCollection } from "@/content/collect
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHead } from "@/components/Editorial";
 import { RecipeCard } from "@/components/RecipeCard";
+import { SponsorLabel } from "@/components/marketing/Disclosure";
 
 // Only prerendered slugs exist; unknown slugs return a real 404.
 export const dynamicParams = false;
@@ -27,7 +28,9 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
   return (
     <>
       <Breadcrumbs items={[{ href: "/discover", label: "Discover" }, { href: `/discover/${c.slug}`, label: c.title }]} />
-      <PageHead eyebrow={`${items.length} recipes`} title={c.title} lede={c.description} />
+      <PageHead eyebrow={`${items.length} recipes`} title={c.title} lede={c.description}>
+        {c.sponsor && <SponsorLabel sponsor={c.sponsor} />}
+      </PageHead>
       <div className="container" style={{ paddingBottom: 48 }}>
         <div className="grid grid-3">
           {items.map((r) => (

@@ -38,7 +38,12 @@ export default function TermsPage() {
         <strong>Featured listings.</strong> Featured listings are offered only to verified listings, renew monthly until cancelled, and revert to a basic listing at the end of the paid period. Payment never affects
         verification or editorial decisions, and we may end a featured listing that breaks our listing standards, refunding any unused period.
       </p>
-      <p>Payments are processed by Stripe. Premium is currently linked to the browser you subscribed in until accounts launch; contact us to move it to another device.</p>
+      <p id="digital-products">
+        <strong>Digital products.</strong> Printable resources are one-time purchases for personal use; please don&apos;t share or resell the files. Download links work for 7 days and are also emailed to you when
+        email delivery is set up. Because the download is available straight away, you&apos;ll be asked to confirm that you want immediate access and understand that this ends your right to cancel. If a file is
+        faulty, doesn&apos;t match its description or you bought it by mistake, contact us and we&apos;ll fix it, replace it or refund you.
+      </p>
+      <p>Payments are processed by Stripe. Premium is currently linked to the browser you subscribed in until accounts launch; to use it in another browser, request a sign-in link from Account → Billing, or contact us.</p>
       <h2>Intellectual property</h2>
       <p>Site content is owned by NourishWell or its licensors. You may print or share recipes for personal use with a link back to the original page.</p>
       <h2>Liability</h2>

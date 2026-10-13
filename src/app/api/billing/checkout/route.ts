@@ -6,10 +6,13 @@ import { attributionMetadata, cleanAttribution } from "@/lib/billing/attribution
 import { resolvePlan } from "@/lib/billing/server";
 import { StripeError, createCheckoutSession } from "@/lib/billing/stripe";
 import { clientIp, rateLimited } from "@/lib/rate-limit";
+import { cleanAssignments } from "@/lib/experiments";
+import { productBySlug, productPriceId, productSellable } from "@/lib/commerce/products";
 
 const body = z.discriminatedUnion("product", [
-  z.object({ product: z.literal("premium"), interval: z.enum(["month", "year"]), attribution: z.unknown().optional() }),
+  z.object({ product: z.literal("premium"), interval: z.enum(["month", "year"]), attribution: z.unknown().optional(), experiments: z.unknown().optional() }),
   z.object({ product: z.literal("listing-featured"), listing: z.string(), sig: z.string(), attribution: z.unknown().optional() }),
+  z.object({ product: z.literal("digital"), slug: z.string().max(80), immediateAccess: z.literal(true), attribution: z.unknown().optional() }),
 ]);
 
 const fail = (message: string, status: number) => NextResponse.json({ ok: false, message }, { status, headers: { "Cache-Control": "no-store" } });
@@ -21,7 +24,12 @@ export async function POST(req: NextRequest) {
   const input = parsed.data;
   const config = billingConfig();
   const origin = req.nextUrl.origin;
-  const metadata = { product: input.product, ...attributionMetadata(cleanAttribution(input.attribution)) };
+  const experiments = "experiments" in input ? cleanAssignments(input.experiments) : {};
+  const metadata = {
+    product: input.product,
+    ...attributionMetadata(cleanAttribution(input.attribution)),
+    ...Object.fromEntries(Object.entries(experiments).map(([k, v]) => [`exp_${k}`, v])),
+  };
 
   try {
     if (input.product === "premium") {
@@ -42,6 +50,26 @@ export async function POST(req: NextRequest) {
           ...(process.env.STRIPE_AUTOMATIC_TAX === "true" ? { automatic_tax: { enabled: true } } : {}),
           subscription_data: { metadata, ...(config.trialDays ? { trial_period_days: config.trialDays } : {}) },
           metadata,
+        },
+        config,
+      );
+      return NextResponse.json({ ok: true, url: session.url }, { headers: { "Cache-Control": "no-store" } });
+    }
+
+    if (input.product === "digital") {
+      const p = productBySlug(input.slug);
+      if (!p || !productSellable(p, config)) return fail("This product isn't on sale yet, so no payment was taken.", 503);
+      const productMeta = { ...metadata, product: "digital-product", product_slug: p.slug, immediate_access_consent: "yes" };
+      const session = await createCheckoutSession(
+        {
+          mode: "payment",
+          line_items: [{ price: productPriceId(p), quantity: 1 }],
+          success_url: `${origin}/api/products/confirm?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${origin}/resources/${p.slug}?checkout=cancelled`,
+          allow_promotion_codes: true,
+          invoice_creation: { enabled: true, invoice_data: { metadata: productMeta } },
+          ...(process.env.STRIPE_AUTOMATIC_TAX === "true" ? { automatic_tax: { enabled: true } } : {}),
+          metadata: productMeta,
         },
         config,
       );

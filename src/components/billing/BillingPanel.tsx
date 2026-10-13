@@ -6,16 +6,58 @@ import { track } from "@/lib/analytics";
 import { toast } from "../Toaster";
 import { usePlan } from "./usePlan";
 
+function RestoreForm() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<{ status: "idle" | "busy" | "done" | "error"; message?: string }>({ status: "idle" });
+  return (
+    <form
+      className="row"
+      style={{ alignItems: "flex-end" }}
+      onSubmit={async (e) => {
+        e.preventDefault();
+        setState({ status: "busy" });
+        const res = await fetch("/api/billing/restore", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) }).catch(() => null);
+        const json = res ? await res.json().catch(() => ({})) : {};
+        setState({ status: res?.ok ? "done" : "error", message: json.message ?? "We couldn't reach the server. Please try again." });
+      }}
+    >
+      <div className="field" style={{ margin: 0, flex: "1 1 240px" }}>
+        <label htmlFor="restore-email">Email used at checkout</label>
+        <input id="restore-email" type="email" required autoComplete="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+      </div>
+      <button type="submit" className="btn btn-secondary" disabled={state.status === "busy"}>
+        {state.status === "busy" ? "Sending…" : "Email me a sign-in link"}
+      </button>
+      {state.message && (
+        <p role="status" className="small" style={{ flexBasis: "100%", margin: "8px 0 0", color: state.status === "error" ? "var(--warning)" : undefined }}>
+          {state.message}
+        </p>
+      )}
+    </form>
+  );
+}
+
 export function BillingPanel() {
   const { info, loading, refresh } = usePlan();
   const [busy, setBusy] = useState(false);
   const [welcome, setWelcome] = useState<{ trial: boolean } | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     if (q.get("status") === "success") {
       setWelcome({ trial: q.get("trial") === "1" });
       track("subscription_started", { trial: q.get("trial") === "1" ? "yes" : "no" });
+      window.history.replaceState(null, "", "/account/billing");
+    }
+    const notices: Record<string, string> = {
+      restored: "Premium is now on in this browser.",
+      "restore-expired": "That sign-in link has expired or isn't valid. Request a new one below.",
+      "restore-failed": "We couldn't find an active Premium subscription for that link. If you think this is wrong, contact us.",
+    };
+    const st = q.get("status");
+    if (st && notices[st]) {
+      setNotice(notices[st]);
       window.history.replaceState(null, "", "/account/billing");
     }
   }, []);
@@ -50,6 +92,11 @@ export function BillingPanel() {
         </div>
       )}
 
+      {notice && (
+        <p className="callout callout-info" role="status">
+          {notice}
+        </p>
+      )}
       {info.pastDue && (
         <div className="callout callout-warning" role="alert">
           <span className="callout-title">Your last payment didn&apos;t go through</span>
@@ -93,10 +140,11 @@ export function BillingPanel() {
         <h2 id="devices-h" style={{ fontSize: "var(--fs-lg)" }}>
           Using Premium on another device
         </h2>
-        <p className="small" style={{ marginBottom: 0 }}>
-          Until accounts launch, Premium is linked to the browser you subscribed in. If you&apos;ve switched devices or cleared your browser, <Link href="/contact?topic=general">contact us</Link> with the email you used at checkout
-          and we&apos;ll restore it. You can always cancel or download receipts from the link in any Stripe receipt email.
+        <p className="small">
+          Until accounts launch, Premium is turned on per browser. To use it here, enter the email you used at checkout and we&apos;ll send a sign-in link. You can always cancel or download receipts from the
+          link in any Stripe receipt email.
         </p>
+        <RestoreForm />
       </section>
     </div>
   );

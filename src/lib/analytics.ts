@@ -23,6 +23,13 @@ export type ProductEvent =
   | "lead_magnet_view"
   | "upgrade_prompt_click"
   | "premium_export"
+  | "upgrade_prompt_view"
+  | "experiment_exposure"
+  | "restore_requested"
+  | "affiliate_click"
+  | "product_view"
+  | "product_purchased"
+  | "listing_application"
   | "share";
 
 declare global {

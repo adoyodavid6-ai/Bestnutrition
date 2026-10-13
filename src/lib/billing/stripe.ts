@@ -68,6 +68,10 @@ export interface StripePrice {
 export interface StripeSubscription {
   id: string;
   customer: string;
+  metadata?: Record<string, string>;
+  created?: number;
+  canceled_at?: number | null;
+  ended_at?: number | null;
   status: "active" | "trialing" | "past_due" | "canceled" | "unpaid" | "incomplete" | "incomplete_expired" | "paused";
   cancel_at_period_end: boolean;
   current_period_end?: number;
@@ -84,6 +88,9 @@ export interface StripeCheckoutSession {
   customer: string | null;
   subscription: string | null;
   metadata?: Record<string, string>;
+  amount_total?: number | null;
+  currency?: string | null;
+  customer_details?: { email?: string | null } | null;
 }
 
 /** Prices change rarely; cache them for an hour so the pricing page stays fast. */
@@ -101,6 +108,32 @@ export function getCheckoutSession(id: string, config?: BillingConfig) {
 
 export function getSubscription(id: string, config?: BillingConfig) {
   return call<StripeSubscription>("GET", `subscriptions/${encodeURIComponent(id)}`, undefined, { config });
+}
+
+export interface StripeList<T> {
+  data: T[];
+  has_more: boolean;
+}
+
+export function listCustomersByEmail(email: string, config?: BillingConfig) {
+  return call<StripeList<{ id: string; email: string | null }>>("GET", "customers", { email, limit: 10 }, { config });
+}
+
+export function listSubscriptions(params: Params, config?: BillingConfig) {
+  return call<StripeList<StripeSubscription & { metadata?: Record<string, string> }>>("GET", "subscriptions", params, { config });
+}
+
+/** Generic paginated list for the revenue dashboard (stops at `max` objects). */
+export async function listAll<T extends { id: string }>(path: string, params: Params, max = 1000, config?: BillingConfig): Promise<{ data: T[]; truncated: boolean }> {
+  const out: T[] = [];
+  let starting_after: string | undefined;
+  for (;;) {
+    const page = await call<StripeList<T>>("GET", path, { ...params, limit: 100, starting_after }, { config });
+    out.push(...page.data);
+    if (!page.has_more || page.data.length === 0) return { data: out, truncated: false };
+    if (out.length >= max) return { data: out.slice(0, max), truncated: true };
+    starting_after = page.data[page.data.length - 1].id;
+  }
 }
 
 export function createPortalSession(customer: string, returnUrl: string, config?: BillingConfig) {

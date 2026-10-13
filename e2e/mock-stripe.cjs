@@ -16,8 +16,20 @@ const prices = {
   price_premium_month: { id: "price_premium_month", active: true, currency: "usd", unit_amount: 499, recurring: { interval: "month", interval_count: 1 }, currency_options: { usd: { unit_amount: 499 }, gbp: { unit_amount: 399 } } },
   price_premium_year: { id: "price_premium_year", active: true, currency: "usd", unit_amount: 3999, recurring: { interval: "year", interval_count: 1 } },
   price_listing_month: { id: "price_listing_month", active: true, currency: "usd", unit_amount: 2900, recurring: { interval: "month", interval_count: 1 } },
+  price_workbook: { id: "price_workbook", active: true, currency: "usd", unit_amount: 900, recurring: null },
 };
-const state = { sessions: {}, subscription: "active", cancelAtPeriodEnd: false, events: [], portalSessions: 0 };
+const state = { sessions: {}, subscription: "active", cancelAtPeriodEnd: false, events: [], portalSessions: 0, emails: [] };
+const now = () => Math.floor(Date.now() / 1000);
+const list = (data) => ({ object: "list", data, has_more: false });
+const subscriptionObj = () => ({
+  id: "sub_test_1",
+  customer: "cus_test_1",
+  status: state.subscription,
+  created: now() - 5 * 86400,
+  cancel_at_period_end: state.cancelAtPeriodEnd,
+  metadata: { product: "premium" },
+  items: { data: [{ quantity: 1, current_period_end: now() + 30 * 86400, price: prices.price_premium_month }] },
+});
 let n = 0;
 
 const send = (res, code, body) => {
@@ -51,6 +63,10 @@ http
         success_url: p.get("success_url"),
         cancel_url: p.get("cancel_url"),
         trial: p.get("subscription_data[trial_period_days]"),
+        created: now(),
+        amount_total: prices[p.get("line_items[0][price]")]?.unit_amount ?? null,
+        currency: "usd",
+        invoice: p.get("invoice_creation[enabled]"),
         promo: p.get("allow_promotion_codes"),
         metadata: Object.fromEntries([...p.entries()].filter(([k]) => k.startsWith("metadata[")).map(([k, v]) => [k.slice(9, -1), v])),
       };
@@ -68,12 +84,42 @@ http
     if ((m = url.pathname.match(/^\/v1\/checkout\/sessions\/(.+)$/))) {
       const s = state.sessions[m[1]];
       if (!s) return send(res, 404, { error: { message: "No such session" } });
-      return send(res, 200, { id: s.id, status: s.status, payment_status: "paid", mode: s.mode, customer: "cus_test_1", subscription: "sub_test_1", metadata: s.metadata });
+      return send(res, 200, { id: s.id, status: s.status, payment_status: "paid", mode: s.mode, customer: "cus_test_1", subscription: s.mode === "subscription" ? "sub_test_1" : null, metadata: s.metadata, amount_total: s.amount_total, currency: s.currency, customer_details: { email: "buyer@example.com" } });
     }
-    if (url.pathname === "/v1/subscriptions/sub_test_1") {
-      const end = Math.floor(Date.now() / 1000) + 30 * 86400;
-      return send(res, 200, { id: "sub_test_1", customer: "cus_test_1", status: state.subscription, cancel_at_period_end: state.cancelAtPeriodEnd, items: { data: [{ current_period_end: end, price: { id: "price_premium_month" } }] } });
+    if (url.pathname === "/v1/checkout/sessions" && req.method === "GET") {
+      return send(res, 200, list(Object.values(state.sessions).reverse().map((s) => ({ id: s.id, status: s.status, mode: s.mode, created: s.created, amount_total: s.amount_total, currency: s.currency, metadata: s.metadata }))));
     }
+    if (url.pathname === "/v1/customers") {
+      return send(res, 200, list(url.searchParams.get("email") === "buyer@example.com" ? [{ id: "cus_test_1", email: "buyer@example.com" }] : []));
+    }
+    if (url.pathname === "/v1/subscriptions" && req.method === "GET") {
+      const listing = { id: "sub_listing_1", customer: "cus_biz_1", status: "active", created: now() - 40 * 86400, cancel_at_period_end: false, metadata: { product: "listing-featured" }, items: { data: [{ quantity: 1, price: prices.price_listing_month }] } };
+      const cust = url.searchParams.get("customer");
+      const all = [subscriptionObj(), listing];
+      return send(res, 200, list(cust ? all.filter((x) => x.customer === cust) : all));
+    }
+    if (url.pathname === "/v1/balance_transactions") {
+      return send(res, 200, list([
+        { id: "txn_1", type: "charge", amount: 499, fee: 45, net: 454, currency: "usd", created: now() - 86400 },
+        { id: "txn_2", type: "charge", amount: 2900, fee: 114, net: 2786, currency: "usd", created: now() - 86400 },
+        { id: "txn_3", type: "refund", amount: -499, fee: 0, net: -499, currency: "usd", created: now() - 3600 },
+        { id: "txn_4", type: "payout", amount: -2000, fee: 0, net: -2000, currency: "usd", created: now() - 60 },
+      ]));
+    }
+    if (url.pathname === "/v1/invoices") {
+      return send(res, 200, list([
+        { id: "in_1", status: "paid", currency: "usd", amount_paid: 499, customer: "cus_test_1", created: now() - 86400, tax: 0, customer_address: { country: "US" }, lines: { data: [{ price: { id: "price_premium_month" } }] } },
+        { id: "in_2", status: "paid", currency: "usd", amount_paid: 2900, customer: "cus_biz_1", created: now() - 86400, tax: 0, customer_address: { country: "GB" }, lines: { data: [{ price: { id: "price_listing_month" } }] } },
+      ]));
+    }
+    if (url.pathname === "/v1/subscriptions/sub_test_1") return send(res, 200, subscriptionObj());
+    // Mock Resend email API (RESEND_API_BASE=http://localhost:4242).
+    if (url.pathname === "/emails" && req.method === "POST") {
+      if (!auth.startsWith("Bearer re_test_")) return send(res, 401, { message: "bad key" });
+      state.emails.push(JSON.parse(body));
+      return send(res, 200, { id: `email_${state.emails.length}` });
+    }
+    if (url.pathname === "/__emails") return send(res, 200, state.emails);
     if (url.pathname === "/v1/billing_portal/sessions" && req.method === "POST") {
       state.portalSessions++;
       return send(res, 200, { url: `${BASE}/__portal?customer=${new URLSearchParams(body).get("customer")}` });

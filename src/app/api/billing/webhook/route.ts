@@ -4,6 +4,19 @@ import { verifyWebhookSignature } from "@/lib/billing/stripe";
 
 const HANDLED = new Set(["checkout.session.completed", "customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted", "invoice.paid", "invoice.payment_failed"]);
 
+/**
+ * Duplicate-event protection. Stripe may deliver the same event more than once; each event id is
+ * processed once per server instance, and the id is forwarded as an Idempotency-Key so the
+ * receiving system can de-duplicate across instances too. Entitlements never depend on these
+ * events (they're re-checked against Stripe), so a duplicate can't grant or remove access.
+ */
+const processed = new Map<string, number>();
+const SEEN_TTL_MS = 3 * 24 * 3600 * 1000;
+function alreadyProcessed(id: string, now = Date.now()) {
+  for (const [k, t] of processed) if (now - t > SEEN_TTL_MS) processed.delete(k);
+  return processed.has(id);
+}
+
 type StripeEvent = { id: string; type: string; created: number; livemode: boolean; data: { object: Record<string, unknown> } };
 
 /**
@@ -24,7 +37,12 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ ok: false, message: "Invalid payload" }, { status: 400 });
   }
-  if (!HANDLED.has(event.type) || !config.eventsWebhook) return NextResponse.json({ received: true });
+  if (typeof event.id !== "string" || !event.data?.object) return NextResponse.json({ ok: false, message: "Invalid event" }, { status: 400 });
+  if (alreadyProcessed(event.id)) return NextResponse.json({ received: true, duplicate: true });
+  if (!HANDLED.has(event.type) || !config.eventsWebhook) {
+    processed.set(event.id, Date.now());
+    return NextResponse.json({ received: true });
+  }
 
   const o = event.data.object;
   const pick = (k: string) => (typeof o[k] === "string" || typeof o[k] === "number" || typeof o[k] === "boolean" ? o[k] : undefined);
@@ -48,8 +66,9 @@ export async function POST(req: NextRequest) {
     },
   };
   try {
-    const res = await fetch(config.eventsWebhook, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ type: "billing", data: summary }), signal: AbortSignal.timeout(8000) });
+    const res = await fetch(config.eventsWebhook, { method: "POST", headers: { "content-type": "application/json", "idempotency-key": event.id }, body: JSON.stringify({ type: "billing", data: summary }), signal: AbortSignal.timeout(8000) });
     if (!res.ok) throw new Error(`forward responded ${res.status}`);
+    processed.set(event.id, Date.now());
   } catch (e) {
     // Ask Stripe to retry later rather than silently losing the notification.
     console.error("billing event forward failed", e);

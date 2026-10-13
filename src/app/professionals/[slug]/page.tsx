@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { publishedProfessionals } from "@/content/directory";
+import { isFeatured, publishedProfessionals } from "@/content/directory";
+import { FeaturedExtras } from "@/components/FeaturedExtras";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { formatDate } from "@/components/Editorial";
 
@@ -40,6 +41,7 @@ export default async function ProfessionalPage({ params }: { params: Promise<{ s
                 <li key={s}>{s}</li>
               ))}
             </ul>
+            {isFeatured(p) && <FeaturedExtras listing={p} name={p.name} />}
             <h2>Languages</h2>
             <p>{p.languages.join(", ")}</p>
             <h2>Locations</h2>

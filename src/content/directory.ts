@@ -7,10 +7,19 @@
  * (tables `professionals`, `businesses`, `listings` in supabase/schema.sql).
  */
 
+import { orderListings } from "@/lib/commerce/listings";
+
 export type VerificationStatus = "unverified" | "pending" | "verified" | "suspended";
+/** "premium" is the paid Featured package (see lib/commerce/listings.ts); the name matches the database enum. */
 export type ListingTier = "basic" | "premium";
 
-export interface Professional {
+/** Extras shown only on Featured (tier "premium") listings. */
+export interface FeaturedExtras {
+  gallery?: { src: string; alt: string }[];
+  extendedDescription?: string;
+}
+
+export interface Professional extends FeaturedExtras {
   slug: string;
   name: string;
   profession: string; // e.g. "Registered Dietitian"
@@ -28,7 +37,7 @@ export interface Professional {
   promoted: boolean;
 }
 
-export interface Business {
+export interface Business extends FeaturedExtras {
   slug: string;
   name: string;
   category: "Healthy meal provider" | "Gym or studio" | "Clinic" | "Wellness brand" | "Grocery" | "Other";
@@ -48,5 +57,9 @@ export interface Business {
 export const professionals: Professional[] = [];
 export const businesses: Business[] = [];
 
-export const publishedProfessionals = () => professionals.filter((p) => p.verification === "verified");
-export const publishedBusinesses = () => businesses.filter((b) => b.verification === "verified");
+/** Verified listings only; paid (promoted) listings first, always labelled by the page. */
+export const publishedProfessionals = () => orderListings(professionals.filter((p) => p.verification === "verified"));
+export const publishedBusinesses = () => orderListings(businesses.filter((b) => b.verification === "verified"));
+
+/** Featured extras render only for paid, verified listings. */
+export const isFeatured = (l: { tier: ListingTier; verification: VerificationStatus }) => l.tier === "premium" && l.verification === "verified";

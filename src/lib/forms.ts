@@ -23,7 +23,7 @@ export const formSchemas = {
   contact: z.object({
     name: z.string().trim().min(1, "Enter your name").max(120),
     email,
-    topic: z.enum(["general", "correction", "privacy", "partnership", "accessibility", "other"]),
+    topic: z.enum(["general", "correction", "privacy", "partnership", "workplace", "accessibility", "other"]),
     message: z.string().trim().min(10, "Tell us a little more (at least 10 characters)").max(5000),
     consent,
     attribution,

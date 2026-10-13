@@ -6,10 +6,17 @@ import { track } from "@/lib/analytics";
 import { Icon } from "../Icon";
 import { toast } from "../Toaster";
 import { usePlan } from "./usePlan";
+import { useEffect } from "react";
+import { useVariant } from "../marketing/useExperiment";
 
 /** A contextual Premium prompt. It names the feature and links to honest pricing. */
 export function UpgradePrompt({ feature, onClose }: { feature: string; onClose?: () => void }) {
   const { info } = usePlan();
+  const copy = useVariant("upgrade-prompt-copy");
+  useEffect(() => {
+    if (copy) track("upgrade_prompt_view", { feature, variant: copy });
+  }, [copy, feature]);
+  const label = !info.sellable ? "Join the waitlist" : copy === "name-the-benefit" ? "Unlock exports and 50 saved plans" : "See Premium";
   return (
     <div className="upsell" role="status">
       <Icon name="leaf" size={20} />
@@ -19,8 +26,8 @@ export function UpgradePrompt({ feature, onClose }: { feature: string; onClose?:
           {info.sellable ? "Premium also keeps up to 50 saved weekly plans." : "Premium isn't open yet — join the waitlist to hear when it launches."}
         </p>
         <div className="row" style={{ marginTop: 8 }}>
-          <Link href="/pricing" className="btn btn-primary btn-sm" onClick={() => track("upgrade_prompt_click", { feature })}>
-            {info.sellable ? "See Premium" : "Join the waitlist"}
+          <Link href="/pricing" className="btn btn-primary btn-sm" onClick={() => track("upgrade_prompt_click", { feature, variant: copy ?? "see-premium" })}>
+            {label}
           </Link>
           {onClose && (
             <button type="button" className="btn btn-ghost btn-sm" onClick={onClose}>

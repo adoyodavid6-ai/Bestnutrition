@@ -8,8 +8,8 @@ These tests were run on 12 October 2026 against a production build (`next build 
 | --- | --- |
 | `npm run typecheck` (TypeScript strict) | ✅ No errors |
 | `npm run lint` (next/core-web-vitals + TypeScript rules) | ✅ No warnings or errors |
-| `npm test`: 80 unit tests | ✅ 80/80 passed |
-| `npm run build` | ✅ 217 pages and images prerendered, no warnings |
+| `npm test`: 96 unit tests | ✅ 96/96 passed |
+| `npm run build` | ✅ 221 pages and images prerendered, no warnings |
 
 Unit tests cover:
 
@@ -91,6 +91,35 @@ A scripted Chromium run passed all 26 checks:
 **Regression:** `npm run e2e` passed 36/36. The crawl covered 154 pages with no problems and no console errors. The shopping calendar suite passed 26/26.
 
 **Not tested:** real Stripe test mode and live mode. That needs the owner's keys, using the plan in `docs/MONETIZATION.md` section 10.
+
+## Revenue architecture (13 October 2026, second pass)
+
+**With Stripe and Resend configured.** These tests used `npm run e2e:billing` against `e2e/mock-stripe.cjs`, which now also mocks Stripe's list endpoints and Resend. All **59 checks passed**: the 36 earlier checks, plus the new ones below.
+
+- **Checkout:** carries experiment variants (`exp_*` metadata).
+- **Webhooks:** a duplicate webhook delivery is not processed or forwarded twice.
+- **Restore by email:**
+  - An unknown email gets the same reply and no email is sent.
+  - The subscriber's email receives a link, and the link turns on Premium in a second browser.
+  - A tampered link is refused.
+- **Workbook purchase:**
+  - The price is read from Stripe and sample pages are shown.
+  - Immediate-access consent is required.
+  - One-time checkout runs with invoice creation, and the download page appears after verified payment.
+  - The real 421 KB A4 PDF is delivered.
+  - A tampered token gets 403, product files aren't publicly reachable, and the download link is emailed.
+- **`/admin/revenue`:**
+  - Gross $33.99, refunds $4.99, fees $1.59 and net $27.41 match the mock's balance transactions; the payout is excluded.
+  - MRR: Premium $4.99, Featured $29.
+  - Revenue by product, market and source is correct.
+  - Experiments show "Not enough data yet".
+- **`/admin/monetization`:** renders, the matrix CSV downloads, and the CSV needs the admin login (401 without).
+
+**Without configuration.** Restore, product checkout, Premium checkout and the webhook all return honest 503s. Downloads are refused without a token. The product shows "Coming soon", and listing packages promise only implemented benefits; Business Plus is marked "In development".
+
+**Regression:** `npm run e2e` passed 36/36. The crawl covered 157 pages with no problems or console errors. The shopping calendar passed 26/26. The new pages are serif-only with no overflow at 375px.
+
+**Not tested:** real Stripe, real Resend, and the real Plausible Stats API.
 
 ## Server and API checks (manual, with curl)
 

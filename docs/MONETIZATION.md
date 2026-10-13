@@ -166,17 +166,21 @@ Set these in your host (for example Vercel → Project → Settings → Environm
 | `ENTITLEMENT_SECRET` | Yes | At least 32 random characters | Signs the `nw_ent` cookie and listing payment links. Values shorter than 32 characters are ignored and Premium stays "Coming soon". Generate with a password manager or `openssl rand -base64 48` |
 | `BILLING_EVENTS_WEBHOOK_URL` | No | HTTPS URL | Receives a summary of each verified Stripe event |
 | `STRIPE_AUTOMATIC_TAX` | No | `true` | Only after Stripe Tax is configured (section 6) |
+| `STRIPE_PRICE_PRODUCT_WORKBOOK` | For the workbook | `price_…` | A **one-time** Price (not recurring). The product shows "Coming soon" until set |
+| `RESEND_API_KEY`, `EMAIL_FROM` | For restore and download emails | Resend API key; `NourishWell <hello@yourdomain>` from a verified domain | Without them, restore by email says "contact us" and download links aren't emailed |
+| `PLAUSIBLE_API_KEY` | No | Plausible Stats API key | Adds traffic and landing-page conversion to `/admin/revenue` |
+| `RESEND_API_BASE` | No (testing only) | URL | Defaults to `https://api.resend.com` |
 | `STRIPE_API_BASE` | No (testing only) | URL | Defaults to `https://api.stripe.com`. Used to point tests at a mock server. Never set in production |
 
 Premium becomes sellable when `STRIPE_SECRET_KEY`, `ENTITLEMENT_SECRET` and at least one Premium Price ID are set and the Price can be read from Stripe. Featured listings become sellable when `STRIPE_SECRET_KEY`, `ENTITLEMENT_SECRET` and `STRIPE_PRICE_LISTING_FEATURED` are set.
 
-**Rotating `ENTITLEMENT_SECRET`** removes Premium from every device (subscribers must restore through support) and invalidates every listing payment link you have sent. Only rotate it if it may have leaked.
+**Rotating `ENTITLEMENT_SECRET`** removes Premium from every device (subscribers restore with "Email me a sign-in link" in Account → Billing) and invalidates every listing payment link you have sent. Only rotate it if it may have leaked.
 
 ---
 
 ## 8. How Premium entitlements work
 
-Until accounts launch, Premium is tied to the browser where the customer subscribed.
+Until accounts launch, Premium is tied to the browser where the customer subscribed. To add another browser, the subscriber enters their checkout email in Account → Billing; if Stripe has an active Premium subscription for that email, a 30-minute signed link is emailed (the response is identical either way, so it can't reveal who subscribes).
 
 1. The customer pays in Stripe Checkout.
 2. Stripe redirects to `/api/billing/confirm?session_id=…`. The site retrieves that Checkout Session from Stripe (it never trusts the URL alone), checks it is complete and for Premium, and reads the subscription.

@@ -24,9 +24,9 @@ Quality checks:
 ```bash
 npm run typecheck    # TypeScript
 npm run lint         # ESLint (next/core-web-vitals)
-npm test             # 80 unit tests (nutrition, scaling, planner, shopping, shopping calendar, billing, exports, attribution, content integrity, forms, search)
+npm test             # 96 unit tests (nutrition, planner, shopping, calendar, billing, revenue reporting, experiments, disclosure rules, content integrity, forms, search)
 npm run e2e          # browser tests against a running server (BASE_URL=http://localhost:3000)
-npm run e2e:billing  # payment & marketing flows against the mock Stripe API (see e2e/billing.cjs)
+npm run e2e:billing  # 59 payment, restore, product, dashboard & marketing checks against the mock Stripe/Resend API
 ```
 
 ## What's included
@@ -45,6 +45,9 @@ npm run e2e:billing  # payment & marketing flows against the mock Stripe API (se
 | Search (recipes, guides, regional ingredient names) | ✅ Working |
 | Premium subscriptions: live Stripe prices (monthly/yearly, trial, promo codes, other currencies), Checkout, signed server-side entitlement, Customer Portal (cancel, receipts), webhook, past-due warning; Premium sells only features that exist today (more saved plans, CSV/calendar exports) | ✅ Built and tested against a mock Stripe API; **live once Stripe env vars are set** — until then “Coming soon” + waitlist |
 | Featured listings: verify → signed payment link from `/admin` → Stripe Checkout; “Promoted” labels | ✅ Built; live once `STRIPE_PRICE_LISTING_FEATURED` is set |
+| Revenue system: `/admin/revenue` (gross, refunds, fees, net, tax, MRR, churn, ARPPU, by product/market/source, checkout funnel, experiment results — all from Stripe), `/admin/monetization` (streams, feature-to-revenue matrix + CSV), Premium restore by email, webhook de-duplication | ✅ Built and tested against mocks; needs Stripe + Resend keys |
+| Digital products: `/resources` store, original 28-page Meal-Planning Workbook (A4 + Letter), one-time Checkout with immediate-access consent, signed 7-day downloads from a private folder | ✅ Built; on sale once `STRIPE_PRICE_PRODUCT_WORKBOOK` is set |
+| Listing packages (Basic / Featured / Business Plus planned), sponsor & affiliate disclosure components with content tests, `/for-organisations`, price/CTA experiments | ✅ Built (boundaries; no partners yet) |
 | Marketing: free 7-day meal plan lead magnet (`/free-meal-plan`), newsletter CTAs with source tags, first-party UTM attribution on sign-ups and checkouts, consent-gated Plausible analytics, Open Graph share images, `/advertise`, `/how-we-make-money`, admin UTM link builder | ✅ Working; analytics needs `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` |
 | Professional & business directory, listing application form | ✅ Working; directory is **empty until verification**, by design |
 | Newsletter, contact and listing forms | ✅ Validated; **delivery requires a webhook URL** (honest message otherwise) |
@@ -81,6 +84,7 @@ e2e/              Playwright browser tests
 ## Documentation
 
 - [Master build prompt v3](docs/PROMPT_v3.md) — the improved specification for future AI-assisted work
+- [Revenue architecture (feature-to-revenue matrix, free vs Premium, event spec, roadmap, limitations)](docs/REVENUE_ARCHITECTURE.md)
 - [Monetization setup (Stripe, pricing research)](docs/MONETIZATION.md)
 - [Marketing playbook](docs/MARKETING.md)
 - [Architecture](docs/ARCHITECTURE.md)

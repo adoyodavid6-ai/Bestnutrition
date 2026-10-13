@@ -7,6 +7,8 @@
  *   STRIPE_PRICE_LISTING_FEATURED=price_listing_month PREMIUM_TRIAL_DAYS=14 \
  *   ENTITLEMENT_SECRET=<32+ chars> STRIPE_WEBHOOK_SECRET=whsec_mock \
  *   BILLING_EVENTS_WEBHOOK_URL=http://localhost:4242/__events NEWSLETTER_WEBHOOK_URL=http://localhost:4242/__events \
+ *   STRIPE_PRICE_PRODUCT_WORKBOOK=price_workbook RESEND_API_BASE=http://localhost:4242 \
+ *   RESEND_API_KEY=re_test_mock EMAIL_FROM="NourishWell <hello@example.com>" \
  *   ADMIN_USERNAME=admin ADMIN_PASSWORD=<pw> npm run build && npm start
  *   (same env) node e2e/billing.cjs
  */
@@ -74,6 +76,7 @@ const mock = (path, body) => fetch(`${MOCK}${path}`, body ? { method: "POST", he
   const s = sessions[sessions.length - 1];
   ok(s.price === "price_premium_month" && s.trial === "14" && s.promo === "true", "checkout session: price, trial, promo codes");
   ok(s.metadata.product === "premium" && s.metadata.attr_utm_source === "instagram" && s.metadata.attr_utm_campaign === "launch", "checkout carries attribution metadata");
+  ok(/^(monthly|yearly)-first$/.test(s.metadata["exp_pricing-default-interval"] || "") && /^(see-premium|name-the-benefit)$/.test(s.metadata["exp_upgrade-prompt-copy"] || ""), "checkout carries experiment variants");
   const cookie = (await ctx.cookies()).find((c) => c.name === "nw_ent");
   ok(cookie && cookie.httpOnly && cookie.sameSite === "Lax", "entitlement cookie is httpOnly");
 
@@ -122,6 +125,11 @@ const mock = (path, body) => fetch(`${MOCK}${path}`, body ? { method: "POST", he
   ok(events.some((e) => e.type === "billing" && e.data.type === "customer.subscription.deleted" && e.data.object.campaign === "launch"), "billing event forwarded with campaign");
   r = await fetch(`${B}/api/billing/webhook`, { method: "POST", headers: { "stripe-signature": `t=${t},v1=deadbeef` }, body: evt });
   ok(r.status === 400, "unsigned webhook rejected");
+  const forwardedBefore = (await mock("/__events")).filter((e) => e.data?.id === "evt_1").length;
+  r = await fetch(`${B}/api/billing/webhook`, { method: "POST", headers: { "stripe-signature": `t=${t},v1=${sig}` }, body: evt });
+  const dup = await r.json();
+  const forwardedAfter = (await mock("/__events")).filter((e) => e.data?.id === "evt_1").length;
+  ok(r.status === 200 && dup.duplicate === true && forwardedAfter === forwardedBefore, "duplicate webhook event is not processed twice");
 
   // Remove Premium from this browser.
   page.once("dialog", (d) => d.accept());
@@ -166,6 +174,67 @@ const mock = (path, body) => fetch(`${MOCK}${path}`, body ? { method: "POST", he
   await page.waitForURL(/meal-planner/);
   const after = await page.evaluate(() => JSON.parse(localStorage.getItem("nw:plans")).length);
   ok(after === before + 1, "starter plan saved into the planner");
+
+  // Restore Premium in a different browser via an emailed link.
+  const other = await browser.newContext();
+  await other.addInitScript(() => localStorage.setItem("nw:consent", '"denied"'));
+  const op = await other.newPage();
+  await op.goto(`${B}/account/billing`, { waitUntil: "networkidle" });
+  await op.fill("#restore-email", "nobody@example.com");
+  await op.getByRole("button", { name: "Email me a sign-in link" }).click();
+  await op.waitForSelector("text=If that email has an active Premium subscription");
+  ok((await mock("/__emails")).length === 0, "unknown email: same message, no email sent");
+  await op.fill("#restore-email", "buyer@example.com");
+  await op.getByRole("button", { name: "Email me a sign-in link" }).click();
+  await op.waitForSelector("text=If that email has an active Premium subscription");
+  const mails = await mock("/__emails");
+  const restoreMail = mails.find((m) => /sign-in link/.test(m.subject));
+  ok(restoreMail && restoreMail.to[0] === "buyer@example.com", "restore email sent to the subscriber");
+  const restoreUrl = restoreMail.text.match(/https?:\/\/\S+/)[0];
+  await op.goto(restoreUrl);
+  await op.waitForSelector("text=Premium is now on in this browser");
+  ok((await op.locator("#plan-h").textContent()).includes("Premium"), "restore link turns on Premium in another browser");
+  await op.goto(`${B}/api/billing/restore/confirm?token=${encodeURIComponent(restoreUrl.split("token=")[1])}x`);
+  ok(op.url().includes("restore-expired"), "tampered restore link refused");
+  await other.close();
+
+  // Digital product: consent, checkout, verified delivery.
+  await page.goto(`${B}/resources/meal-planning-workbook`, { waitUntil: "networkidle" });
+  ok((await page.locator(".product-buy .price-amount").textContent()).includes("$9"), "product price read from Stripe");
+  ok((await page.locator(".product-previews img").count()) === 4, "sample pages shown");
+  await page.screenshot({ path: `${SHOTS}/product-page.png`, fullPage: true });
+  await page.getByRole("button", { name: "Buy and download" }).click();
+  ok(await page.getByText("confirm you want immediate access").isVisible(), "immediate-access consent required");
+  await page.locator(".product-buy input[type=checkbox]").check();
+  await page.getByRole("button", { name: "Buy and download" }).click();
+  await page.waitForURL(/\/resources\/meal-planning-workbook\/download\?token=/);
+  ok(await page.getByText("your download is ready").isVisible(), "download page after verified payment");
+  const ps = Object.values(await mock("/__sessions")).pop();
+  ok(ps.mode === "payment" && ps.metadata.product_slug === "meal-planning-workbook" && ps.metadata.immediate_access_consent === "yes" && ps.invoice === "true", "one-time checkout with consent and invoice");
+  const dlHref = await page.locator("a", { hasText: "Download A4 PDF" }).getAttribute("href");
+  r = await page.request.get(`${B}${dlHref}`);
+  const pdf = await r.body();
+  ok(r.status() === 200 && pdf.subarray(0, 4).toString() === "%PDF" && pdf.length > 100000, `A4 PDF delivered (${pdf.length} bytes)`);
+  r = await page.request.get(`${B}${dlHref.replace("token=", "token=x")}`);
+  ok(r.status() === 403, "tampered download token refused");
+  r = await fetch(`${B}/products/files/nourishwell-meal-planning-workbook-a4.pdf`);
+  ok(r.status === 404, "product files are not publicly reachable");
+  ok((await mock("/__emails")).some((m) => /Your download/.test(m.subject) && m.to[0] === "buyer@example.com"), "download link emailed to buyer");
+
+  // Revenue dashboard and monetization map (admin).
+  await ap.goto(`${B}/admin/revenue`, { waitUntil: "networkidle" });
+  const rev = await ap.locator("main").textContent().catch(() => ap.textContent("body"));
+  ok(/Gross sales\s*\$33\.99/.test(rev) && /Refunds\s*\$4\.99/.test(rev) && /Stripe fees\s*\$1\.59/.test(rev), "revenue: gross, refunds, fees from Stripe");
+  ok(/Net receipts\s*\$27\.41/.test(rev), "revenue: net receipts");
+  ok(/Premium MRR\s*\$4\.99/.test(rev) && /Featured listing MRR\s*\$29/.test(rev), "revenue: MRR by stream");
+  ok(/Premium \(monthly\)/.test(rev) && /GB/.test(rev) && /instagram \/ launch/.test(rev), "revenue: by product, market and source");
+  ok(/pricing-default-interval/.test(rev) && /Not enough data yet/.test(rev), "revenue: experiments guarded by sample size");
+  await ap.screenshot({ path: `${SHOTS}/admin-revenue.png`, fullPage: true });
+  await ap.goto(`${B}/admin/monetization`, { waitUntil: "networkidle" });
+  ok(/Built — needs configuration|Live/.test(await ap.textContent("body")) && (await ap.locator("#matrix-h").isVisible()), "monetization map renders");
+  r = await ap.request.get(`${B}/admin/revenue-matrix.csv`);
+  ok(r.status() === 200 && (await r.text()).startsWith("feature,routes,problem"), "matrix CSV export");
+  ok((await fetch(`${B}/admin/revenue-matrix.csv`)).status === 401, "matrix CSV requires admin login");
 
   // Cancelled checkout notice.
   await page.goto(`${B}/pricing?checkout=cancelled`, { waitUntil: "networkidle" });

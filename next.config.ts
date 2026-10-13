@@ -9,6 +9,12 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Files read at runtime with fs: product downloads (served only after verified purchase) and OG fonts.
+  outputFileTracingIncludes: {
+    "/api/products/download": ["./src/products/files/**"],
+    "/opengraph-image": ["./src/assets/fonts/**"],
+    "/recipes/[slug]/opengraph-image": ["./src/assets/fonts/**"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
