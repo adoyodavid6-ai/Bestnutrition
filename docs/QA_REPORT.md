@@ -8,7 +8,7 @@ These tests were run on 12 October 2026 against a production build (`next build 
 | --- | --- |
 | `npm run typecheck` (TypeScript strict) | ✅ No errors |
 | `npm run lint` (next/core-web-vitals + TypeScript rules) | ✅ No warnings or errors |
-| `npm test`: 96 unit tests | ✅ 96/96 passed |
+| `npm test`: 108 unit tests | ✅ 108/108 passed |
 | `npm run build` | ✅ 221 pages and images prerendered, no warnings |
 
 Unit tests cover:
@@ -120,6 +120,35 @@ A scripted Chromium run passed all 26 checks:
 **Regression:** `npm run e2e` passed 36/36. The crawl covered 157 pages with no problems or console errors. The shopping calendar passed 26/26. The new pages are serif-only with no overflow at 375px.
 
 **Not tested:** real Stripe, real Resend, and the real Plausible Stats API.
+
+## Prices, bookings and professional sign-up (13 October 2026)
+
+**`npm run e2e:billing`: 71 checks passed** (mock Stripe and Resend). The new checks:
+- **Premium price:** shown as $37.99 USD / month, with the local-currency note.
+- **Premium checkout:** uses inline `price_data` of 3799 USD a month, with Adaptive Pricing enabled.
+- **Monthly revenue figure:** the dashboard shows $37.99.
+- **`/professionals/join`:**
+  - The booking preview prices a 60-minute session from the hourly rate and can't send requests.
+  - The application refuses a missing hourly rate.
+  - A submitted application carries the rate (75 GBP), session lengths, consultation types, weekly availability and time zone.
+- **Sign-up fee:**
+  - `/admin` generates a signed sign-up link.
+  - The page shows "$100 USD · one-time", and payment completes.
+  - The checkout session is a one-time 10000 USD payment with Adaptive Pricing and an invoice.
+  - The link can't be reused for another professional.
+- **Bookings:** a request for an unlisted professional is refused.
+
+**Unit tests (12 new):**
+- Time-zone conversion for London, New York, Singapore and Kolkata, with daylight-saving gaps rejected.
+- Slot generation across the 25 October clock change.
+- Server-side checks on the slot, mode and session length.
+- Fee calculation.
+- Booking emails go to the professional (reply-to the client) and to the client; the team webhook record leaves out the client's note.
+- USD price parsing and the default prices.
+
+**Without Stripe or email configured:** Premium shows "$37.99 USD / month — Opening soon" with the waitlist. Booking requests refuse honestly when email isn't set up.
+
+**Regression:** `npm run e2e` passed 36/36. The crawl covered 158 pages with no problems. The shopping calendar passed 26/26.
 
 ## Server and API checks (manual, with curl)
 

@@ -12,12 +12,12 @@ export function emailConfig(env: Record<string, string | undefined> = process.en
 
 export const emailConfigured = (c = emailConfig()) => Boolean(c.apiKey && c.from);
 
-export async function sendEmail(msg: { to: string; subject: string; text: string; html: string }, c = emailConfig()) {
+export async function sendEmail(msg: { to: string; subject: string; text: string; html: string; replyTo?: string }, c = emailConfig()) {
   if (!c.apiKey || !c.from) throw new Error("Email is not configured");
   const res = await fetch(`${c.apiBase}/emails`, {
     method: "POST",
     headers: { authorization: `Bearer ${c.apiKey}`, "content-type": "application/json" },
-    body: JSON.stringify({ from: c.from, to: [msg.to], subject: msg.subject, text: msg.text, html: msg.html }),
+    body: JSON.stringify({ from: c.from, to: [msg.to], subject: msg.subject, text: msg.text, html: msg.html, ...(msg.replyTo ? { reply_to: msg.replyTo } : {}) }),
     signal: AbortSignal.timeout(10_000),
   });
   if (!res.ok) throw new Error(`Email provider responded ${res.status}`);

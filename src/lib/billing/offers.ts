@@ -1,4 +1,4 @@
-import { billingConfig, premiumSellable, listingSellable, type BillingConfig } from "./config";
+import { billingConfig, premiumSellable, proSignupSellable, listingSellable, type BillingConfig } from "./config";
 import { formatMoney, getPrice, type StripePrice } from "./stripe";
 
 export interface Offer {
@@ -33,11 +33,25 @@ async function safePrice(id: string | undefined, config: BillingConfig) {
   }
 }
 
-/** Live Premium offers read from Stripe. Empty when billing isn't configured or prices can't be read. */
+/** An offer built from the owner's US-dollar list price (used when no Stripe Price ID is set). */
+export function usdOffer(cents: number, interval: "month" | "year"): Offer {
+  return { interval, amount: cents, currency: "usd", display: formatMoney(cents, "usd"), otherCurrencies: [] };
+}
+
+/**
+ * Premium offers. Monthly uses the Stripe Price if configured, otherwise the owner's USD list
+ * price; yearly exists only if a yearly Stripe Price is configured.
+ */
 export async function premiumOffers(config: BillingConfig = billingConfig()) {
-  if (!premiumSellable(config)) return { sellable: false as const, month: null, year: null, trialDays: 0 };
-  const [month, year] = await Promise.all([safePrice(config.prices.premiumMonthly, config), safePrice(config.prices.premiumYearly, config)]);
-  return { sellable: Boolean(month || year), month, year, trialDays: config.trialDays };
+  const listMonthly = usdOffer(config.usd.premiumMonthly, "month");
+  if (!premiumSellable(config)) return { sellable: false as const, month: null, year: null, trialDays: 0, adaptivePricing: false, listMonthly };
+  const [month, year] = await Promise.all([config.prices.premiumMonthly ? safePrice(config.prices.premiumMonthly, config) : Promise.resolve(usdOffer(config.usd.premiumMonthly, "month")), safePrice(config.prices.premiumYearly, config)]);
+  return { sellable: Boolean(month || year), month, year, trialDays: config.trialDays, adaptivePricing: config.adaptivePricing, listMonthly };
+}
+
+/** The professional sign-up fee (one-time, USD). */
+export function proSignupOffer(config: BillingConfig = billingConfig()) {
+  return proSignupSellable(config) ? { amount: config.usd.proSignup, currency: "usd", display: formatMoney(config.usd.proSignup, "usd") } : null;
 }
 
 export async function featuredListingOffer(config: BillingConfig = billingConfig()) {

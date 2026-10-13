@@ -15,12 +15,16 @@ export interface PricingPlansProps {
   year: Offer | null;
   trialDays: number;
   saving: number;
+  /** Buyers can pay in their local currency at Checkout (Stripe Adaptive Pricing). */
+  adaptivePricing?: boolean;
+  /** The owner's list price, shown while Premium isn't open yet. */
+  listMonthly?: Offer;
   freeItems: string[];
   premiumItems: string[];
   plannedItems: string[];
 }
 
-export function PricingPlans({ sellable, month, year, trialDays, saving, freeItems, premiumItems, plannedItems }: PricingPlansProps) {
+export function PricingPlans({ sellable, month, year, trialDays, saving, freeItems, premiumItems, plannedItems, adaptivePricing, listMonthly }: PricingPlansProps) {
   const [interval, setInterval] = useState<"month" | "year">(year && !month ? "year" : "month");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -101,10 +105,19 @@ export function PricingPlans({ sellable, month, year, trialDays, saving, freeIte
             {offer && (
               <p className="price-amount">
                 {offer.display}
-                <span className="price-per"> / {offer.interval}</span>
+                <span className="price-per">
+                  {" "}
+                  {offer.currency.toUpperCase()} / {offer.interval}
+                </span>
               </p>
             )}
             {offer && offer.otherCurrencies.length > 0 && <p className="xs" style={{ margin: 0, opacity: 0.85 }}>Also billed in {offer.otherCurrencies.join(", ")} — your currency is confirmed at checkout.</p>}
+            {offer && (
+              <p className="xs" style={{ margin: "4px 0 0", opacity: 0.85 }}>
+                Priced in {offer.currency.toUpperCase()}.{" "}
+                {adaptivePricing ? "At checkout you can pay in your local currency where available — the converted amount is shown before you pay." : "Cards in any currency can pay; your card provider converts the amount."}
+              </p>
+            )}
             {info.plan === "premium" ? (
               <>
                 <p style={{ marginTop: 12 }}>You have Premium in this browser. Thank you for supporting NourishWell.</p>
@@ -132,9 +145,17 @@ export function PricingPlans({ sellable, month, year, trialDays, saving, freeIte
           </>
         ) : (
           <>
-            <p className="price-amount" style={{ fontSize: "1.6rem" }}>
-              Price to be announced
+            <p className="price-amount" style={{ fontSize: listMonthly ? undefined : "1.6rem" }}>
+              {listMonthly ? (
+                <>
+                  {listMonthly.display}
+                  <span className="price-per"> USD / month</span>
+                </>
+              ) : (
+                "Price to be announced"
+              )}
             </p>
+            {listMonthly && <p className="xs" style={{ margin: 0, opacity: 0.85 }}>Opening soon — no payment is taken until then.</p>}
             <p>More planning power for busy households. Health information will always stay free.</p>
             <div className="waitlist">
               <NewsletterForm variant="dark" source="premium-waitlist" heading="Get told when Premium opens" consentText="Email me when Premium launches, plus the weekly newsletter." button="Notify me" />

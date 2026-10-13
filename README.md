@@ -24,9 +24,9 @@ Quality checks:
 ```bash
 npm run typecheck    # TypeScript
 npm run lint         # ESLint (next/core-web-vitals)
-npm test             # 96 unit tests (nutrition, planner, shopping, calendar, billing, revenue reporting, experiments, disclosure rules, content integrity, forms, search)
+npm test             # 108 unit tests (nutrition, planner, shopping, calendar, billing, revenue reporting, experiments, disclosure rules, content integrity, forms, search)
 npm run e2e          # browser tests against a running server (BASE_URL=http://localhost:3000)
-npm run e2e:billing  # 59 payment, restore, product, dashboard & marketing checks against the mock Stripe/Resend API
+npm run e2e:billing  # 71 payment, booking, sign-up, restore, product, dashboard & marketing checks against the mock Stripe/Resend API
 ```
 
 ## What's included
@@ -47,6 +47,8 @@ npm run e2e:billing  # 59 payment, restore, product, dashboard & marketing check
 | Featured listings: verify → signed payment link from `/admin` → Stripe Checkout; “Promoted” labels | ✅ Built; live once `STRIPE_PRICE_LISTING_FEATURED` is set |
 | Revenue system: `/admin/revenue` (gross, refunds, fees, net, tax, MRR, churn, ARPPU, by product/market/source, checkout funnel, experiment results — all from Stripe), `/admin/monetization` (streams, feature-to-revenue matrix + CSV), Premium restore by email, webhook de-duplication | ✅ Built and tested against mocks; needs Stripe + Resend keys |
 | Digital products: `/resources` store, original 28-page Meal-Planning Workbook (A4 + Letter), one-time Checkout with immediate-access consent, signed 7-day downloads from a private folder | ✅ Built; on sale once `STRIPE_PRICE_PRODUCT_WORKBOOK` is set |
+| Prices: Premium **US$37.99/month**, professional sign-up **US$100 one-time** (after verification), set in US dollars with env overrides; Stripe Adaptive Pricing lets buyers pay in local currency while funds settle in USD | ✅ Built; charges once Stripe keys are set |
+| Professionals: hourly rate (any of 19 currencies) and weekly availability captured at registration; profiles show the rate and a date-and-time booking scheduler (time-zone and DST aware); requests are emailed to the professional, who confirms and is paid directly — no commission; `/professionals/join` | ✅ Built; booking delivery needs Resend; directory stays empty until professionals are verified |
 | Listing packages (Basic / Featured / Business Plus planned), sponsor & affiliate disclosure components with content tests, `/for-organisations`, price/CTA experiments | ✅ Built (boundaries; no partners yet) |
 | Marketing: free 7-day meal plan lead magnet (`/free-meal-plan`), newsletter CTAs with source tags, first-party UTM attribution on sign-ups and checkouts, consent-gated Plausible analytics, Open Graph share images, `/advertise`, `/how-we-make-money`, admin UTM link builder | ✅ Working; analytics needs `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` |
 | Professional & business directory, listing application form | ✅ Working; directory is **empty until verification**, by design |

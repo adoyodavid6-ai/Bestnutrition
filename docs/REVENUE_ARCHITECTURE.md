@@ -6,6 +6,26 @@ Operational setup (Stripe products, webhooks, test plan) is in [MONETIZATION.md]
 
 ---
 
+## Prices and currency (owner decisions, 13 October 2026)
+
+| Item | Price | How it's charged |
+| --- | --- | --- |
+| Premium | **US$37.99 per month** | Stripe Checkout subscription with inline `price_data` (env `PREMIUM_MONTHLY_PRICE_USD`); a Stripe Price ID overrides it; optional yearly Stripe Price |
+| Professional sign-up | **US$100, one-time** | After verification only, via a 30-day signed link from `/admin` → `/professionals/join` (env `PRO_SIGNUP_FEE_USD`) |
+| Consultations | Each professional's own hourly rate, in their currency | **Not charged through NourishWell.** Clients pay professionals directly; no commission |
+
+The holding account settles in **US dollars**. Stripe Adaptive Pricing (`adaptive_pricing[enabled]=true`, on by default) shows buyers the converted amount in their local currency and lets them pay in it; where it isn't available, any card can pay the USD amount and the card issuer converts it. The dashboard reports what Stripe records, never converting currencies itself.
+
+**Note on Premium's price:** at US$37.99/month, Premium is priced well above the consumer meal-planning apps researched in MONETIZATION.md section 15 (roughly US$3–15/month), while it currently includes two extras (50 saved plans and exports). Expect low conversion until more Premium features ship; the price is configurable without code changes.
+
+## Professional bookings
+
+1. At registration, professionals give their hourly rate and currency, session lengths, consultation types, weekly availability, time zone and minimum notice. Professionals must provide these; validation is on the server.
+2. Verified profiles show the rate and a booking scheduler. Clients choose a length, a date and a start time. Times show in the client's time zone, and DST is handled.
+3. `/api/bookings` checks the slot against the published availability. It emails the professional, with replies going to the client, and sends the client an acknowledgement. The optional team webhook record omits the client's note.
+4. Nothing is booked until the professional replies. Clients pay the professional directly.
+5. **Limitation:** without a database, two clients can request the same slot; the professional resolves it on reply.
+
 ## Commercial principles (how they're enforced)
 
 | Principle | Where it is enforced |

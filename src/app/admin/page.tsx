@@ -5,7 +5,7 @@ import { professionals, businesses } from "@/content/directory";
 import { ALL_FEATURES, FEATURE_LABELS, FEATURE_STATUS, plans } from "@/lib/plans";
 import { absoluteUrl, site } from "@/lib/site";
 import { billingConfig, billingStatus } from "@/lib/billing/config";
-import { signListing } from "@/lib/billing/entitlement";
+import { signListing, signToken } from "@/lib/billing/entitlement";
 import { featuredListingOffer, premiumOffers } from "@/lib/billing/offers";
 import { UtmBuilder } from "@/components/marketing/UtmBuilder";
 import { AdminNav } from "@/components/AdminNav";
@@ -33,6 +33,11 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const listingSlug = listing.trim().toLowerCase();
   const listingValid = /^[a-z0-9-]{2,80}$/.test(listingSlug);
   const paymentLink = listingValid && config.entitlementSecret ? absoluteUrl(`/for-businesses/upgrade?listing=${listingSlug}&sig=${signListing(listingSlug, config.entitlementSecret)}`) : null;
+  // Professional sign-up fee link: valid for 30 days.
+  const proLink =
+    listingValid && config.entitlementSecret
+      ? absoluteUrl(`/professionals/join?listing=${listingSlug}&sig=${encodeURIComponent(signToken("pro-signup", { listing: listingSlug, exp: Math.floor(Date.now() / 1000) + 30 * 86400 }, config.entitlementSecret))}`)
+      : null;
   const verifiedSlugs = [...professionals, ...businesses].filter((x) => x.verification === "verified").map((x) => x.slug);
   const rows = auditContent();
   const refs = referenceUsage();
@@ -284,7 +289,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
       <section aria-labelledby="listing-pay-h" style={{ marginBottom: 32 }}>
         <h2 id="listing-pay-h" style={{ fontSize: "var(--fs-xl)" }}>
-          Featured listing payment links
+          Payment links (after verification)
         </h2>
         <p className="small muted">Generate a personal payment link only after a listing has been verified. The link is signed, so it can&apos;t be edited to upgrade a different listing.</p>
         <form method="get" action="/admin#listing-pay-h" className="row" style={{ alignItems: "flex-end" }}>
@@ -308,6 +313,14 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <label htmlFor="pay-link">Payment link for {listingSlug}</label>
             <input id="pay-link" className="input" readOnly value={paymentLink} />
             {!featured && <p className="xs muted">Payments aren&apos;t switched on yet (STRIPE_PRICE_LISTING_FEATURED), so this page will say so instead of taking payment.</p>}
+          </div>
+        )}
+        {proLink && (
+          <div className="field" style={{ marginTop: 12 }}>
+            <label htmlFor="pro-link">
+              Professional sign-up payment link for {listingSlug} (US${(config.usd.proSignup / 100).toFixed(2)} one-time, valid 30 days)
+            </label>
+            <input id="pro-link" className="input" readOnly value={proLink} />
           </div>
         )}
       </section>

@@ -166,6 +166,10 @@ Set these in your host (for example Vercel → Project → Settings → Environm
 | `ENTITLEMENT_SECRET` | Yes | At least 32 random characters | Signs the `nw_ent` cookie and listing payment links. Values shorter than 32 characters are ignored and Premium stays "Coming soon". Generate with a password manager or `openssl rand -base64 48` |
 | `BILLING_EVENTS_WEBHOOK_URL` | No | HTTPS URL | Receives a summary of each verified Stripe event |
 | `STRIPE_AUTOMATIC_TAX` | No | `true` | Only after Stripe Tax is configured (section 6) |
+| `PREMIUM_MONTHLY_PRICE_USD` | No | Default `37.99` | Premium list price in US dollars, charged with inline Stripe `price_data`. `STRIPE_PRICE_PREMIUM_MONTHLY`, if set, overrides it |
+| `PRO_SIGNUP_FEE_USD` | No | Default `100` | One-time professional sign-up fee, charged only via a signed link after verification |
+| `STRIPE_ADAPTIVE_PRICING` | No | Unset (on) or `off` | Lets buyers see and pay the converted amount in their local currency; settlement stays USD. Requires Adaptive Pricing to be available on your Stripe account — if Checkout returns an error mentioning it, set `off` (cards in any currency can still pay a USD charge) |
+| `BOOKINGS_WEBHOOK_URL` | No | HTTPS URL | Optional team record of booking requests (no client notes) |
 | `STRIPE_PRICE_PRODUCT_WORKBOOK` | For the workbook | `price_…` | A **one-time** Price (not recurring). The product shows "Coming soon" until set |
 | `RESEND_API_KEY`, `EMAIL_FROM` | For restore and download emails | Resend API key; `NourishWell <hello@yourdomain>` from a verified domain | Without them, restore by email says "contact us" and download links aren't emailed |
 | `PLAUSIBLE_API_KEY` | No | Plausible Stats API key | Adds traffic and landing-page conversion to `/admin/revenue` |

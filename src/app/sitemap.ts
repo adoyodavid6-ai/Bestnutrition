@@ -28,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources",
     "/resources/meal-planning-workbook",
     "/for-organisations",
+    "/professionals/join",
     "/advertise",
     "/how-we-make-money",
     "/about",

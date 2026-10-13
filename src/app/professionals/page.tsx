@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { formatRate } from "@/lib/booking";
 import { publishedProfessionals } from "@/content/directory";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHead } from "@/components/Editorial";
@@ -29,7 +30,7 @@ export default function ProfessionalsPage() {
               ones.
             </p>
             <div className="row" style={{ justifyContent: "center" }}>
-              <Link href="/for-businesses#apply" className="btn btn-primary">
+              <Link href="/professionals/join" className="btn btn-primary">
                 I&apos;m a professional — apply
               </Link>
               <Link href="/health-conditions" className="btn btn-ghost">
@@ -44,6 +45,9 @@ export default function ProfessionalsPage() {
                 {p.promoted && <span className="chip chip-warning">Promoted</span>}
                 <h2 style={{ fontSize: "1.2rem" }}>{p.name}</h2>
                 <p className="small muted">{p.profession}</p>
+                <p className="small">
+                  {formatRate(p.hourlyRate.amount, p.hourlyRate.currency)} per hour{p.availability ? " · book online" : ""}
+                </p>
                 <span className="chip chip-success">Verified</span>
               </Link>
             ))}

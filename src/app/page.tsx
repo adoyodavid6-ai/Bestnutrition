@@ -30,7 +30,7 @@ const GOAL_ICONS: Record<string, string> = {
 
 export default async function HomePage() {
   const offers = await premiumOffers();
-  const fromPrice = offers.month ? `${offers.month.display} / month` : offers.year ? `${offers.year.display} / year` : null;
+  const fromPrice = offers.month ? `${offers.month.display} USD / month` : offers.year ? `${offers.year.display} USD / year` : `${offers.listMonthly.display} USD / month`;
   const featured = [
     { label: "Breakfast", slug: "banana-oat-pancakes" },
     { label: "Lunch", slug: "vietnamese-prawn-noodle-salad" },

@@ -105,9 +105,28 @@ describe("forms", () => {
     expect(r.success).toBe(false);
   });
   it("validates listing website URLs", () => {
-    const base = { listingType: "professional", name: "A", email: "a@b.co", country: "Kenya", profession: "Dietitian", services: "Clinical nutrition consultations", consent: true };
+    const base = {
+      listingType: "professional",
+      name: "A",
+      email: "a@b.co",
+      country: "Kenya",
+      profession: "Dietitian",
+      services: "Clinical nutrition consultations",
+      consent: true,
+      hourlyRate: { amount: 60, currency: "USD" },
+      modes: ["video"],
+      availability: { timezone: "Africa/Nairobi", weekly: [{ day: 1, start: "09:00", end: "17:00" }], sessionMinutes: [60], minNoticeHours: 24, horizonDays: 30 },
+    };
     expect(formSchemas.listing.safeParse({ ...base, website: "javascript:alert(1)" }).success).toBe(false);
     expect(formSchemas.listing.safeParse({ ...base, website: "https://example.com" }).success).toBe(true);
+  });
+
+  it("requires professionals to give an hourly rate, consultation types and availability", () => {
+    const pro = { listingType: "professional", name: "A", email: "a@b.co", country: "UK", profession: "Dietitian", services: "Clinical nutrition consultations", consent: true };
+    const r = formSchemas.listing.safeParse(pro);
+    expect(r.success).toBe(false);
+    expect(r.error!.issues.map((i) => i.path.join("."))).toEqual(expect.arrayContaining(["hourlyRate", "modes", "availability"]));
+    expect(formSchemas.listing.safeParse({ ...pro, listingType: "business" }).success).toBe(true);
   });
 });
 

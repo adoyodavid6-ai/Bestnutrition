@@ -38,6 +38,10 @@ export default function TermsPage() {
         <strong>Featured listings.</strong> Featured listings are offered only to verified listings, renew monthly until cancelled, and revert to a basic listing at the end of the paid period. Payment never affects
         verification or editorial decisions, and we may end a featured listing that breaks our listing standards, refunding any unused period.
       </p>
+      <p id="professional-sign-up">
+        <strong>Professional sign-up fee.</strong> Professionals pay a one-time sign-up fee, shown in US dollars before payment, only after we&apos;ve verified their registration. It covers verification and
+        publishing the profile with booking requests. Professionals set their own hourly rates; clients pay professionals directly, and NourishWell is not a party to the consultation or its payment.
+      </p>
       <p id="digital-products">
         <strong>Digital products.</strong> Printable resources are one-time purchases for personal use; please don&apos;t share or resell the files. Download links work for 7 days and are also emailed to you when
         email delivery is set up. Because the download is available straight away, you&apos;ll be asked to confirm that you want immediate access and understand that this ends your right to cancel. If a file is

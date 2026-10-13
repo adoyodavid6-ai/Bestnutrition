@@ -30,6 +30,7 @@ export type ProductEvent =
   | "product_view"
   | "product_purchased"
   | "listing_application"
+  | "booking_requested"
   | "share";
 
 declare global {

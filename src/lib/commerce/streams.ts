@@ -23,14 +23,15 @@ export interface RevenueStream {
 }
 
 export const STREAMS: RevenueStream[] = [
-  { id: "premium", name: "Premium subscription", phase: 2, model: "Recurring subscription (monthly or yearly) via Stripe Checkout", requires: ["STRIPE_SECRET_KEY", "STRIPE_PRICE_PREMIUM_MONTHLY and/or STRIPE_PRICE_PREMIUM_YEARLY", "ENTITLEMENT_SECRET", "STRIPE_WEBHOOK_SECRET", "Owner: prices"], notes: "Sells only features that exist today (see plans.ts FEATURE_STATUS)." },
+  { id: "premium", name: "Premium subscription", phase: 2, model: "US$37.99/month (PREMIUM_MONTHLY_PRICE_USD), payable in local currency via Adaptive Pricing; optional yearly Stripe Price", requires: ["STRIPE_SECRET_KEY", "ENTITLEMENT_SECRET", "STRIPE_WEBHOOK_SECRET"], notes: "Sells only features that exist today (see plans.ts FEATURE_STATUS)." },
+  { id: "pro-signup", name: "Professional sign-up fee", phase: 3, model: "One-time US$100 after verification (PRO_SIGNUP_FEE_USD), via a signed payment link", requires: ["STRIPE_SECRET_KEY", "ENTITLEMENT_SECRET", "Verified professionals"], notes: "Professionals set their own hourly rate; clients pay them directly (no commission)." },
   { id: "featured-listing", name: "Featured directory listing", phase: 3, model: "Monthly subscription, offered only after verification via a signed link", requires: ["STRIPE_PRICE_LISTING_FEATURED", "ENTITLEMENT_SECRET", "Verified listings"], notes: "Directory is empty until listings are verified." },
   { id: "business-plus", name: "Business Plus listing", phase: 3, model: "Higher-tier listing subscription", requires: ["Accounts + database (Supabase)", "Lead inbox", "Reporting"], notes: "Needs business accounts and stored enquiries before it can be sold honestly." },
   { id: "digital-products", name: "Digital products", phase: 4, model: "One-time purchases with secure download", requires: ["STRIPE_PRICE_PRODUCT_* per product", "ENTITLEMENT_SECRET", "Owner: prices, refund policy"], notes: "Starts with the original Meal-Planning Workbook." },
   { id: "sponsored-content", name: "Sponsored collections & newsletter sponsorship", phase: 4, model: "Flat-fee sponsorship, labelled", requires: ["Signed sponsor agreement", "Editorial sign-off"], notes: "Sponsor fields and disclosure labels are built; no sponsors yet." },
   { id: "affiliate", name: "Affiliate links (kitchen & meal-prep equipment)", phase: 4, model: "Commission on referred purchases", requires: ["Affiliate programme approval per market", "Reviewed product data"], notes: "Link component, disclosure and click tracking built; never used in health-condition or supplement guidance." },
   { id: "workplace", name: "Workplace & organisation programmes", phase: 4, model: "Quoted packages (workshops, group Premium)", requires: ["Package definitions", "Delivery capacity"], notes: "Enquiry route only; no outcomes promised." },
-  { id: "bookings", name: "Professional bookings & lead fees", phase: 4, model: "Commission or lead fee", requires: ["Sufficient verified professionals", "Healthcare advertising/referral rules review per market", "Booking + payments design"], notes: "Not launched: regulated and operationally heavy." },
+  { id: "bookings", name: "Booking commissions & lead fees", phase: 4, model: "Commission or lead fee on consultations", requires: ["Sufficient verified professionals", "Healthcare advertising/referral rules review per market", "Stripe Connect payouts"], notes: "Not pursued: booking requests are free and clients pay professionals directly." },
   { id: "display-ads", name: "Display advertising", phase: 4, model: "CPM display ads", requires: ["Meaningful traffic", "Performance budget review", "Contextual-only ad network"], notes: "Deferred: would hurt page speed and trust at current scale." },
 ];
 
@@ -38,6 +39,8 @@ export function streamStatus(id: string, c: BillingConfig = billingConfig(), env
   switch (id) {
     case "premium":
       return premiumSellable(c) ? "live" : "needs-config";
+    case "pro-signup":
+      return c.secretKey && c.entitlementSecret ? "live" : "needs-config";
     case "featured-listing":
       return listingSellable(c) ? "live" : "needs-config";
     case "digital-products":

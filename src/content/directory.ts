@@ -8,6 +8,7 @@
  */
 
 import { orderListings } from "@/lib/commerce/listings";
+import type { Availability, ConsultMode, HourlyRate } from "@/lib/booking";
 
 export type VerificationStatus = "unverified" | "pending" | "verified" | "suspended";
 /** "premium" is the paid Featured package (see lib/commerce/listings.ts); the name matches the database enum. */
@@ -31,6 +32,13 @@ export interface Professional extends FeaturedExtras {
   bio: string;
   website?: string;
   bookingUrl?: string;
+  /** The professional's own hourly rate; clients pay the professional directly. */
+  hourlyRate: HourlyRate;
+  /** Weekly availability for booking requests through NourishWell. */
+  availability?: Availability;
+  modes: ConsultMode[];
+  /** Where booking requests are emailed. Private: never rendered on the site. */
+  bookingEmail?: string;
   verification: VerificationStatus;
   tier: ListingTier;
   /** Premium placements must be labelled as promoted wherever they appear. */

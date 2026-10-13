@@ -32,6 +32,7 @@ export interface Invoice {
   tax?: number | null;
   total_taxes?: { amount: number }[];
   customer_address?: { country?: string | null } | null;
+  metadata?: Record<string, string>;
   lines?: { data: { price?: { id: string } | null; pricing?: { price_details?: { price?: string } } }[] };
   subscription_details?: { metadata?: Record<string, string> } | null;
   parent?: { subscription_details?: { metadata?: Record<string, string> } | null } | null;
@@ -85,6 +86,8 @@ const invoiceTax = (i: Invoice) => i.tax ?? (i.total_taxes ?? []).reduce((s, t) 
 const invoicePriceIds = (i: Invoice) => (i.lines?.data ?? []).map((l) => l.price?.id ?? l.pricing?.price_details?.price).filter(Boolean) as string[];
 const invoiceMeta = (i: Invoice) => i.subscription_details?.metadata ?? i.parent?.subscription_details?.metadata ?? {};
 
+const ONE_TIME = new Set(["digital-product", "pro-signup"]);
+
 export function productOfPrice(priceId: string | undefined, c: BillingConfig): string {
   if (!priceId) return "Other";
   if (priceId === c.prices.premiumMonthly) return "Premium (monthly)";
@@ -102,6 +105,8 @@ export function summariseInvoices(invoices: Invoice[], c: BillingConfig) {
   const customersByCurrency: Record<string, Set<string>> = {};
   for (const i of invoices) {
     if (i.status !== "paid" || i.amount_paid <= 0) continue;
+    // One-time purchases (products, sign-up fees) are counted from Checkout Sessions, not here.
+    if (ONE_TIME.has(i.metadata?.product ?? "")) continue;
     let product = productOfPrice(invoicePriceIds(i)[0], c);
     if (product === "Other" && invoiceMeta(i).product === "listing-featured") product = "Featured listing";
     if (product === "Other" && invoiceMeta(i).product === "premium") product = "Premium";
@@ -174,8 +179,9 @@ export function summariseCheckouts(sessions: Session[]) {
     const so = (sources[src] ??= { completed: 0, amount: {} });
     so.completed++;
     if (s.amount_total && s.currency) add(so.amount, s.currency, s.amount_total);
-    if (s.mode === "payment" && s.metadata?.product_slug) {
-      const p = (products[s.metadata.product_slug] ??= { sold: 0, amount: {} });
+    const oneTime = s.mode === "payment" ? (s.metadata?.product === "pro-signup" ? "Professional sign-up fee" : s.metadata?.product_slug) : undefined;
+    if (oneTime) {
+      const p = (products[oneTime] ??= { sold: 0, amount: {} });
       p.sold++;
       if (s.amount_total && s.currency) add(p.amount, s.currency, s.amount_total);
     }

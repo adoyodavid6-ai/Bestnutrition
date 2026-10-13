@@ -3,7 +3,8 @@
  *
  *   node e2e/mock-stripe.cjs &
  *   STRIPE_API_BASE=http://localhost:4242 STRIPE_SECRET_KEY=sk_test_mock \
- *   STRIPE_PRICE_PREMIUM_MONTHLY=price_premium_month STRIPE_PRICE_PREMIUM_YEARLY=price_premium_year \
+ *   (no Premium Price IDs: Premium uses the owner's US$37.99/month list price via inline price_data) \
+ *   LISTINGS_WEBHOOK_URL=http://localhost:4242/__events \
  *   STRIPE_PRICE_LISTING_FEATURED=price_listing_month PREMIUM_TRIAL_DAYS=14 \
  *   ENTITLEMENT_SECRET=<32+ chars> STRIPE_WEBHOOK_SECRET=whsec_mock \
  *   BILLING_EVENTS_WEBHOOK_URL=http://localhost:4242/__events NEWSLETTER_WEBHOOK_URL=http://localhost:4242/__events \
@@ -48,18 +49,15 @@ const mock = (path, body) => fetch(`${MOCK}${path}`, body ? { method: "POST", he
   const attr = await page.evaluate(() => JSON.parse(localStorage.getItem("nw:attribution")));
   ok(attr?.utm_source === "instagram" && attr.landing === "/", "first-touch attribution captured");
 
-  // Pricing shows live prices from Stripe.
+  // Pricing shows the owner's US-dollar price, payable in local currency.
   await page.goto(`${B}/pricing`, { waitUntil: "networkidle" });
   const card = page.locator(".price-card.featured");
-  ok((await card.textContent()).includes("$4.99"), "monthly price read from Stripe");
-  ok((await card.textContent()).includes("Also billed in GBP"), "other currencies listed");
-  await page.getByRole("button", { name: /Yearly/ }).click();
-  ok((await card.textContent()).includes("$39.99"), "yearly price shown");
-  ok(/save 33%/.test(await card.textContent()), "yearly saving computed");
+  ok(/\$37\.99\s*USD \/ month/.test(await card.textContent()), "Premium priced at $37.99 USD / month");
+  ok(/pay in your local currency/.test(await card.textContent()), "local-currency payment explained");
+  ok((await page.getByRole("button", { name: /Yearly/ }).count()) === 0, "no yearly option without a yearly price");
   ok((await card.textContent()).includes("Planned — not yet included"), "roadmap features marked as not included");
   ok(/renewing automatically until you cancel/.test(await card.textContent()), "auto-renewal disclosed before payment");
   await page.screenshot({ path: `${SHOTS}/billing-pricing.png`, fullPage: true });
-  await page.getByRole("button", { name: /Monthly/ }).click();
 
   // Free browser: export is blocked server-side with an upgrade prompt.
   const free = await (await fetch(`${B}/api/premium/export`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ kind: "shopping-csv", items: [] }) })).status;
@@ -74,7 +72,8 @@ const mock = (path, body) => fetch(`${MOCK}${path}`, body ? { method: "POST", he
   await page.screenshot({ path: `${SHOTS}/billing-account.png`, fullPage: true });
   const sessions = Object.values(await mock("/__sessions"));
   const s = sessions[sessions.length - 1];
-  ok(s.price === "price_premium_month" && s.trial === "14" && s.promo === "true", "checkout session: price, trial, promo codes");
+  ok(s.price === "inline" && s.inlineAmount === "3799" && s.inlineInterval === "month" && s.trial === "14" && s.promo === "true", "checkout session: US$37.99 monthly, trial, promo codes");
+  ok(s.adaptive === "true", "Adaptive Pricing on (pay in local currency, settle in USD)");
   ok(s.metadata.product === "premium" && s.metadata.attr_utm_source === "instagram" && s.metadata.attr_utm_campaign === "launch", "checkout carries attribution metadata");
   ok(/^(monthly|yearly)-first$/.test(s.metadata["exp_pricing-default-interval"] || "") && /^(see-premium|name-the-benefit)$/.test(s.metadata["exp_upgrade-prompt-copy"] || ""), "checkout carries experiment variants");
   const cookie = (await ctx.cookies()).find((c) => c.name === "nw_ent");
@@ -157,6 +156,49 @@ const mock = (path, body) => fetch(`${MOCK}${path}`, body ? { method: "POST", he
   const ls = Object.values(await mock("/__sessions")).pop();
   ok(ls.metadata.listing === "green-table-kitchen" && ls.price === "price_listing_month", "listing session metadata");
 
+  // Professional sign-up: apply with rate + availability, admin link, pay US$100 once.
+  await page.goto(`${B}/professionals/join`, { waitUntil: "networkidle" });
+  ok(await page.getByText("What clients see").isVisible(), "booking preview shown to professionals");
+  const preview = page.locator(".booking").first();
+  await preview.getByRole("button", { name: /^60 min/ }).click();
+  await preview.locator(".booking-dates button").first().click();
+  await preview.locator(".booking-times button").first().click();
+  ok(/about \$80/.test(await preview.locator(".booking-summary").textContent()), "preview prices a 60-minute session from the hourly rate");
+  ok(await preview.getByRole("button", { name: /Preview only/ }).isDisabled(), "preview can't send requests");
+  await page.screenshot({ path: `${SHOTS}/pro-join.png`, fullPage: true });
+  const proForm = page.locator("#apply form");
+  await proForm.locator("#l-name").fill("Jane Example");
+  await proForm.locator("#l-email").fill("jane@example.com");
+  await proForm.locator("#l-country").fill("United Kingdom");
+  await proForm.locator("#l-profession").fill("Registered dietitian");
+  await proForm.locator("#l-registration").fill("HCPC DT00000");
+  await proForm.locator("#l-services").fill("Weight-neutral nutrition support, IBS dietary management");
+  await proForm.locator('input[name="consent"]').check();
+  await proForm.getByRole("button", { name: "Submit application" }).click();
+  ok(await proForm.getByText("Enter your hourly rate").waitFor({ timeout: 5000 }).then(() => true, () => false), "hourly rate required for professionals");
+  await proForm.locator("#l-rate-currency").selectOption("GBP");
+  await proForm.locator("#l-rate").fill("75");
+  await proForm.locator('input[name="session_30"]').check();
+  await proForm.getByRole("button", { name: "Submit application" }).click();
+  await page.waitForSelector("text=Listings appear only after verification");
+  const app = (await mock("/__events")).filter((e) => e.type === "listing").pop();
+  ok(app && app.data.hourlyRate.amount === 75 && app.data.hourlyRate.currency === "GBP" && app.data.availability.weekly.length === 5 && app.data.availability.sessionMinutes.join() === "30,60" && app.data.modes.includes("video"), "application carries rate, sessions, modes and weekly availability");
+  ok(typeof app.data.availability.timezone === "string" && app.data.availability.timezone.length > 0, "application carries time zone");
+  await ap.goto(`${B}/admin?listing=jane-example`, { waitUntil: "networkidle" });
+  const proLink = await ap.locator("#pro-link").inputValue();
+  ok(proLink.includes("/professionals/join?listing=jane-example&sig="), "admin generates pro sign-up link");
+  await page.goto(`${B}${new URL(proLink).pathname}${new URL(proLink).search}`, { waitUntil: "networkidle" });
+  ok(/\$100\s*USD · one-time/.test(await page.locator("#pay-h").locator("..").textContent()), "sign-up fee shown as $100 USD one-time");
+  await page.getByRole("button", { name: /Pay \$100/ }).click();
+  await page.waitForURL(/professionals\/join\?status=success/);
+  ok(await page.getByText("Payment received").isVisible(), "pro sign-up payment completes");
+  const pss = Object.values(await mock("/__sessions")).pop();
+  ok(pss.mode === "payment" && pss.inlineAmount === "10000" && pss.metadata.product === "pro-signup" && pss.metadata.listing === "jane-example" && pss.adaptive === "true" && pss.invoice === "true", "pro sign-up session: US$100, metadata, local currency, invoice");
+  r = await fetch(`${B}/api/billing/checkout`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ product: "pro-signup", listing: "someone-else", sig: new URL(proLink).searchParams.get("sig") }) });
+  ok(r.status === 403, "sign-up link can't be reused for another professional");
+  r = await fetch(`${B}/api/bookings`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ professional: "nobody-here", start: new Date(Date.now() + 3 * 86400e3).toISOString(), minutes: 60, mode: "video", name: "A", email: "a@b.co", consent: true }) });
+  ok(r.status === 404, "booking for an unlisted professional refused");
+
   // Lead magnet → newsletter with source + attribution; "make it mine" saves a plan.
   await page.goto(`${B}/free-meal-plan`, { waitUntil: "networkidle" });
   await page.getByRole("tab", { name: "British kitchen" }).click();
@@ -226,8 +268,8 @@ const mock = (path, body) => fetch(`${MOCK}${path}`, body ? { method: "POST", he
   const rev = await ap.locator("main").textContent().catch(() => ap.textContent("body"));
   ok(/Gross sales\s*\$33\.99/.test(rev) && /Refunds\s*\$4\.99/.test(rev) && /Stripe fees\s*\$1\.59/.test(rev), "revenue: gross, refunds, fees from Stripe");
   ok(/Net receipts\s*\$27\.41/.test(rev), "revenue: net receipts");
-  ok(/Premium MRR\s*\$4\.99/.test(rev) && /Featured listing MRR\s*\$29/.test(rev), "revenue: MRR by stream");
-  ok(/Premium \(monthly\)/.test(rev) && /GB/.test(rev) && /instagram \/ launch/.test(rev), "revenue: by product, market and source");
+  ok(/Premium MRR\s*\$37\.99/.test(rev) && /Featured listing MRR\s*\$29/.test(rev), "revenue: MRR by stream");
+  ok(/Premium\s*\$37\.99/.test(rev) && /GB/.test(rev) && /instagram \/ launch/.test(rev), "revenue: by product, market and source");
   ok(/pricing-default-interval/.test(rev) && /Not enough data yet/.test(rev), "revenue: experiments guarded by sample size");
   await ap.screenshot({ path: `${SHOTS}/admin-revenue.png`, fullPage: true });
   await ap.goto(`${B}/admin/monetization`, { waitUntil: "networkidle" });

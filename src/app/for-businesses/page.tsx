@@ -87,7 +87,10 @@ export default async function ForBusinessesPage() {
 
         <section id="apply" className="card" style={{ marginTop: 24 }} aria-labelledby="apply-h">
           <h2 id="apply-h">Apply for a listing</h2>
-          <p className="muted small">We&apos;ll contact you to verify your details. Applying doesn&apos;t guarantee a listing.</p>
+          <p className="muted small">
+            We&apos;ll contact you to verify your details. Applying doesn&apos;t guarantee a listing. Dietitians, nutritionists and other professionals: see{" "}
+            <Link href="/professionals/join">joining as a professional</Link> for hourly rates, online booking and the one-time sign-up fee.
+          </p>
           <ListingForm />
         </section>
       </div>

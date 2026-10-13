@@ -28,7 +28,8 @@ const subscriptionObj = () => ({
   created: now() - 5 * 86400,
   cancel_at_period_end: state.cancelAtPeriodEnd,
   metadata: { product: "premium" },
-  items: { data: [{ quantity: 1, current_period_end: now() + 30 * 86400, price: prices.price_premium_month }] },
+  // Created from inline price_data (the owner's US$37.99 list price).
+  items: { data: [{ quantity: 1, current_period_end: now() + 30 * 86400, price: { id: "price_inline_premium", active: true, currency: "usd", unit_amount: 3799, recurring: { interval: "month", interval_count: 1 } } }] },
 });
 let n = 0;
 
@@ -59,12 +60,15 @@ http
         id,
         status: "open",
         mode: p.get("mode"),
-        price: p.get("line_items[0][price]"),
+        price: p.get("line_items[0][price]") || "inline",
+        inlineAmount: p.get("line_items[0][price_data][unit_amount]"),
+        inlineInterval: p.get("line_items[0][price_data][recurring][interval]"),
+        adaptive: p.get("adaptive_pricing[enabled]"),
         success_url: p.get("success_url"),
         cancel_url: p.get("cancel_url"),
         trial: p.get("subscription_data[trial_period_days]"),
         created: now(),
-        amount_total: prices[p.get("line_items[0][price]")]?.unit_amount ?? null,
+        amount_total: prices[p.get("line_items[0][price]")]?.unit_amount ?? (Number(p.get("line_items[0][price_data][unit_amount]")) || null),
         currency: "usd",
         invoice: p.get("invoice_creation[enabled]"),
         promo: p.get("allow_promotion_codes"),
@@ -108,7 +112,7 @@ http
     }
     if (url.pathname === "/v1/invoices") {
       return send(res, 200, list([
-        { id: "in_1", status: "paid", currency: "usd", amount_paid: 499, customer: "cus_test_1", created: now() - 86400, tax: 0, customer_address: { country: "US" }, lines: { data: [{ price: { id: "price_premium_month" } }] } },
+        { id: "in_1", status: "paid", currency: "usd", amount_paid: 3799, customer: "cus_test_1", created: now() - 86400, tax: 0, customer_address: { country: "US" }, subscription_details: { metadata: { product: "premium" } }, lines: { data: [{ price: { id: "price_inline_premium" } }] } },
         { id: "in_2", status: "paid", currency: "usd", amount_paid: 2900, customer: "cus_biz_1", created: now() - 86400, tax: 0, customer_address: { country: "GB" }, lines: { data: [{ price: { id: "price_listing_month" } }] } },
       ]));
     }

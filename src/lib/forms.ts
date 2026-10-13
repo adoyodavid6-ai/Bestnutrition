@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { attributionSchema } from "./billing/attribution";
+import { CONSULT_MODES, availabilitySchema, hourlyRateSchema } from "./booking";
 
 const email = z.string().trim().toLowerCase().email("Enter a valid email address").max(254);
 const consent = z.literal(true, { message: "Please confirm to continue" });
@@ -45,8 +46,17 @@ export const formSchemas = {
       .refine((v) => v === "" || /^https?:\/\/[^\s]+\.[^\s]+/.test(v), "Enter a full URL starting with http:// or https://"),
     services: z.string().trim().min(10, "Describe your services (at least 10 characters)").max(3000),
     tier: z.enum(["basic", "featured"]).optional().catch(undefined),
+    // Professionals only: their own rate (paid to them directly) and bookable availability.
+    hourlyRate: hourlyRateSchema.optional(),
+    modes: z.array(z.enum(CONSULT_MODES)).optional(),
+    availability: availabilitySchema.optional(),
     consent,
     attribution,
+  }).superRefine((v, ctx) => {
+    if (v.listingType !== "professional") return;
+    if (!v.hourlyRate) ctx.addIssue({ code: "custom", path: ["hourlyRate"], message: "Enter your hourly rate" });
+    if (!v.modes?.length) ctx.addIssue({ code: "custom", path: ["modes"], message: "Choose how you see clients" });
+    if (!v.availability) ctx.addIssue({ code: "custom", path: ["availability"], message: "Add your availability" });
   }),
 } as const;
 

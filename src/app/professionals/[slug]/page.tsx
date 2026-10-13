@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isFeatured, publishedProfessionals } from "@/content/directory";
 import { FeaturedExtras } from "@/components/FeaturedExtras";
+import { BookingScheduler } from "@/components/booking/BookingScheduler";
+import { formatRate } from "@/lib/booking";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { formatDate } from "@/components/Editorial";
 
@@ -59,7 +61,10 @@ export default async function ProfessionalPage({ params }: { params: Promise<{ s
                 </li>
               ))}
             </ul>
-            {p.bookingUrl && (
+            <p style={{ margin: "12px 0" }}>
+              <strong>{formatRate(p.hourlyRate.amount, p.hourlyRate.currency)}</strong> <span className="small muted">per hour · paid directly to {p.name}</span>
+            </p>
+            {p.bookingUrl && !p.availability && (
               <a href={p.bookingUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
                 Request an appointment
               </a>
@@ -69,6 +74,14 @@ export default async function ProfessionalPage({ params }: { params: Promise<{ s
             </p>
           </aside>
         </div>
+        {p.availability && p.bookingEmail && (
+          <section className="card" aria-labelledby="book-h" style={{ marginTop: 24 }}>
+            <h2 id="book-h" style={{ fontSize: "var(--fs-xl)" }}>
+              Book a session with {p.name}
+            </h2>
+            <BookingScheduler professional={{ slug: p.slug, name: p.name, hourlyRate: p.hourlyRate, availability: p.availability, modes: p.modes }} />
+          </section>
+        )}
       </article>
     </>
   );
