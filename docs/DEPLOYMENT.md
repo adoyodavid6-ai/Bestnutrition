@@ -3,7 +3,7 @@
 ## Requirements
 
 - Node.js 20+
-- Outbound HTTPS from the build machine to Google Fonts (`next/font` downloads Fraunces and Inter at build time)
+- Outbound HTTPS from the build machine to Google Fonts (`next/font` downloads Source Serif 4 at build time)
 
 ## Option A: Vercel (recommended)
 
