@@ -10,13 +10,13 @@ Operational setup (Stripe products, webhooks, test plan) is in [MONETIZATION.md]
 
 | Item | Price | How it's charged |
 | --- | --- | --- |
-| Premium | **US$37.99 per month** | Stripe Checkout subscription with inline `price_data` (env `PREMIUM_MONTHLY_PRICE_USD`); a Stripe Price ID overrides it; optional yearly Stripe Price |
+| Premium | **US$14.99 per month** | Stripe Checkout subscription with inline `price_data` (env `PREMIUM_MONTHLY_PRICE_USD`); a Stripe Price ID overrides it; optional yearly Stripe Price |
 | Professional sign-up | **US$100, one-time** | After verification only, via a 30-day signed link from `/admin` → `/professionals/join` (env `PRO_SIGNUP_FEE_USD`) |
 | Consultations | Each professional's own hourly rate, in their currency | **Not charged through NourishWell.** Clients pay professionals directly; no commission |
 
 The holding account settles in **US dollars**. Stripe Adaptive Pricing (`adaptive_pricing[enabled]=true`, on by default) shows buyers the converted amount in their local currency and lets them pay in it; where it isn't available, any card can pay the USD amount and the card issuer converts it. The dashboard reports what Stripe records, never converting currencies itself.
 
-**Note on Premium's price:** at US$37.99/month, Premium is priced well above the consumer meal-planning apps researched in MONETIZATION.md section 15 (roughly US$3–15/month), while it currently includes two extras (50 saved plans and exports). Expect low conversion until more Premium features ship; the price is configurable without code changes.
+**Note on Premium's price:** at US$14.99/month, Premium sits at the top of the range of consumer meal-planning apps researched in MONETIZATION.md section 15 (roughly US$3–15/month), while it currently includes two extras (50 saved plans and exports). Shipping more Premium features will help it earn that price; the price is configurable without code changes.
 
 ## Professional bookings
 

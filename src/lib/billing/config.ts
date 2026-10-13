@@ -8,9 +8,9 @@
  */
 
 /** Owner-set list prices in US dollars. */
-export const DEFAULT_USD_PRICES = { premiumMonthly: "37.99", proSignup: "100.00" };
+export const DEFAULT_USD_PRICES = { premiumMonthly: "14.99", proSignup: "100.00" };
 
-/** "37.99" → 3799 cents; invalid or non-positive values fall back to the default. */
+/** "14.99" → 1499 cents; invalid or non-positive values fall back to the default. */
 export function usdToCents(value: string | undefined, fallback: string): number {
   const n = Number.parseFloat((value ?? "").trim());
   const cents = Math.round((Number.isFinite(n) && n > 0 && n < 100_000 ? n : Number.parseFloat(fallback)) * 100);

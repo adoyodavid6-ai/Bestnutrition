@@ -23,7 +23,7 @@ export interface RevenueStream {
 }
 
 export const STREAMS: RevenueStream[] = [
-  { id: "premium", name: "Premium subscription", phase: 2, model: "US$37.99/month (PREMIUM_MONTHLY_PRICE_USD), payable in local currency via Adaptive Pricing; optional yearly Stripe Price", requires: ["STRIPE_SECRET_KEY", "ENTITLEMENT_SECRET", "STRIPE_WEBHOOK_SECRET"], notes: "Sells only features that exist today (see plans.ts FEATURE_STATUS)." },
+  { id: "premium", name: "Premium subscription", phase: 2, model: "US$14.99/month (PREMIUM_MONTHLY_PRICE_USD), payable in local currency via Adaptive Pricing; optional yearly Stripe Price", requires: ["STRIPE_SECRET_KEY", "ENTITLEMENT_SECRET", "STRIPE_WEBHOOK_SECRET"], notes: "Sells only features that exist today (see plans.ts FEATURE_STATUS)." },
   { id: "pro-signup", name: "Professional sign-up fee", phase: 3, model: "One-time US$100 after verification (PRO_SIGNUP_FEE_USD), via a signed payment link", requires: ["STRIPE_SECRET_KEY", "ENTITLEMENT_SECRET", "Verified professionals"], notes: "Professionals set their own hourly rate; clients pay them directly (no commission)." },
   { id: "featured-listing", name: "Featured directory listing", phase: 3, model: "Monthly subscription, offered only after verification via a signed link", requires: ["STRIPE_PRICE_LISTING_FEATURED", "ENTITLEMENT_SECRET", "Verified listings"], notes: "Directory is empty until listings are verified." },
   { id: "business-plus", name: "Business Plus listing", phase: 3, model: "Higher-tier listing subscription", requires: ["Accounts + database (Supabase)", "Lead inbox", "Reporting"], notes: "Needs business accounts and stored enquiries before it can be sold honestly." },

@@ -28,22 +28,22 @@ const find = (s: string) => (s === pro.slug ? pro : undefined);
 
 describe("pricing configuration", () => {
   it("uses the owner's USD list prices unless overridden", () => {
-    expect(usdToCents(undefined, "37.99")).toBe(3799);
-    expect(usdToCents("49.5", "37.99")).toBe(4950);
+    expect(usdToCents(undefined, "14.99")).toBe(1499);
+    expect(usdToCents("49.5", "14.99")).toBe(4950);
     expect(usdToCents("-3", "100")).toBe(10000);
     const c = billingConfig({});
-    expect(c.usd).toEqual({ premiumMonthly: 3799, proSignup: 10000 });
+    expect(c.usd).toEqual({ premiumMonthly: 1499, proSignup: 10000 });
     expect(c.adaptivePricing).toBe(true);
     expect(billingConfig({ STRIPE_ADAPTIVE_PRICING: "off" }).adaptivePricing).toBe(false);
   });
 
-  it("offers Premium at US$37.99/month without a Stripe Price, and shows it before launch", async () => {
+  it("offers Premium at US$14.99/month without a Stripe Price, and shows it before launch", async () => {
     const live = await premiumOffers(billingConfig({ STRIPE_SECRET_KEY: "sk_test_x", ENTITLEMENT_SECRET: "s".repeat(40) }));
     expect(live.sellable).toBe(true);
-    expect(live.month).toMatchObject({ amount: 3799, currency: "usd", display: "$37.99", interval: "month" });
+    expect(live.month).toMatchObject({ amount: 1499, currency: "usd", display: "$14.99", interval: "month" });
     const before = await premiumOffers(billingConfig({}));
     expect(before.sellable).toBe(false);
-    expect(before.listMonthly.display).toBe("$37.99");
+    expect(before.listMonthly.display).toBe("$14.99");
     expect(proSignupOffer(billingConfig({}))).toBeNull();
     expect(proSignupOffer(billingConfig({ STRIPE_SECRET_KEY: "sk_test_x", ENTITLEMENT_SECRET: "s".repeat(40) }))!.display).toBe("$100");
   });

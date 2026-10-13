@@ -150,6 +150,18 @@ A scripted Chromium run passed all 26 checks:
 
 **Regression:** `npm run e2e` passed 36/36. The crawl covered 158 pages with no problems. The shopping calendar passed 26/26.
 
+## Premium price changed to US$14.99/month (13 October 2026)
+
+The owner changed Premium from US$37.99 to **US$14.99 a month** (`PREMIUM_MONTHLY_PRICE_USD` default). The earlier entries above record the tests run at the old price.
+
+Re-run at the new price:
+- **`npm run e2e:billing`:** 71/71 passed. Pricing shows $14.99 USD / month, checkout uses inline `price_data` of 1499 USD, and the dashboard's monthly revenue figure is $14.99.
+- **Unit tests:** 108/108 passed.
+- **Without Stripe configured:** pricing shows "$14.99 USD / month — Opening soon".
+- **Regression:** `npm run e2e` passed 36/36, and the crawl covered 158 pages with no problems.
+
+The logo row of the header is now #D9C4B1. Header text contrast is at least 6.7:1.
+
 ## Server and API checks (manual, with curl)
 
 | Check | Result |

@@ -17,10 +17,10 @@
   --slate-70: #51625d;
   --white: #ffffff;
   --forest: #0a2610;
-  /* Header: logo row #DEE0CC, navigation row Midnight Violet (as the footer) */
-  --header-bg: #dee0cc;
-  --header-hover: #cfd2b8;
-  --header-border: #c3c7a4;
+  /* Header: logo row #D9C4B1, navigation row Midnight Violet (as the footer) */
+  --header-bg: #d9c4b1;
+  --header-hover: #cbb39d;
+  --header-border: #c7b09b;
   --nav-bg: var(--violet);
   --nav-hover: rgba(255, 255, 255, 0.14);
 

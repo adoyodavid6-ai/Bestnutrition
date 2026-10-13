@@ -28,8 +28,8 @@ const subscriptionObj = () => ({
   created: now() - 5 * 86400,
   cancel_at_period_end: state.cancelAtPeriodEnd,
   metadata: { product: "premium" },
-  // Created from inline price_data (the owner's US$37.99 list price).
-  items: { data: [{ quantity: 1, current_period_end: now() + 30 * 86400, price: { id: "price_inline_premium", active: true, currency: "usd", unit_amount: 3799, recurring: { interval: "month", interval_count: 1 } } }] },
+  // Created from inline price_data (the owner's US$14.99 list price).
+  items: { data: [{ quantity: 1, current_period_end: now() + 30 * 86400, price: { id: "price_inline_premium", active: true, currency: "usd", unit_amount: 1499, recurring: { interval: "month", interval_count: 1 } } }] },
 });
 let n = 0;
 
@@ -112,7 +112,7 @@ http
     }
     if (url.pathname === "/v1/invoices") {
       return send(res, 200, list([
-        { id: "in_1", status: "paid", currency: "usd", amount_paid: 3799, customer: "cus_test_1", created: now() - 86400, tax: 0, customer_address: { country: "US" }, subscription_details: { metadata: { product: "premium" } }, lines: { data: [{ price: { id: "price_inline_premium" } }] } },
+        { id: "in_1", status: "paid", currency: "usd", amount_paid: 1499, customer: "cus_test_1", created: now() - 86400, tax: 0, customer_address: { country: "US" }, subscription_details: { metadata: { product: "premium" } }, lines: { data: [{ price: { id: "price_inline_premium" } }] } },
         { id: "in_2", status: "paid", currency: "usd", amount_paid: 2900, customer: "cus_biz_1", created: now() - 86400, tax: 0, customer_address: { country: "GB" }, lines: { data: [{ price: { id: "price_listing_month" } }] } },
       ]));
     }
