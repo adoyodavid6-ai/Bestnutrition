@@ -23,6 +23,7 @@ export const KEYS = {
   plannerPrefs: "planner-prefs",
   recent: "recent",
   consent: "consent",
+  shoppingSchedule: "shopping-schedule",
 } as const;
 
 const cache = new Map<string, unknown>();

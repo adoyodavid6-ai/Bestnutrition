@@ -6,6 +6,8 @@ import { DAY_LABELS, SLOT_LABELS, type MealPlan } from "@/lib/planner";
 import type { ShoppingItem } from "@/lib/shopping";
 import type { RecentItem } from "./RecentTracker";
 import { Icon } from "./Icon";
+import { formatDay, useShoppingSchedule } from "./shopping/useShoppingSchedule";
+import { nextOccurrence } from "@/lib/shopping-schedule";
 
 export interface DashboardRecipe {
   slug: string;
@@ -21,6 +23,7 @@ export function Dashboard({ recipes, thumbs, articleTitles }: { recipes: Dashboa
   const [savedRecipes, setSavedRecipes] = useStored<string[]>(KEYS.savedRecipes, []);
   const [savedArticles, setSavedArticles] = useStored<string[]>(KEYS.savedArticles, []);
   const [recent] = useStored<RecentItem[]>(KEYS.recent, []);
+  const { schedule, today: todayDay } = useShoppingSchedule();
 
   if (!hydrated) return <div className="card" aria-busy="true" style={{ minHeight: 300 }} />;
 
@@ -29,6 +32,7 @@ export function Dashboard({ recipes, thumbs, articleTitles }: { recipes: Dashboa
   const todayIndex = (new Date().getDay() + 6) % 7;
   const today = plan?.days[todayIndex];
   const done = shopping.filter((i) => i.checked).length;
+  const nextShop = schedule.enabled ? nextOccurrence(schedule, todayDay) : null;
   const totalEntries = plan?.days.reduce((s, d) => s + d.entries.length, 0) ?? 0;
   const prepared = plan?.days.reduce((s, d) => s + d.entries.filter((e) => e.prepared).length, 0) ?? 0;
 
@@ -36,6 +40,7 @@ export function Dashboard({ recipes, thumbs, articleTitles }: { recipes: Dashboa
   if (!plan) actions.push({ href: "/meal-planner", label: "Build your first weekly meal plan" });
   else if (shopping.length === 0) actions.push({ href: "/meal-planner", label: "Turn your plan into a shopping list" });
   if (shopping.length > 0 && done < shopping.length) actions.push({ href: "/shopping-list", label: `Finish your shopping list (${shopping.length - done} items left)` });
+  if (!schedule.enabled) actions.push({ href: "/shopping-calendar", label: "Set a regular shopping day" });
   if (savedRecipes.length === 0) actions.push({ href: "/recipes", label: "Save a few recipes you'd like to try" });
   actions.push({ href: "/account", label: "Set your units, region and preferences" });
 
@@ -113,6 +118,16 @@ export function Dashboard({ recipes, thumbs, articleTitles }: { recipes: Dashboa
               </div>
             </>
           )}
+          <p className="small" style={{ margin: "12px 0 0" }}>
+            <Icon name="calendar" size={14} />{" "}
+            {nextShop ? (
+              <>
+                Next shopping day: <strong>{formatDay(nextShop, { weekday: "long", day: "numeric", month: "short" })}</strong> · <Link href="/shopping-calendar">Change</Link>
+              </>
+            ) : (
+              <Link href="/shopping-calendar">{schedule.enabled ? "Shopping calendar" : "Set a shopping day"}</Link>
+            )}
+          </p>
         </section>
       </div>
 

@@ -27,6 +27,7 @@ export const footerNav = [
       { href: "/discover", label: "Collections" },
       { href: "/meal-planner", label: "Meal planner" },
       { href: "/shopping-list", label: "Shopping list" },
+      { href: "/shopping-calendar", label: "Shopping calendar" },
       { href: "/search", label: "Search" },
     ],
   },

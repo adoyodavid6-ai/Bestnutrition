@@ -40,6 +40,14 @@ Business rules live in `lib/` and are unit-tested independently of the UI.
 - Converts spoons to ml so lines can be added together, then merges by ingredient + unit.
 - Regenerating from a plan keeps check marks, user prices and custom items.
 
+### Shopping calendar (`lib/shopping-schedule.ts`)
+
+- A schedule is a start day, a frequency of 1–4 weeks, an end rule (never, after N trips, or until a date), and a lead time of 0–2 days. All dates are calendar days (`YYYY-MM-DD`) handled in UTC, so daylight-saving changes never shift a shopping day.
+- **Due logic:** the latest trip whose window (shopping day − lead time) has opened is due until it is marked done. A missed trip stays on the homepage as "still to do" until the next trip's window opens.
+- `ShoppingDueBanner` on the homepage shows the list when a trip is due. **Done shopping** marks the trip complete and clears ticked items. **Hide for today** snoozes until tomorrow.
+- `toICS()` exports an RRULE (`FREQ=WEEKLY;INTERVAL=n` plus `COUNT` or `UNTIL`) so the reminder also works in Google Calendar, Apple Calendar or Outlook.
+- Stored under `KEYS.shoppingSchedule`. When accounts launch, this maps to one row per user alongside `shopping_lists`.
+
 ## Persistence
 
 **Today:** all personal data (saved items, plans, lists, preferences, consent, habit ticks) lives in `localStorage` under the `nw:` prefix. Access goes through `useStored()` (a `useSyncExternalStore` hook that syncs across tabs). Users can export it as JSON or delete it from `/account`. Nothing personal is sent to the server.

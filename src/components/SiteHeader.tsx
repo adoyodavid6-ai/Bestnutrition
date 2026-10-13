@@ -128,6 +128,9 @@ export function SiteHeader() {
                 <Link href="/shopping-list">Shopping list</Link>
               </li>
               <li>
+                <Link href="/shopping-calendar">Shopping calendar</Link>
+              </li>
+              <li>
                 <Link href="/pricing">Free &amp; Premium</Link>
               </li>
               <li>

@@ -10,6 +10,7 @@ import { RecipeImage } from "@/components/RecipeImage";
 import { RecipeCard } from "@/components/RecipeCard";
 import { Icon } from "@/components/Icon";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
+import { ShoppingDueBanner } from "@/components/shopping/ShoppingDueBanner";
 import { DEFAULT_PREFS, SLOT_LABELS, generatePlan } from "@/lib/planner";
 import { FEATURE_LABELS, plans } from "@/lib/plans";
 
@@ -40,6 +41,9 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Shopping-day reminder: appears only when a scheduled shopping day is due */}
+      <ShoppingDueBanner />
+
       {/* 1. Hero */}
       <section className="hero">
         <div className="container hero-grid">

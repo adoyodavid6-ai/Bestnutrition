@@ -182,6 +182,9 @@ export function ShoppingList() {
           <button type="button" className="btn btn-ghost btn-sm" onClick={share}>
             <Icon name="share" size={16} /> Share
           </button>
+          <Link href="/shopping-calendar" className="btn btn-ghost btn-sm">
+            <Icon name="calendar" size={16} /> Shopping calendar
+          </Link>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => setItems((all) => all.filter((i) => !i.checked))} disabled={done === 0}>
             Remove ticked items
           </button>

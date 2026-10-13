@@ -8,8 +8,8 @@ These tests were run on 12 October 2026 against a production build (`next build 
 | --- | --- |
 | `npm run typecheck` (TypeScript strict) | ✅ No errors |
 | `npm run lint` (next/core-web-vitals + TypeScript rules) | ✅ No warnings or errors |
-| `npm test`: 46 unit tests | ✅ 46/46 passed |
-| `npm run build` | ✅ 129 pages prerendered, no warnings |
+| `npm test`: 64 unit tests | ✅ 64/64 passed |
+| `npm run build` | ✅ 155 pages prerendered, no warnings |
 
 Unit tests cover:
 
@@ -17,6 +17,7 @@ Unit tests cover:
 - **Units and scaling:** metric/US conversion, fractions.
 - **Dietary derivation:** vegan, pescatarian, honey, oats and gluten.
 - **Shopping consolidation:** merging, scaling, keeping checks, prices and custom items.
+- **Shopping calendar:** weekly / 2 / 3 / 4-week repeats, ending after N trips or on a date, month/year/DST boundaries, lead time, missed trips staying due until done, hide-for-today, and .ics RRULE export.
 - **Planner:** 7 days and requested slots; hard constraints never violated; no back-to-back repeats; reproducible from a seed; moving meals; batch-cooking ideas.
 - **Content integrity:** unique slugs and ids, every reference resolves and uses HTTPS, no reviewer without a review date, all 12 condition sections filled, related links resolve, no cure language in claim fields, every collection and goal populated, at least 10 East African recipes.
 - **Directory:** never publishes unverified entries.
@@ -49,6 +50,18 @@ Unit tests cover:
 - No duplicate titles or descriptions.
 - No images without alt text; no unlabelled SVG images.
 - No horizontal overflow at 390px wide, and no console errors.
+
+## Shopping calendar (browser, 13 October 2026)
+
+A scripted Chromium run passed all 26 checks:
+
+- With no schedule, the homepage shows no banner.
+- A schedule set through the form (every 2 weeks, 6 trips) is saved, and the shopping days are highlighted on the month grid.
+- The .ics download contains `RRULE:FREQ=WEEKLY;INTERVAL=2;COUNT=6`.
+- On shopping day the list appears at the top of the homepage, grouped by aisle. Ticking an item updates the count.
+- **Hide for today** removes the banner. **Done shopping** removes it, clears ticked items and marks the day done on the calendar.
+- Missed trips show as "still to do". The 2-day lead time shows "Shopping day is Thursday", and nothing appears before the window opens.
+- At 375px there is no horizontal overflow, every element uses Source Serif 4, and there are no console errors.
 
 ## Server and API checks (manual, with curl)
 

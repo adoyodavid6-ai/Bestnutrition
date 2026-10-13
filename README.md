@@ -24,7 +24,7 @@ Quality checks:
 ```bash
 npm run typecheck    # TypeScript
 npm run lint         # ESLint (next/core-web-vitals)
-npm test             # 47 unit tests (nutrition, scaling, planner, shopping, content integrity, forms, entitlements, search)
+npm test             # 64 unit tests (nutrition, scaling, planner, shopping, shopping calendar, content integrity, forms, entitlements, search)
 npm run e2e          # browser tests against a running server (BASE_URL=http://localhost:3000)
 ```
 
@@ -39,6 +39,7 @@ npm run e2e          # browser tests against a running server (BASE_URL=http://l
 | Nutrition education (16 guides), health conditions (22 guides, 12-part structure), supplements (12), fitness & wellness (14) | ✅ Published as general education; **clinical review pending** (honestly labelled) |
 | Meal planner: preferences, generation, replace, move, servings, prepared, custom meals, saved plans, duplicate-as-template, batch-cooking ideas, daily estimates | ✅ Working (stored on device) |
 | Shopping list: consolidation, aisles, check-off, edit, custom items, print, share, user-entered prices with currency | ✅ Working (stored on device) |
+| Shopping calendar: repeat weekly or every 2, 3 or 4 weeks; repeat forever, for N trips or until a date; the list appears at the top of the homepage on shopping day (or 1–2 days early) until marked done; month view; .ics export | ✅ Working (stored on device) |
 | Dashboard, account preferences, data export & deletion, consent controls | ✅ Working (on device) |
 | Search (recipes, guides, regional ingredient names) | ✅ Working |
 | Pricing page with configurable plans and feature comparison | ✅ Working; Premium **not yet available**, no prices invented |
