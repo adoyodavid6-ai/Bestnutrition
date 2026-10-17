@@ -10,7 +10,7 @@ import { formatBaseQuantity } from "@/lib/units";
 
 export const metadata: Metadata = {
   title: "Free 7-Day Meal Plan with Shopping List",
-  description: "A free, printable seven-day meal plan — American, British or Asian kitchen — with breakfasts, lunches and dinners, estimated nutrition and one consolidated shopping list.",
+  description: "A free, printable seven-day meal plan — American, British, European, Latin American or Asian kitchen — with breakfasts, lunches and dinners, estimated nutrition and one consolidated shopping list.",
   alternates: { canonical: "/free-meal-plan" },
   openGraph: { title: "Free 7-day meal plan with shopping list", description: "Balanced breakfasts, lunches and dinners for a week, with one tidy shopping list. Free and printable.", url: "/free-meal-plan" },
 };
@@ -18,6 +18,8 @@ export const metadata: Metadata = {
 const KITCHENS: { id: StarterPlan["id"]; label: string; regions: string[]; seed: number; blurb: string }[] = [
   { id: "american", label: "American kitchen", regions: ["United States"], seed: 11, blurb: "Familiar American favourites made lighter — turkey chilli, salmon bowls and sheet-pan dinners." },
   { id: "british", label: "British kitchen", regions: ["United Kingdom"], seed: 23, blurb: "Comforting British classics — soups, fish pie and Sunday-style suppers, with plenty of veg." },
+  { id: "european", label: "European kitchen", regions: ["Europe", "Mediterranean"], seed: 29, blurb: "Mediterranean and European home cooking — minestrone, ratatouille, paprikash and plenty of beans and greens." },
+  { id: "latin", label: "Latin American kitchen", regions: ["Latin America"], seed: 31, blurb: "Bright, filling dishes from Mexico to Brazil — fajitas, rice and beans, moqueca and fresh salsas." },
   { id: "asian", label: "Asian kitchen", regions: ["East Asia", "Southeast Asia", "South Asia"], seed: 37, blurb: "Bright, quick dishes from across Asia — stir-fries, noodle salads, curries and rice bowls." },
 ];
 

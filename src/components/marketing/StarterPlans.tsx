@@ -11,7 +11,7 @@ import { toast } from "../Toaster";
 import { usePlan } from "../billing/usePlan";
 
 export interface StarterPlan {
-  id: "american" | "british" | "asian";
+  id: "american" | "british" | "european" | "latin" | "asian";
   label: string;
   blurb: string;
   plan: MealPlan;
