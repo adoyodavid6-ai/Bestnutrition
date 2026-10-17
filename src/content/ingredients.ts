@@ -168,6 +168,79 @@ export const ingredients: Ingredient[] = [
   { id: "chilli-flakes", name: "Chilli flakes or powder", category: "spices", per100g: n(318, 12, 56.6, 17.3, 3.3, 27.2, 30), source: fdc("Spices, pepper, red or cayenne"), cost: 1, color: "#a8241c" },
   { id: "dried-herbs", name: "Dried thyme or mixed herbs", category: "spices", per100g: n(276, 9.1, 63.9, 7.4, 2.7, 37, 55), source: fdc("Spices, thyme, dried"), cost: 1, color: "#6f7d4a" },
   { id: "coriander-ground", name: "Ground coriander seed", category: "spices", per100g: n(298, 12.4, 55, 17.8, 1.0, 41.9, 35), source: fdc("Spices, coriander seed"), cost: 1, color: "#a88a4a" },
+
+  // ---------- Added for the expanded American, European and Asian library ----------
+  // Grains & bakery
+  { id: "wholewheat-pasta", name: "Whole-wheat pasta (dry)", category: "grains", per100g: n(348, 14.6, 73.4, 2.9, 0.5, 9.2, 8), source: fdc("Pasta, whole-wheat, dry"), allergens: ["gluten"], cost: 2, color: "#b98a52" },
+  { id: "couscous", name: "Couscous (dry)", category: "grains", per100g: n(376, 12.8, 77.4, 0.6, 0.1, 5.0, 10), source: fdc("Couscous, dry"), allergens: ["gluten"], cost: 2, color: "#ecd7a2" },
+  { id: "pearl-barley", name: "Pearl barley (dry)", category: "grains", per100g: n(352, 9.9, 77.7, 1.2, 0.2, 15.6, 9), source: fdc("Barley, pearled, raw"), allergens: ["gluten"], cost: 1, color: "#e3cfa0" },
+  { id: "egg-noodles", name: "Egg noodles (dry)", category: "grains", per100g: n(384, 14.2, 71.3, 4.4, 0.9, 3.3, 21), source: fdc("Noodles, egg, dry, enriched"), allergens: ["gluten", "egg"], animal: "egg", cost: 2, color: "#f0cf7a" },
+  { id: "soba", name: "Soba (buckwheat) noodles (dry)", category: "grains", per100g: n(336, 14.4, 74.6, 0.7, 0.1, 3.0, 792), source: fdc("Noodles, japanese, soba, dry"), allergens: ["gluten"], cost: 2, color: "#9c8466" },
+  { id: "flour-tortilla", name: "Whole-wheat flour tortillas", category: "grains", per100g: n(304, 8.1, 50.4, 7.5, 2.1, 6.0, 619), source: fdc("Tortillas, ready-to-bake or -fry, flour", "Fibre adjusted towards whole-wheat tortillas; check the label"), allergens: ["gluten"], cost: 2, color: "#e7cf9c" },
+  { id: "rye-bread", name: "Rye bread", category: "grains", per100g: n(259, 8.5, 48.3, 3.3, 0.6, 5.8, 603), source: fdc("Bread, rye"), allergens: ["gluten"], cost: 2, color: "#7a5a3c" },
+  { id: "breadcrumbs", name: "Dried breadcrumbs", altNames: ["panko"], category: "grains", per100g: n(395, 13.4, 71.9, 5.3, 1.2, 4.5, 732), source: fdc("Bread, crumbs, dry, grated, plain"), allergens: ["gluten"], cost: 1, color: "#d9b97a" },
+  { id: "cornflour", name: "Cornflour (cornstarch)", category: "pantry", per100g: n(381, 0.3, 91.3, 0.1, 0, 0.9, 9), source: fdc("Cornstarch"), cost: 1, color: "#fbf8ef" },
+  { id: "baking-powder", name: "Baking powder", category: "pantry", per100g: n(53, 0, 27.7, 0, 0, 0.2, 10600), source: fdc("Leavening agents, baking powder, double-acting, sodium aluminum sulfate"), cost: 1, color: "#f4f2ec" },
+
+  // Vegetables & herbs
+  { id: "green-pepper", name: "Green bell pepper", category: "produce", per100g: n(20, 0.9, 4.6, 0.2, 0.1, 1.7, 3), source: fdc("Peppers, sweet, green, raw"), cost: 1, color: "#4f8f3a" },
+  { id: "mangetout", name: "Mangetout / snow peas", altNames: ["snow peas", "sugar snap peas"], category: "produce", per100g: n(42, 2.8, 7.6, 0.2, 0, 2.6, 4), source: fdc("Peas, edible-podded, raw"), cost: 2, color: "#6fae4a" },
+  { id: "beetroot", name: "Beetroot", altNames: ["beets"], category: "produce", per100g: n(43, 1.6, 9.6, 0.2, 0, 2.8, 78), source: fdc("Beets, raw"), cost: 1, color: "#8c1d40" },
+  { id: "asparagus", name: "Asparagus", category: "produce", per100g: n(20, 2.2, 3.9, 0.1, 0, 2.1, 2), source: fdc("Asparagus, raw"), cost: 3, color: "#7a9e4a" },
+  { id: "fennel", name: "Fennel bulb", category: "produce", per100g: n(31, 1.2, 7.3, 0.2, 0.1, 3.1, 52), source: fdc("Fennel, bulb, raw"), cost: 2, color: "#d8e3b5" },
+  { id: "brussels-sprouts", name: "Brussels sprouts", category: "produce", per100g: n(43, 3.4, 9.0, 0.3, 0.1, 3.8, 25), source: fdc("Brussels sprouts, raw"), cost: 2, color: "#6d9a45" },
+  { id: "parsnip", name: "Parsnip", category: "produce", per100g: n(75, 1.2, 18.0, 0.3, 0.1, 4.9, 10), source: fdc("Parsnips, raw"), cost: 1, color: "#eadcb6" },
+  { id: "rocket", name: "Rocket (arugula)", altNames: ["arugula"], category: "produce", per100g: n(25, 2.6, 3.7, 0.7, 0.1, 1.6, 27), source: fdc("Arugula, raw"), cost: 2, color: "#4f7f35" },
+  { id: "bean-sprouts", name: "Bean sprouts", category: "produce", per100g: n(30, 3.0, 5.9, 0.2, 0, 1.8, 6), source: fdc("Mung beans, mature seeds, sprouted, raw"), cost: 1, color: "#efeccd" },
+  { id: "lemongrass", name: "Lemongrass", category: "produce", per100g: n(99, 1.8, 25.3, 0.5, 0.1, 0, 6), source: fdc("Lemon grass (citronella), raw"), cost: 2, color: "#c3cf8a" },
+  { id: "basil", name: "Fresh basil", altNames: ["Thai basil"], category: "produce", per100g: n(23, 3.2, 2.7, 0.6, 0, 1.6, 4), source: fdc("Basil, fresh"), cost: 1, color: "#3e8a3a" },
+  { id: "dill", name: "Fresh dill", category: "produce", per100g: n(43, 3.5, 7.0, 1.1, 0.1, 2.1, 61), source: fdc("Dill weed, fresh"), cost: 1, color: "#6a9b4c" },
+  { id: "olives", name: "Olives (drained)", altNames: ["kalamata olives"], category: "produce", per100g: n(115, 0.8, 6.3, 10.7, 1.4, 3.2, 735), source: fdc("Olives, ripe, canned (small-extra large)"), cost: 2, color: "#3d3a2a" },
+  { id: "capers", name: "Capers (drained)", category: "produce", per100g: n(23, 2.4, 4.9, 0.9, 0.2, 3.2, 2964), source: fdc("Capers, canned"), cost: 2, color: "#5b6b3a" },
+  { id: "sauerkraut", name: "Sauerkraut", category: "produce", per100g: n(19, 0.9, 4.3, 0.1, 0, 2.9, 661), source: fdc("Sauerkraut, canned, solids and liquids"), cost: 1, color: "#e3dca6" },
+  { id: "kimchi", name: "Kimchi (traditional, usually contains fish sauce)", category: "produce", per100g: n(15, 1.1, 2.4, 0.5, 0.1, 1.6, 498), source: fdc("Kimchi", "Traditional kimchi often contains fish sauce or salted shrimp; it is treated as containing fish"), allergens: ["fish"], animal: "fish", cost: 2, color: "#c8452e" },
+
+  // Fruit
+  { id: "kiwi", name: "Kiwi fruit", category: "fruit", per100g: n(61, 1.1, 14.7, 0.5, 0, 3.0, 3), source: fdc("Kiwifruit, green, raw"), cost: 2, color: "#8bb04a" },
+  { id: "passion-fruit", name: "Passion fruit pulp", category: "fruit", per100g: n(97, 2.2, 23.4, 0.7, 0.1, 10.4, 28), source: fdc("Passion-fruit, (granadilla), purple, raw"), cost: 2, color: "#e5b23a" },
+  { id: "papaya", name: "Papaya", altNames: ["pawpaw"], category: "fruit", per100g: n(43, 0.5, 10.8, 0.3, 0.1, 1.7, 8), source: fdc("Papayas, raw"), cost: 1, color: "#f08a4b" },
+  { id: "pear", name: "Pear", category: "fruit", per100g: n(57, 0.4, 15.2, 0.1, 0, 3.1, 1), source: fdc("Pears, raw"), cost: 2, color: "#cfd36a" },
+  { id: "strawberries", name: "Strawberries", category: "fruit", per100g: n(32, 0.7, 7.7, 0.3, 0, 2.0, 1), source: fdc("Strawberries, raw"), cost: 2, color: "#d93a3a" },
+  { id: "raisins", name: "Raisins", altNames: ["sultanas"], category: "fruit", per100g: n(299, 3.1, 79.2, 0.5, 0.1, 3.7, 11), source: fdc("Raisins, seedless"), cost: 2, color: "#5a3a3a" },
+
+  // Legumes & plant proteins
+  { id: "pinto-beans", name: "Pinto beans (cooked)", category: "legumes", per100g: n(143, 9.0, 26.2, 0.7, 0.1, 9.0, 1), source: fdc("Beans, pinto, mature seeds, cooked, boiled, without salt"), cost: 1, color: "#b08a6a" },
+  { id: "white-beans", name: "Cannellini / white beans (cooked)", altNames: ["haricot beans", "navy beans"], category: "legumes", per100g: n(139, 9.7, 25.1, 0.4, 0.1, 6.3, 6), source: fdc("Beans, white, mature seeds, cooked, boiled, without salt"), cost: 1, color: "#efe6d2" },
+  { id: "edamame", name: "Edamame (shelled, frozen)", category: "legumes", per100g: n(121, 11.9, 8.9, 5.2, 0.6, 5.2, 6), source: fdc("Edamame, frozen, prepared"), allergens: ["soy"], cost: 2, color: "#7fb34a" },
+  { id: "tempeh", name: "Tempeh", category: "protein", per100g: n(192, 20.3, 7.6, 10.8, 2.2, 0, 9), source: fdc("Tempeh"), allergens: ["soy"], cost: 3, color: "#c9a86a" },
+
+  // Meat & fish
+  { id: "pork-tenderloin", name: "Pork tenderloin, trimmed", altNames: ["pork fillet"], category: "protein", per100g: n(109, 21.0, 0, 2.2, 0.7, 0, 52), source: fdc("Pork, fresh, loin, tenderloin, separable lean only, raw"), animal: "meat", cost: 2, color: "#e2a596" },
+  { id: "lamb", name: "Lean lamb leg, diced", category: "protein", per100g: n(134, 20.6, 0, 5.3, 1.9, 0, 66), source: fdc("Lamb, domestic, leg, whole (shank and sirloin), separable lean only, raw"), animal: "meat", cost: 3, color: "#9a4a42" },
+  { id: "beef-steak", name: "Lean beef steak (sirloin), trimmed", category: "protein", per100g: n(135, 22.4, 0, 4.5, 1.7, 0, 56), source: fdc("Beef, top sirloin, steak, separable lean only, trimmed to 1/8\" fat, raw"), animal: "meat", cost: 3, color: "#8f3530" },
+  { id: "smoked-sausage", name: "Smoked sausage (e.g. andouille or kielbasa)", category: "protein", per100g: n(301, 12.0, 2.5, 26.5, 9.5, 0, 900), source: fdc("Sausage, smoked link sausage, pork and beef", "Values vary widely between brands; check the label"), animal: "meat", cost: 2, color: "#9b4b35" },
+  { id: "mackerel", name: "Mackerel fillet", category: "protein", per100g: n(205, 18.6, 0, 13.9, 3.3, 0, 90), source: fdc("Fish, mackerel, Atlantic, raw"), allergens: ["fish"], animal: "fish", cost: 2, color: "#9aa6b0" },
+  { id: "smoked-salmon", name: "Smoked salmon", category: "protein", per100g: n(117, 18.3, 0, 4.3, 0.9, 0, 784), source: fdc("Fish, salmon, chinook, smoked"), allergens: ["fish"], animal: "fish", cost: 3, color: "#f2876a" },
+
+  // Dairy
+  { id: "parmesan", name: "Parmesan cheese", category: "dairy", per100g: n(392, 35.8, 3.2, 25.8, 16.4, 0, 1529), source: fdc("Cheese, parmesan, hard"), allergens: ["dairy"], animal: "dairy", cost: 3, color: "#f1e2a8" },
+  { id: "mozzarella", name: "Mozzarella (part-skim)", category: "dairy", per100g: n(254, 24.3, 2.8, 15.9, 10.1, 0, 619), source: fdc("Cheese, mozzarella, part skim milk"), allergens: ["dairy"], animal: "dairy", cost: 2, color: "#fbf6e6" },
+  { id: "ricotta", name: "Ricotta (part-skim)", category: "dairy", per100g: n(138, 11.4, 5.1, 7.9, 4.9, 0, 99), source: fdc("Cheese, ricotta, part skim milk"), allergens: ["dairy"], animal: "dairy", cost: 2, color: "#fbf8ef" },
+  { id: "cottage-cheese", name: "Cottage cheese (low-fat)", category: "dairy", per100g: n(81, 10.5, 4.1, 2.3, 1.4, 0, 308), source: fdc("Cheese, cottage, lowfat, 2% milkfat"), allergens: ["dairy"], animal: "dairy", cost: 2, color: "#f7f3e8" },
+  { id: "butter", name: "Unsalted butter", category: "dairy", per100g: n(717, 0.9, 0.1, 81.1, 51.4, 0, 11), source: fdc("Butter, without salt"), allergens: ["dairy"], animal: "dairy", cost: 2, color: "#f5d97a" },
+
+  // Nuts & seeds
+  { id: "cashews", name: "Cashew nuts", category: "nuts-seeds", per100g: n(553, 18.2, 30.2, 43.9, 7.8, 3.3, 12), source: fdc("Nuts, cashew nuts, raw"), allergens: ["tree-nut"], cost: 3, color: "#e3c48e" },
+  { id: "pecans", name: "Pecans", category: "nuts-seeds", per100g: n(691, 9.2, 13.9, 72.0, 6.2, 9.6, 0), source: fdc("Nuts, pecans"), allergens: ["tree-nut"], cost: 3, color: "#8a5a34" },
+  { id: "hazelnuts", name: "Hazelnuts", category: "nuts-seeds", per100g: n(628, 15.0, 16.7, 60.8, 4.5, 9.7, 0), source: fdc("Nuts, hazelnuts or filberts"), allergens: ["tree-nut"], cost: 3, color: "#a57148" },
+  { id: "pumpkin-seeds", name: "Pumpkin seeds (pepitas)", category: "nuts-seeds", per100g: n(559, 30.2, 10.7, 49.1, 8.7, 6.0, 7), source: fdc("Seeds, pumpkin and squash seed kernels, dried"), cost: 2, color: "#5f7a3a" },
+  { id: "coconut-flakes", name: "Unsweetened coconut flakes", altNames: ["desiccated coconut"], category: "nuts-seeds", per100g: n(660, 6.9, 23.7, 64.5, 57.2, 16.3, 37), source: fdc("Nuts, coconut meat, dried (desiccated), not sweetened"), cost: 2, color: "#f6f1e4" },
+
+  // Pantry & sauces
+  { id: "maple-syrup", name: "Maple syrup", category: "pantry", per100g: n(260, 0, 67.0, 0.1, 0, 0, 12), source: fdc("Syrups, maple"), cost: 3, color: "#b5651d" },
+  { id: "mustard", name: "Mustard (Dijon or yellow)", category: "pantry", per100g: n(60, 3.7, 5.8, 3.3, 0.2, 4.0, 1104), source: fdc("Mustard, prepared, yellow"), cost: 1, color: "#d9a520" },
+  { id: "hoisin", name: "Hoisin sauce", category: "pantry", per100g: n(220, 3.3, 44.1, 3.4, 0.6, 2.8, 1615), source: fdc("Sauce, hoisin, ready-to-serve"), allergens: ["soy", "gluten"], cost: 2, color: "#5a2a1e" },
+  { id: "gochujang", name: "Gochujang or sriracha chilli sauce", category: "pantry", per100g: n(93, 1.9, 19.2, 0.9, 0.1, 2.2, 2124), source: fdc("Sauce, hot chile, sriracha", "Sriracha used as proxy for gochujang; many gochujang brands contain wheat and soy"), allergens: ["gluten", "soy"], cost: 2, color: "#b5281e" },
 ];
 
 const byId = new Map(ingredients.map((i) => [i.id, i]));

@@ -15,7 +15,7 @@ export default function AboutPage() {
       <h2>What makes us different</h2>
       <ul>
         <li>
-          <strong>Food people actually cook.</strong> American, British and Asian favourites lead the library, alongside East African, Mediterranean, Middle Eastern and Latin American recipes, with
+          <strong>Food people actually cook.</strong> American, European and Asian favourites lead the library, alongside Latin American, East African, Mediterranean and Middle Eastern recipes, with
           familiar ingredient names, US and metric measurements, and affordable substitutions.
         </li>
         <li>

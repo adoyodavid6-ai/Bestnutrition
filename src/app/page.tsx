@@ -74,7 +74,7 @@ export default async function HomePage() {
             <div className="hero-stats">
               <div>
                 <strong>{recipes.length}</strong>
-                <span>recipes from American, British &amp; Asian kitchens and beyond</span>
+                <span>recipes from American, European &amp; Asian kitchens and beyond</span>
               </div>
               <div>
                 <strong>{conditions.length}</strong>

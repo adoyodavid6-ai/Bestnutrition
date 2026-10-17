@@ -1,6 +1,11 @@
 import type { ContentReview, Recipe } from "@/lib/types";
 import { recipePhotos } from "./recipe-photos";
 import { usUkAsiaRecipes } from "./recipes-us-uk-asia";
+import { americasRecipes } from "./recipes-americas";
+import { latinAmericaRecipes } from "./recipes-latin-america";
+import { europeNorthRecipes } from "./recipes-europe-north";
+import { europeSouthRecipes } from "./recipes-europe-south";
+import { asiaRecipes } from "./recipes-asia";
 
 const editorial = (published: string): ContentReview => ({
   status: "published",
@@ -603,13 +608,15 @@ const originalRecipes: Recipe[] = [
       { id: "chilli-flakes", qty: 0.5, unit: "tsp", grams: 1 },
       { id: "lime", qty: 1, unit: "tbsp", grams: 15 },
       { id: "salt", qty: 0.5, unit: "tsp", grams: 3 },
+      { id: "cashews", qty: 2, unit: "tbsp", grams: 20, optional: true, note: "toasted and chopped, to serve" },
+      { id: "coriander", qty: 1, unit: "handful", grams: 10, optional: true, note: "to serve" },
     ],
     steps: [
       "Heat the oil in a large pan and cook the onion for 5 minutes. Add the garlic, ginger, cumin and chilli and cook for 1 minute.",
       "Add the tomatoes and cook for 5 minutes.",
       "Whisk the peanut butter into the stock until smooth, then add to the pan with the sweet potato, chickpeas and salt.",
       "Simmer, partly covered, for 15–20 minutes until the sweet potato is tender. Stir occasionally — the sauce can catch.",
-      "Stir in the spinach until wilted, add the lime juice and serve with rice, fufu or bread.",
+      "Stir in the spinach until wilted, add the lime juice and serve with rice, fufu or bread, topped with cashews and coriander if you like.",
     ],
     equipment: ["Large saucepan", "Whisk"],
     methods: ["stovetop", "simmered"],
@@ -813,12 +820,13 @@ const originalRecipes: Recipe[] = [
       { id: "vinegar", qty: 1, unit: "tbsp", grams: 15 },
       { id: "parsley", qty: 1, unit: "handful", grams: 10 },
       { id: "black-pepper", qty: 0.25, unit: "tsp", grams: 0.6 },
+      { id: "capers", qty: 1, unit: "tbsp", grams: 9, optional: true, note: "drained; adds about 70 mg sodium per serving" },
     ],
     steps: [
       "Boil the potatoes in a pan of water for 12–15 minutes until tender. Add the green beans for the final 4 minutes. Drain and cool slightly.",
       "Meanwhile, boil the eggs for 9 minutes, cool in cold water, peel and quarter.",
       "Whisk the olive oil, vinegar and pepper. Toss with the warm potatoes and beans.",
-      "Add the tomatoes, onion, tuna and parsley, top with the eggs and serve.",
+      "Add the tomatoes, onion, tuna, parsley and capers (if using), top with the eggs and serve.",
     ],
     equipment: ["2 saucepans", "Large bowl"],
     methods: ["stovetop"],
@@ -855,12 +863,16 @@ const originalRecipes: Recipe[] = [
       { id: "black-pepper", qty: 0.25, unit: "tsp", grams: 0.6 },
       { id: "salt", qty: 0.25, unit: "tsp", grams: 1.5 },
       { id: "parsley", qty: 1, unit: "handful", grams: 10, optional: true },
+      { id: "green-beans", qty: 100, unit: "g", grams: 100, optional: true, note: "cut into 3 cm lengths" },
+      { id: "sweet-corn", qty: 100, unit: "g", grams: 100, optional: true, note: "frozen or canned, drained" },
+      { id: "celery", qty: 2, unit: "piece", grams: 80, optional: true, note: "stalks, diced" },
+      { id: "red-pepper", qty: 0.5, unit: "piece", grams: 60, optional: true, note: "diced" },
     ],
     steps: [
-      "Heat the oil in a large pot and cook the onion and carrot for 5 minutes. Add the garlic for 1 minute.",
+      "Heat the oil in a large pot and cook the onion and carrot (plus the celery and pepper, if using) for 5 minutes. Add the garlic for 1 minute.",
       "Add the stock and whole chicken breasts and bring to a gentle simmer. Poach for 15 minutes.",
       "Lift out the chicken, add the potatoes and simmer for 10 minutes.",
-      "Shred the chicken with two forks. Return it to the pot with the cabbage and simmer for 5 minutes until the potatoes are tender.",
+      "Shred the chicken with two forks. Return it to the pot with the cabbage (and the green beans and sweetcorn, if using) and simmer for 5 minutes until the potatoes are tender.",
       "Season with pepper, taste, and add salt only if needed. Finish with parsley.",
     ],
     equipment: ["Large pot", "Two forks"],
@@ -985,14 +997,17 @@ const originalRecipes: Recipe[] = [
       { id: "broccoli", qty: 400, unit: "g", grams: 400, note: "florets" },
       { id: "veg-oil", qty: 1, unit: "tsp", grams: 5 },
       { id: "spring-onion", qty: 2, unit: "piece", grams: 30, optional: true },
+      { id: "carrot", qty: 1, unit: "piece", grams: 60, optional: true, note: "cut into thin batons" },
+      { id: "red-pepper", qty: 1, unit: "piece", grams: 120, optional: true, note: "sliced" },
+      { id: "sesame-seeds", qty: 1, unit: "tsp", grams: 3, optional: true, note: "to serve" },
     ],
     steps: [
       "Cook the brown rice according to the packet, usually 25–30 minutes.",
       "Heat the oven to 200 °C (400 °F). Line a tray with baking paper.",
       "Mix the miso, honey, soy sauce, ginger and garlic into a paste.",
-      "Place the salmon on the tray and spread the glaze over the top. Toss the broccoli with the oil and arrange around the fish.",
+      "Place the salmon on the tray and spread the glaze over the top. Toss the broccoli (and the carrot and pepper, if using) with the oil and arrange around the fish.",
       "Roast for 12–15 minutes until the salmon flakes easily and the broccoli is tender-crisp.",
-      "Serve with the rice and sliced spring onions.",
+      "Serve with the rice, sliced spring onions and sesame seeds (if using).",
     ],
     equipment: ["Baking tray", "Saucepan", "Small bowl"],
     methods: ["oven"],
@@ -1031,11 +1046,13 @@ const originalRecipes: Recipe[] = [
       { id: "lime", qty: 1, unit: "tbsp", grams: 15 },
       { id: "brown-rice", qty: 250, unit: "g", grams: 250 },
       { id: "spring-onion", qty: 2, unit: "piece", grams: 30, optional: true },
+      { id: "mangetout", qty: 100, unit: "g", grams: 100, optional: true, note: "or sugar snap peas" },
+      { id: "red-onion", qty: 0.5, unit: "piece", grams: 55, optional: true, note: "sliced" },
     ],
     steps: [
       "Cook the brown rice according to the packet.",
       "Pat the tofu dry. Heat 1 tbsp oil in a wok over high heat and fry the tofu for 6–8 minutes, turning, until golden. Remove.",
-      "Add the remaining oil, then the carrot and broccoli. Stir-fry for 3 minutes. Add the pepper and mushrooms for 2 more minutes.",
+      "Add the remaining oil, then the carrot and broccoli. Stir-fry for 3 minutes. Add the pepper, mushrooms and the mangetout and red onion (if using) for 2 more minutes.",
       "Add the garlic and ginger for 30 seconds, then return the tofu with the soy sauce and lime juice. Toss to coat.",
       "Serve over the rice, topped with spring onions.",
     ],
@@ -1077,13 +1094,15 @@ const originalRecipes: Recipe[] = [
       { id: "olive-oil", qty: 1, unit: "tbsp", grams: 14 },
       { id: "salt", qty: 0.5, unit: "tsp", grams: 3 },
       { id: "coriander", qty: 1, unit: "handful", grams: 15, optional: true },
+      { id: "pumpkin-seeds", qty: 2, unit: "tbsp", grams: 20, optional: true, note: "toasted, to scatter" },
+      { id: "carrot", qty: 1, unit: "piece", grams: 60, optional: true, note: "grated, for the slaw" },
     ],
     steps: [
       "Heat the oil in a pan and soften half the onion for 3 minutes. Add the garlic, cumin and paprika for 30 seconds.",
       "Add the beans, a splash of water and half the salt. Cook for 5 minutes, lightly mashing.",
-      "Toss the cabbage with the remaining onion, half the lime juice and the rest of the salt.",
+      "Toss the cabbage (and grated carrot, if using) with the remaining onion, half the lime juice and the rest of the salt.",
       "Mash the avocado with the remaining lime juice.",
-      "Warm the tortillas in a dry pan. Fill with beans, slaw, tomato, avocado and coriander.",
+      "Warm the tortillas in a dry pan. Fill with beans, slaw, tomato, avocado and coriander, and scatter with toasted pumpkin seeds if you like.",
     ],
     equipment: ["Frying pan", "Mixing bowl"],
     methods: ["stovetop"],
@@ -1119,11 +1138,15 @@ const originalRecipes: Recipe[] = [
       { id: "berries", qty: 150, unit: "g", grams: 150, note: "fresh or frozen" },
       { id: "cinnamon", qty: 0.5, unit: "tsp", grams: 1.3 },
       { id: "honey", qty: 1, unit: "tsp", grams: 7, optional: true, note: "optional" },
+      { id: "almonds", qty: 1, unit: "tbsp", grams: 10, optional: true, note: "flaked or chopped, to top; adds about 30 kcal per serving" },
+      { id: "pumpkin-seeds", qty: 1, unit: "tbsp", grams: 10, optional: true, note: "to top" },
+      { id: "coconut-flakes", qty: 1, unit: "tbsp", grams: 5, optional: true, note: "unsweetened, to top" },
+      { id: "mint", qty: 2, unit: "pinch", grams: 1, optional: true, note: "a few leaves, to serve" },
     ],
     steps: [
       "Mix the oats, milk, yoghurt, chia and cinnamon in a bowl or two jars.",
       "Fold in half the berries. Cover and refrigerate overnight.",
-      "In the morning, stir, loosen with a splash of milk if needed and top with the remaining berries and a drizzle of honey if you like.",
+      "In the morning, stir, loosen with a splash of milk if needed and top with the remaining berries, a drizzle of honey and the almonds, pumpkin seeds, coconut and mint if you like.",
     ],
     equipment: ["Bowl or 2 jars with lids"],
     methods: ["no-cook"],
@@ -1155,8 +1178,10 @@ const originalRecipes: Recipe[] = [
       { id: "milk", qty: 150, unit: "ml", grams: 155 },
       { id: "ginger", qty: 1, unit: "tsp", grams: 2, note: "grated" },
       { id: "lime", qty: 1, unit: "tsp", grams: 5, optional: true },
+      { id: "chia", qty: 1, unit: "tsp", grams: 4, optional: true, note: "to sprinkle" },
+      { id: "mint", qty: 2, unit: "pinch", grams: 1, optional: true, note: "a sprig, to serve" },
     ],
-    steps: ["Add everything to a blender.", "Blend for 1 minute until completely smooth. Add more milk for a thinner drink.", "Serve immediately."],
+    steps: ["Add everything to a blender.", "Blend for 1 minute until completely smooth. Add more milk for a thinner drink.", "Serve immediately, topped with a sprinkle of chia seeds and a mint sprig if you like."],
     equipment: ["Blender"],
     methods: ["blender", "no-cook"],
     tips: ["Freeze over-ripe bananas in chunks for colder, thicker smoothies."],
@@ -1225,11 +1250,16 @@ const originalRecipes: Recipe[] = [
       { id: "cinnamon", qty: 0.5, unit: "tsp", grams: 1.3 },
       { id: "greek-yogurt", qty: 200, unit: "g", grams: 200 },
       { id: "mint", qty: 1, unit: "handful", grams: 5, optional: true },
+      { id: "kiwi", qty: 2, unit: "piece", grams: 150, optional: true, note: "peeled and cut into wedges" },
+      { id: "papaya", qty: 150, unit: "g", grams: 150, optional: true, note: "cubed" },
+      { id: "passion-fruit", qty: 2, unit: "piece", grams: 36, optional: true, note: "pulp scooped out" },
+      { id: "hazelnuts", qty: 2, unit: "tbsp", grams: 20, optional: true, note: "toasted and chopped, to top" },
+      { id: "coconut-flakes", qty: 1, unit: "tbsp", grams: 5, optional: true, note: "unsweetened, to top" },
     ],
     steps: [
-      "Cut the pineapple, mango and banana into bite-sized pieces. Segment the oranges over the bowl to catch the juice.",
-      "Toss the fruit with the lime juice and cinnamon.",
-      "Serve with a spoonful of yoghurt and torn mint leaves.",
+      "Cut the pineapple, mango, banana (and kiwi and papaya, if using) into bite-sized pieces. Segment the oranges over the bowl to catch the juice.",
+      "Toss the fruit with the lime juice and cinnamon. Spoon over the passion fruit pulp if using.",
+      "Serve with a spoonful of yoghurt and torn mint leaves, scattered with the hazelnuts and coconut if you like.",
     ],
     equipment: ["Sharp knife", "Large bowl"],
     methods: ["no-cook"],
@@ -1244,8 +1274,16 @@ const originalRecipes: Recipe[] = [
   },
 ];
 
-/** American, British and Asian dishes lead; the original East African and global recipes follow unchanged. */
-export const recipes: Recipe[] = [...usUkAsiaRecipes, ...originalRecipes];
+/** American, European and Asian dishes lead; the original East African and global recipes follow unchanged. */
+export const recipes: Recipe[] = [
+  ...usUkAsiaRecipes,
+  ...americasRecipes,
+  ...latinAmericaRecipes,
+  ...europeNorthRecipes,
+  ...europeSouthRecipes,
+  ...asiaRecipes,
+  ...originalRecipes,
+];
 
 for (const r of recipes) r.photo ??= recipePhotos[r.slug];
 
