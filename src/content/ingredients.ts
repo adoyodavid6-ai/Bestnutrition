@@ -112,6 +112,7 @@ export const ingredients: Ingredient[] = [
 
   { id: "ground-turkey", name: "Lean ground turkey (93% lean)", altNames: ["turkey mince"], category: "protein", per100g: n(150, 18.7, 0, 8.3, 2.2, 0, 69), source: fdc("Turkey, ground, 93% lean, 7% fat, raw"), animal: "poultry", cost: 2, color: "#c99a86" },
   { id: "lean-beef-mince", name: "Lean beef mince (90% lean)", altNames: ["ground beef"], category: "protein", per100g: n(176, 20, 0, 10, 3.9, 0, 66), source: fdc("Beef, ground, 90% lean meat / 10% fat, raw"), animal: "meat", cost: 3, color: "#8c3b32" },
+  { id: "bacon", name: "Bacon (streaky), cooked", altNames: ["streaky bacon", "American-style bacon"], category: "protein", per100g: n(541, 37, 1.4, 41.8, 13.7, 0, 1717), source: fdc("Pork, cured, bacon, cooked, pan-fried"), animal: "meat", cost: 3, color: "#a8432f" },
   { id: "cod", name: "Cod or haddock fillet", category: "protein", per100g: n(82, 17.8, 0, 0.7, 0.1, 0, 54), source: fdc("Fish, cod, Atlantic, raw"), allergens: ["fish"], animal: "fish", cost: 3, color: "#f3ebe2" },
 
   // ---------- Dairy ----------

@@ -82,7 +82,7 @@ export function buildShoppingList(requests: ShoppingRequest[]): ShoppingItem[] {
           category: ing.category,
           checked: false,
           recipes: [recipe.title],
-          note: STAPLES.has(ing.id) ? "Pantry staple — check before buying" : undefined,
+          note: STAPLES.has(ing.id) ? "Pantry staple — check before buying" : line.optional ? "Optional" : undefined,
         });
       }
     }
