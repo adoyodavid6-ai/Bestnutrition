@@ -246,7 +246,7 @@ export const europeNorthRecipes: Recipe[] = [
     ],
     storage: "Best eaten fresh. Leftover cooked mackerel and potato salad keep separately in the fridge for 1 day; eat cold.",
     foodSafety: "Cook mackerel to 63 °C (145 °F), until the flesh is opaque and flakes easily. Refrigerate leftovers within 2 hours.",
-    goals: ["heart-health", "high-protein", "quick"],
+    goals: ["heart-health", "high-protein"],
     review: R,
   },
   {
@@ -460,6 +460,7 @@ export const europeNorthRecipes: Recipe[] = [
       { id: "strawberries", qty: 400, unit: "g", grams: 400, note: "hulled and quartered" },
       { id: "greek-yogurt", qty: 400, unit: "g", grams: 400, note: "0–2% fat" },
       { id: "sugar", qty: 2, unit: "tbsp", grams: 25, note: "stands in for 2 shop-bought meringue nests (about 25 g), crushed" },
+      { id: "eggs", qty: 1, unit: "piece", grams: 6, note: "egg white in the meringue nests (meringue is made from egg white and sugar)" },
       { id: "honey", qty: 1, unit: "tbsp", grams: 21, note: "or maple syrup" },
       { id: "lemon", qty: 1, unit: "tsp", grams: 5, note: "juice" },
       { id: "mint", qty: 1, unit: "handful", grams: 10, note: "small leaves, to serve", optional: true },
@@ -576,7 +577,7 @@ export const europeNorthRecipes: Recipe[] = [
     ],
     storage: "Refrigerate leftover salmon within 2 hours and eat within 2 days, cold or gently reheated until piping hot. The cucumber salad keeps for 3 days.",
     foodSafety: "Cook salmon to 63 °C (145 °F), until opaque and flaking easily.",
-    goals: ["heart-health", "high-protein", "quick"],
+    goals: ["heart-health", "high-protein"],
     review: R,
   },
   {
@@ -671,7 +672,7 @@ export const europeNorthRecipes: Recipe[] = [
     ],
     storage: "Cool within 2 hours and refrigerate for up to 1 day. Reheat gently until steaming hot; do not reheat more than once.",
     foodSafety: "Fish must reach 63 °C (145 °F) and flake easily.",
-    goals: ["high-protein", "heart-health", "quick"],
+    goals: ["high-protein", "heart-health"],
     review: R,
   },
   {
