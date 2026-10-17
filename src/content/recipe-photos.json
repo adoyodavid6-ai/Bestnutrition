@@ -1,4 +1,12 @@
 {
+  "apple-cinnamon-baked-oatmeal": {
+    "src": "/images/recipes/apple-cinnamon-baked-oatmeal.webp",
+    "alt": "A square of apple cinnamon baked oatmeal on a black plate, topped with diced red apple and chopped nuts",
+    "width": 1375,
+    "height": 1144,
+    "kind": "ai-generated",
+    "credit": "NourishWell"
+  },
   "banana-oat-pancakes": {
     "src": "/images/recipes/banana-oat-pancakes.webp",
     "alt": "Banana oat pancakes stacked on a black plate, topped with banana slices, strawberries, raspberries, blueberries and a sprig of mint",
